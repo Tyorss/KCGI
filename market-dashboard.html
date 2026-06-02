@@ -322,6 +322,75 @@
       gap: 14px;
     }
 
+    .image-chart-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .image-chart-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .image-chart-title-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .image-chart-title-row h3 {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.3;
+      color: var(--navy);
+    }
+
+    .image-chart-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .image-chart-actions a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--text);
+      font-size: 13px;
+      text-decoration: none;
+    }
+
+    .image-chart-actions a:hover {
+      border-color: #9fb0c3;
+      background: #f3f7fb;
+    }
+
+    .image-chart-frame {
+      padding: 12px;
+      background: #ffffff;
+    }
+
+    .image-chart-frame img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #ffffff;
+    }
+
     .chart-card,
     .request-card {
       border: 1px solid var(--line);
@@ -654,6 +723,11 @@
       .upload-panel {
         min-width: 0;
       }
+
+      .image-chart-title-row {
+        align-items: flex-start;
+        flex-direction: column;
+      }
     }
   </style>
 </head>
@@ -692,14 +766,201 @@
         <button id="periodOneMonth" class="active" type="button">1개월</button>
         <button id="periodSixMonths" type="button">6개월</button>
         <button id="periodOneYear" type="button">1년</button>
+        <button id="periodYearToDate" type="button">올해</button>
         <button id="periodAll" type="button">전체 기간</button>
       </div>
       <div class="upload-row">
+        <button type="button" onclick="window.location.href='./market-dashboard-2026-04.html'">4월 기준 표 보기</button>
         <button id="downloadPagePng" type="button">전체 PNG</button>
         <button id="downloadAllCsv" type="button">전체 CSV</button>
         <button id="downloadMissingCsv" type="button">누락 데이터 요청서</button>
       </div>
     </div>
+
+    <section id="pptImageGraphs" class="section-card" aria-label="PPT image graphs">
+      <div class="section-header">
+        <div>
+          <p class="section-kicker">PPT IMAGE GRAPHS</p>
+          <h2>5월 기준 PPT용 그래프 이미지</h2>
+        </div>
+        <div class="section-actions">
+          <button class="small" type="button" onclick="downloadElementPng(document.getElementById('pptImageGraphs'), 'ppt_image_graphs.png')">섹션 PNG</button>
+        </div>
+      </div>
+
+      <div class="image-chart-grid">
+        <article class="image-chart-card">
+          <div class="image-chart-title-row">
+            <h3>글로벌 증시 5월 수익률 비교</h3>
+            <div class="image-chart-actions">
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/global_market_returns_2026_05.png', 'global_market_returns_2026_05.png')">고해상도 PNG</button>
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/global_market_returns_2026_05.pptx', 'global_market_returns_2026_05.pptx')">PPTX</button>
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/global_market_returns_2026_05.csv', 'global_market_returns_2026_05.csv')">CSV</button>
+            </div>
+          </div>
+          <div class="image-chart-frame">
+            <img src="./outputs/global_market_returns_2026_05.png" alt="글로벌 증시 2026년 5월 1개월 및 연초 이후 수익률 그래프">
+          </div>
+        </article>
+
+        <article class="image-chart-card">
+          <div class="image-chart-title-row">
+            <h3>연령별 추천 비중</h3>
+            <div class="image-chart-actions">
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/retirement_allocation_2026_05.png', 'retirement_allocation_2026_05.png')">고해상도 PNG</button>
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/retirement_allocation_2026_05.pptx', 'retirement_allocation_2026_05.pptx')">PPTX</button>
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/retirement_allocation_2026_05.csv', 'retirement_allocation_2026_05.csv')">CSV</button>
+            </div>
+          </div>
+          <div class="image-chart-frame">
+            <img src="./outputs/retirement_allocation_2026_05.png" alt="5월 말 엑셀 기준 연령별 추천 비중 누적 막대 그래프">
+          </div>
+        </article>
+
+        <article class="image-chart-card">
+          <div class="image-chart-title-row">
+            <h3>멀티에셋 자산배분 전략 포트폴리오 백테스트</h3>
+            <div class="image-chart-actions">
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/conservative_backtest_2026_05.png', 'conservative_backtest_2026_05.png')">고해상도 PNG</button>
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/conservative_backtest_2026_05.pptx', 'conservative_backtest_2026_05.pptx')">PPTX</button>
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/conservative_backtest_2026_05.csv', 'conservative_backtest_2026_05.csv')">CSV</button>
+            </div>
+          </div>
+          <div class="image-chart-frame">
+            <img src="./outputs/conservative_backtest_2026_05.png" alt="5월 말 엑셀 기준 멀티에셋 자산배분 전략 포트폴리오 백테스트 그래프">
+          </div>
+        </article>
+
+        <article class="image-chart-card">
+          <div class="image-chart-title-row">
+            <h3>듀얼 모멘텀 전략 포트폴리오 성과</h3>
+            <div class="image-chart-actions">
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/aggressive_momentum_2026_05.png', 'aggressive_momentum_2026_05.png')">고해상도 PNG</button>
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/aggressive_momentum_2026_05.pptx', 'aggressive_momentum_2026_05.pptx')">PPTX</button>
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/aggressive_momentum_2026_05.csv', 'aggressive_momentum_2026_05.csv')">CSV</button>
+            </div>
+          </div>
+          <div class="image-chart-frame">
+            <img src="./outputs/aggressive_momentum_2026_05.png" alt="5월 말 엑셀 기준 듀얼 모멘텀 전략 포트폴리오 성과 그래프">
+          </div>
+        </article>
+        <article class="image-chart-card">
+          <div class="image-chart-title-row">
+            <h3>한국 단기채 제외 자산 성과 지표</h3>
+            <div class="image-chart-actions">
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_ex_kis_2026_05.png', 'asset_metrics_ex_kis_2026_05.png')">고해상도 PNG</button>
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_ex_kis_2026_05.csv', 'asset_metrics_ex_kis_2026_05.csv')">CSV</button>
+            </div>
+          </div>
+          <div class="image-chart-frame">
+            <img src="./outputs/asset_metrics_ex_kis_2026_05.png" alt="한국 단기채 제외 2006년 1월부터 2026년 5월까지 자산 성과 지표 표">
+          </div>
+        </article>
+
+        <article class="image-chart-card">
+          <div class="image-chart-title-row">
+            <h3>KRW 기준 자산 성과 지표 (CAGR)</h3>
+            <div class="image-chart-actions">
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_2026_05.png', 'asset_metrics_krw_2026_05.png')">고해상도 PNG</button>
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_2026_05.csv', 'asset_metrics_krw_2026_05.csv')">CSV</button>
+            </div>
+          </div>
+          <div class="image-chart-frame">
+            <img src="./outputs/asset_metrics_krw_2026_05.png" alt="KRW 기준 자산 성과 지표 CAGR 기준 표">
+          </div>
+        </article>
+
+        <article class="image-chart-card">
+          <div class="image-chart-title-row">
+            <h3>KRW 기준 자산 성과 지표 (일간 산술평균 연율화)</h3>
+            <div class="image-chart-actions">
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_daily_annualized_2026_05.png', 'asset_metrics_krw_daily_annualized_2026_05.png')">고해상도 PNG</button>
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_daily_annualized_2026_05.csv', 'asset_metrics_krw_daily_annualized_2026_05.csv')">CSV</button>
+            </div>
+          </div>
+          <div class="image-chart-frame">
+            <img src="./outputs/asset_metrics_krw_daily_annualized_2026_05.png" alt="KRW 기준 자산 성과 지표 일간 산술평균 연율화 기준 표">
+          </div>
+        </article>
+
+        <article class="image-chart-card">
+          <div class="image-chart-title-row">
+            <h3>KRW 기준 자산 성과 지표 (월간 산술평균 연율화)</h3>
+            <div class="image-chart-actions">
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_monthly_annualized_2026_05.png', 'asset_metrics_krw_monthly_annualized_2026_05.png')">고해상도 PNG</button>
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_monthly_annualized_2026_05.csv', 'asset_metrics_krw_monthly_annualized_2026_05.csv')">CSV</button>
+            </div>
+          </div>
+          <div class="image-chart-frame">
+            <img src="./outputs/asset_metrics_krw_monthly_annualized_2026_05.png" alt="KRW 기준 자산 성과 지표 월간 산술평균 연율화 기준 표">
+          </div>
+        </article>
+
+        <article class="image-chart-card">
+          <div class="image-chart-title-row">
+            <h3>KRW 기준 자산 성과 지표 (TR, CAGR)</h3>
+            <div class="image-chart-actions">
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_tr_cagr_2026_05.png', 'asset_metrics_krw_tr_cagr_2026_05.png')">고해상도 PNG</button>
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_tr_cagr_2026_05.csv', 'asset_metrics_krw_tr_cagr_2026_05.csv')">CSV</button>
+            </div>
+          </div>
+          <div class="image-chart-frame">
+            <img src="./outputs/asset_metrics_krw_tr_cagr_2026_05.png" alt="KRW 기준 자산 성과 지표 TR CAGR 기준 표">
+          </div>
+        </article>
+
+        <article class="image-chart-card">
+          <div class="image-chart-title-row">
+            <h3>KRW 기준 자산 성과 지표 (TR, 일간 산술평균 연율화)</h3>
+            <div class="image-chart-actions">
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_tr_daily_annualized_2026_05.png', 'asset_metrics_krw_tr_daily_annualized_2026_05.png')">고해상도 PNG</button>
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_tr_daily_annualized_2026_05.csv', 'asset_metrics_krw_tr_daily_annualized_2026_05.csv')">CSV</button>
+            </div>
+          </div>
+          <div class="image-chart-frame">
+            <img src="./outputs/asset_metrics_krw_tr_daily_annualized_2026_05.png" alt="KRW 기준 자산 성과 지표 TR 일간 산술평균 연율화 기준 표">
+          </div>
+        </article>
+
+        <article class="image-chart-card">
+          <div class="image-chart-title-row">
+            <h3>KRW 기준 자산 성과 지표 (TR, 월간 산술평균 연율화)</h3>
+            <div class="image-chart-actions">
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_tr_monthly_annualized_2026_05.png', 'asset_metrics_krw_tr_monthly_annualized_2026_05.png')">고해상도 PNG</button>
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_tr_monthly_annualized_2026_05.csv', 'asset_metrics_krw_tr_monthly_annualized_2026_05.csv')">CSV</button>
+            </div>
+          </div>
+          <div class="image-chart-frame">
+            <img src="./outputs/asset_metrics_krw_tr_monthly_annualized_2026_05.png" alt="KRW 기준 자산 성과 지표 TR 월간 산술평균 연율화 기준 표">
+          </div>
+        </article>
+
+        <article class="image-chart-card">
+          <div class="image-chart-title-row">
+            <h3>KRW 기준 자산별 시계열 및 MDD</h3>
+            <div class="image-chart-actions">
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_series_mdd_krw_2026_05.png', 'asset_series_mdd_krw_2026_05.png')">고해상도 PNG</button>
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_series_krw_2026_05.csv', 'asset_series_krw_2026_05.csv')">CSV</button>
+            </div>
+          </div>
+          <div class="image-chart-frame">
+            <img src="./outputs/asset_series_mdd_krw_2026_05.png" alt="KRW 기준 자산별 시계열 및 MDD 그래프">
+          </div>
+        </article>
+        <article class="image-chart-card">
+          <div class="image-chart-title-row">
+            <h3>5월 기준 전략별 성과 요약</h3>
+            <div class="image-chart-actions">
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/strategy_summary_2026_05.png', 'strategy_summary_2026_05.png')">고해상도 PNG</button>
+              <button class="small" type="button" onclick="downloadStaticFile('./outputs/strategy_summary_2026_05.csv', 'strategy_summary_2026_05.csv')">CSV</button>
+            </div>
+          </div>
+          <div class="image-chart-frame">
+            <img src="./outputs/strategy_summary_2026_05.png" alt="5월 기준 전략별 성과 요약 표">
+          </div>
+        </article>
+      </div>
+    </section>
 
     <div id="sectionsRoot"></div>
   </main>
@@ -721,6 +982,7 @@
       "1m": { label: "1개월", months: 1 },
       "6m": { label: "6개월", months: 6 },
       "1y": { label: "1년", months: 12 },
+      ytd: { label: "올해", months: null, yearToDate: true },
       all: { label: "전체 기간", months: null }
     };
     const LATE_LISTING_KEYS = new Set(["DRAM", "NASA", "QTUM"]);
@@ -1101,6 +1363,7 @@
       periodOneMonth: document.getElementById("periodOneMonth"),
       periodSixMonths: document.getElementById("periodSixMonths"),
       periodOneYear: document.getElementById("periodOneYear"),
+      periodYearToDate: document.getElementById("periodYearToDate"),
       periodAll: document.getElementById("periodAll"),
       libraryWarning: document.getElementById("libraryWarning"),
       downloadPagePng: document.getElementById("downloadPagePng"),
@@ -1126,6 +1389,7 @@
       el.periodOneMonth.addEventListener("click", () => setPeriod("1m"));
       el.periodSixMonths.addEventListener("click", () => setPeriod("6m"));
       el.periodOneYear.addEventListener("click", () => setPeriod("1y"));
+      el.periodYearToDate.addEventListener("click", () => setPeriod("ytd"));
       el.periodAll.addEventListener("click", () => setPeriod("all"));
       el.downloadPagePng.addEventListener("click", () => downloadElementPng(document.getElementById("dashboardPage"), "5월_시장_데이터_대시보드.png"));
       el.downloadAllCsv.addEventListener("click", downloadAllCsv);
@@ -2991,12 +3255,19 @@
       const rows = dataset.rows.filter(row => row.date instanceof Date && !Number.isNaN(row.date.getTime()));
       if (!rows.length) return [];
       const latest = rows.reduce((max, row) => row.date > max ? row.date : max, rows[0].date);
-      const months = PERIOD_OPTIONS[mode]?.months ?? 1;
-      const start = addMonthsUtc(latest, -months);
+      const start = periodStartDate(latest, mode);
       return dataset.rows.filter(row => {
         const time = row.date.getTime();
         return time >= start.getTime() && time <= latest.getTime();
       });
+    }
+
+    function periodStartDate(latest, mode) {
+      if (PERIOD_OPTIONS[mode]?.yearToDate) {
+        return new Date(Date.UTC(latest.getUTCFullYear(), 0, 1));
+      }
+      const months = PERIOD_OPTIONS[mode]?.months ?? 1;
+      return addMonthsUtc(latest, -months);
     }
 
     function addMonthsUtc(date, months) {
@@ -3033,7 +3304,7 @@
       if (rows.length < 2) return { ok: false, reason: `${DATASETS[key].label} 수익률 계산에는 최소 2개 값이 필요합니다.` };
       const first = rows[0];
       const last = rows[rows.length - 1];
-      if (mode !== "all" && !allowShortWindow) {
+      if (mode !== "all" && !allowShortWindow && !PERIOD_OPTIONS[mode]?.yearToDate) {
         const requiredStart = addMonthsUtc(last.date, -(PERIOD_OPTIONS[mode]?.months ?? 1));
         requiredStart.setUTCDate(requiredStart.getUTCDate() + 10);
         if (first.date > requiredStart) {
@@ -3112,6 +3383,7 @@
       el.periodOneMonth.classList.toggle("active", mode === "1m");
       el.periodSixMonths.classList.toggle("active", mode === "6m");
       el.periodOneYear.classList.toggle("active", mode === "1y");
+      el.periodYearToDate.classList.toggle("active", mode === "ytd");
       el.periodAll.classList.toggle("active", mode === "all");
       render();
     }
@@ -3123,6 +3395,15 @@
     function destroyCharts() {
       for (const chart of state.chartInstances.values()) chart.destroy();
       state.chartInstances.clear();
+    }
+
+    function downloadStaticFile(path, fileName) {
+      const link = document.createElement("a");
+      link.href = path;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
     }
 
     async function downloadElementPng(element, fileName) {
