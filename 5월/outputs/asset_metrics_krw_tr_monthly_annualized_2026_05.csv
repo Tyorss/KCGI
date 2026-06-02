@@ -1,8 +1,0 @@
-﻿"자산분류","Bloomberg_Ticker","파일","데이터_범위","관측치","연평균수익률(%)","표준편차(%)","샤프비율","MDD(%)","MDD_고점","MDD_저점","MDD_회복","고점회복기간(년)","데이터소스"
-"미국 성장주","NDX Index","NASDAQ 100 KRW.xlsx","2006.01~2026.05","245","18.7","16.4","1.14","-28.6","2021-12","2022-12","2023-06","0.5","NASDAQ 100 KRW.xlsx / NDX Index / TOT_RETURN_INDEX_NET_DVDS / KRW"
-"미국 배당주","DJDVP Index","Dow 배당 KRW.xlsx","2006.01~2026.05","245","11.8","13.9","0.85","-31.1","2007-05","2009-03","2011-04","2.1","Dow 배당 KRW.xlsx / DJDVP Index / TOT_RETURN_INDEX_NET_DVDS / KRW"
-"중국 본토","SHSZ300 Index","CSI 300 KRW.xlsx","2006.01~2026.05","245","16.3","26.6","0.61","-51.9","2007-10","2008-10","2014-12","6.2","CSI 300 KRW.xlsx / SHSZ300 Index / TOT_RETURN_INDEX_NET_DVDS / KRW"
-"일본","NKYTR Index","니케이225 KRW.xlsx","2006.01~2026.05","245","10.4","14.5","0.72","-19.0","2021-09","2022-06","2023-06","1.0","니케이225 KRW.xlsx / NKYTR Index / TOT_RETURN_INDEX_NET_DVDS / KRW"
-"한국","KOSPI Index","Kospi KRW.xlsx","2006.01~2026.05","245","13.0","22.0","0.59","-47.0","2007-10","2008-11","2010-12","2.1","Kospi KRW.xlsx / KOSPI Index / TOT_RETURN_INDEX_NET_DVDS / KRW"
-"미국 달러","BTSISOFR Index","SOFR KRW.xlsx","2018.04~2026.05","98","7.3","8.5","0.85","-13.1","2022-09","2023-01","2024-03","1.2","SOFR KRW.xlsx / BTSISOFR Index / TOT_RETURN_INDEX_NET_DVDS / KRW"
-"한국 단기채","KSV1131T Index","KIS Pricing Treasury Bonds 2Y-2Y6M (Group level 1 Maturity Level2) TR.xlsx","2014.11~2026.05","139","2.0","1.5","1.35","-3.3","2021-04","2022-09","2023-03","0.5","KIS Pricing Treasury Bonds 2Y-2Y6M (Group level 1 Maturity Level2) TR.xlsx / KSV1131T Index / TOT_RETURN_INDEX_NET_DVDS / KRW"
