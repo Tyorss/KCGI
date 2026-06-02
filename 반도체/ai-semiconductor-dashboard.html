@@ -571,6 +571,201 @@
       line-height: 1.5;
     }
 
+    .financial-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(150px, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .financial-summary-card,
+    .metric-card,
+    .disclosure-card,
+    .adjustment-row {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfa;
+    }
+
+    .financial-summary-card {
+      min-height: 104px;
+      padding: 12px;
+    }
+
+    .financial-summary-card span,
+    .metric-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .financial-summary-card strong,
+    .metric-card strong {
+      display: block;
+      margin-top: 8px;
+      color: var(--navy);
+      font-size: 18px;
+      line-height: 1.25;
+    }
+
+    .financial-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(360px, 0.8fr);
+      gap: 14px;
+      align-items: start;
+    }
+
+    .financial-table tbody tr {
+      cursor: pointer;
+    }
+
+    .financial-table {
+      min-width: 1320px;
+    }
+
+    .financial-table th,
+    .financial-table td {
+      min-width: 86px;
+    }
+
+    .financial-table th:first-child,
+    .financial-table td:first-child {
+      min-width: 170px;
+    }
+
+    .financial-table tbody tr:hover,
+    .financial-table tbody tr.is-selected {
+      background: #edf5f1;
+    }
+
+    .financial-table tbody tr.is-muted {
+      cursor: default;
+      color: var(--muted);
+    }
+
+    .drawer-panel {
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .drawer-header {
+      display: grid;
+      gap: 8px;
+      padding: 14px;
+      border-bottom: 1px solid var(--line);
+      background: #f9faf8;
+    }
+
+    .drawer-header p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .drawer-body {
+      display: grid;
+      gap: 14px;
+      padding: 14px;
+    }
+
+    .detail-pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .detail-pill {
+      display: inline-flex;
+      min-height: 24px;
+      align-items: center;
+      padding: 3px 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #ffffff;
+      color: #384151;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .metric-card {
+      min-height: 86px;
+      padding: 11px;
+    }
+
+    .mix-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .mix-block {
+      min-width: 0;
+    }
+
+    .mix-block h3 {
+      margin-bottom: 8px;
+    }
+
+    .chart-box.short {
+      height: 220px;
+    }
+
+    .disclosure-card {
+      min-height: 112px;
+      padding: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .disclosure-card strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--navy);
+      font-size: 15px;
+    }
+
+    .adjustment-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .adjustment-row {
+      padding: 10px;
+      border-color: #efc7bd;
+      background: #fff6f3;
+      color: #8d3421;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .margin-table .strong-margin {
+      color: #14564e;
+      font-weight: 900;
+    }
+
+    .source-caveats {
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
     .footer-note {
       margin: 18px 0 0;
       color: var(--muted);
@@ -594,11 +789,13 @@
       .hero-grid,
       .grid-2,
       .grid-3,
-      .priority-grid {
+      .priority-grid,
+      .financial-layout {
         grid-template-columns: 1fr;
       }
 
-      .kpi-grid {
+      .kpi-grid,
+      .financial-summary-grid {
         grid-template-columns: repeat(2, minmax(150px, 1fr));
       }
 
@@ -628,7 +825,9 @@
       }
 
       .signal-strip,
-      .kpi-grid {
+      .kpi-grid,
+      .financial-summary-grid,
+      .metric-grid {
         grid-template-columns: 1fr;
       }
 
@@ -758,6 +957,41 @@
       </div>
     </section>
 
+    <section class="section" aria-label="Market Player Financial Drilldown">
+      <div class="section-header">
+        <div class="section-title-block">
+          <p class="kicker">Market to Player Financial Drilldown</p>
+          <h2>시장별 TAM → 주요 플레이어 → 손익 구조</h2>
+          <p class="section-subtitle">시장 내 비중과 기업 매출·영업이익은 같은 개념이 아니므로 bridge table로 분리해 보여줍니다.</p>
+        </div>
+        <div class="actions">
+          <select id="financialMarketSelector" aria-label="Financial drilldown market selector"></select>
+          <button type="button" onclick="downloadTableCsv('market-exposure')">Exposure CSV</button>
+          <button type="button" onclick="downloadTableCsv('financials')">Financial CSV</button>
+          <button type="button" onclick="downloadTableCsv('segments')">Segment CSV</button>
+        </div>
+      </div>
+
+      <div id="financialMarketSummary" class="financial-summary-grid"></div>
+
+      <div class="financial-layout">
+        <div class="card">
+          <h3>주요 플레이어 손익 연결</h3>
+          <p class="card-note">행을 클릭하면 오른쪽 패널에서 기업 전체 손익과 세그먼트 매출·이익률을 확인할 수 있습니다.</p>
+          <div class="table-wrap" style="margin-top: 10px">
+            <table id="financialPlayerTable" class="financial-table"></table>
+          </div>
+        </div>
+
+        <aside id="playerDetailPanel" class="drawer-panel" aria-label="Player financial detail">
+          <div class="drawer-header">
+            <h3>플레이어 상세</h3>
+            <p>왼쪽 표에서 기업을 선택하면 재무 요약과 세그먼트 drill-down이 표시됩니다.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
     <section class="section" aria-label="Theme Score Heatmap">
       <div class="section-header">
         <div class="section-title-block">
@@ -840,12 +1074,20 @@
           <h3>Future data automation TODO</h3>
           <div class="roadmap">
             <div class="roadmap-step"><strong>Bloomberg</strong><p>price, market cap, valuation, consensus integration.</p></div>
+            <div class="roadmap-step"><strong>FX conversion</strong><p>USD, KRW, TWD 원 통화 표시를 유지하되, 향후 Bloomberg FX로 공통 USD 환산 layer를 추가.</p></div>
             <div class="roadmap-step"><strong>Source table</strong><p>market-size estimate별 원문 링크, 기준일, 시장 정의 컬럼 추가.</p></div>
             <div class="roadmap-step"><strong>Event tracker</strong><p>IR, earnings call, supply-chain news, capex 이벤트를 테마와 기업에 연결.</p></div>
             <div class="roadmap-step"><strong>Scoring</strong><p>company exposure score와 source confidence score를 별도 layer로 분리.</p></div>
           </div>
         </div>
       </div>
+      <ul class="source-caveats">
+        <li>Company-level revenue and operating income are not the same as market-specific revenue.</li>
+        <li>HBM, CoWoS, CPO, and glass-core substrate often lack company-level product operating profit disclosure.</li>
+        <li>Segment operating income is only shown when disclosed or mechanically calculated from disclosed segment margin.</li>
+        <li>Do not infer HBM operating profit from HBM market share unless a separate estimate source is added.</li>
+        <li>CoWoS allocation is not market share. CPO and glass-core substrate should be shown as roadmap/status markets.</li>
+      </ul>
       <p class="footer-note">Data caveats: TAM values are based on heterogeneous public estimates and should not be interpreted as directly comparable without checking market definition. Enterprise SSD 2030 value and aggressive CPU TAM are scenario estimates.</p>
     </section>
   </main>
@@ -940,6 +1182,67 @@
       { company: "AGC", ticker: "5201 JP", country: "Japan", theme: "Glass Substrate", stage: "Material", product: "Specialty glass", exposure: 2, note: "Long-term material option" }
     ];
 
+    const companyFinancialsSeed = [
+      { company: "NVIDIA", ticker: "NVDA US", country: "US", fiscalYear: 2026, period: "FY2026", currency: "USD", revenue: 215938, grossProfit: null, operatingIncome: 130387, grossMarginPct: 71.1, operatingMarginPct: 60.4, accountingBasis: "GAAP", source: "NVIDIA FY2026 results", sourceDate: "FY2026", confidence: "High", note: "Segment operating income not disclosed in press release." },
+      { company: "AMD", ticker: "AMD US", country: "US", fiscalYear: 2025, period: "FY2025", currency: "USD", revenue: 34639, grossProfit: 17152, operatingIncome: 3694, grossMarginPct: 50, operatingMarginPct: 11, accountingBasis: "GAAP", source: "AMD FY2025 results", sourceDate: "FY2025", confidence: "High", note: "Segment revenue and segment operating income are disclosed." },
+      { company: "Broadcom", ticker: "AVGO US", country: "US", fiscalYear: 2025, period: "FY2025", currency: "USD", revenue: 63887, grossProfit: 43294, operatingIncome: 25484, grossMarginPct: 67.8, operatingMarginPct: 39.9, accountingBasis: "GAAP", source: "Broadcom FY2025 results", sourceDate: "FY2025", confidence: "High", note: "Segment revenue disclosed for Semiconductor Solutions and Infrastructure Software." },
+      { company: "Marvell", ticker: "MRVL US", country: "US", fiscalYear: 2026, period: "FY2026", currency: "USD", revenue: 8195, grossProfit: 4180.7, operatingIncome: null, grossMarginPct: 51.0, operatingMarginPct: 16.1, accountingBasis: "GAAP", source: "Marvell FY2026 results", sourceDate: "FY2026", confidence: "High", note: "Operating margin disclosed; operating income can be calculated if needed." },
+      { company: "TSMC", ticker: "TSM US", country: "Taiwan", fiscalYear: 2025, period: "FY2025", currency: "TWD", revenue: 3809050, grossProfit: 2281290, operatingIncome: 1936090, grossMarginPct: 59.9, operatingMarginPct: 50.8, accountingBasis: "IFRS / company reported", source: "TSMC 4Q25 Management Report", sourceDate: "FY2025", confidence: "High", note: "Platform revenue mix disclosed; platform operating income not disclosed." },
+      { company: "Samsung Electronics", ticker: "005930 KS", country: "Korea", fiscalYear: 2025, period: "FY2025", currency: "KRW", revenue: 333600000, grossProfit: null, operatingIncome: 43600000, grossMarginPct: null, operatingMarginPct: 13.1, accountingBasis: "IFRS / company reported", source: "Samsung Electronics FY2025 results", sourceDate: "FY2025", confidence: "High", note: "Segment detail should be added from IR or DART later." },
+      { company: "SK Hynix", ticker: "000660 KS", country: "Korea", fiscalYear: 2025, period: "FY2025", currency: "KRW", revenue: 97100000, grossProfit: null, operatingIncome: 47200000, grossMarginPct: null, operatingMarginPct: 48.6, accountingBasis: "IFRS / company reported", source: "SK Hynix FY2025 results", sourceDate: "FY2025", confidence: "High", note: "HBM-specific revenue and operating income are not separately disclosed in this seed." },
+      { company: "Micron", ticker: "MU US", country: "US", fiscalYear: 2025, period: "FY2025", currency: "USD", revenue: 37378, grossProfit: 14873, operatingIncome: 9770, grossMarginPct: 39.8, operatingMarginPct: 26.1, accountingBasis: "GAAP", source: "Micron FY2025 results", sourceDate: "FY2025", confidence: "High", note: "FQ4 business-unit margin data can be used for segment profitability view." }
+    ];
+
+    const companySegmentSeed = [
+      { company: "NVIDIA", ticker: "NVDA US", fiscalYear: 2026, period: "FY2026", segment: "Data Center", segmentGroup: "Compute / AI Infrastructure", currency: "USD", revenue: 193700, grossProfit: null, operatingIncome: null, revenuePct: null, operatingIncomePct: null, grossMarginPct: null, operatingMarginPct: null, metricBasis: "reported segment revenue", source: "NVIDIA FY2026 results", sourceDate: "FY2026", confidence: "High", note: "Segment revenue disclosed; segment operating income not disclosed." },
+      { company: "NVIDIA", ticker: "NVDA US", fiscalYear: 2026, period: "FY2026", segment: "Gaming", segmentGroup: "Gaming", currency: "USD", revenue: 16000, grossProfit: null, operatingIncome: null, revenuePct: null, operatingIncomePct: null, grossMarginPct: null, operatingMarginPct: null, metricBasis: "reported segment revenue", source: "NVIDIA FY2026 results", sourceDate: "FY2026", confidence: "High", note: "Segment operating income not disclosed." },
+      { company: "NVIDIA", ticker: "NVDA US", fiscalYear: 2026, period: "FY2026", segment: "Professional Visualization", segmentGroup: "Pro Visualization", currency: "USD", revenue: 3200, grossProfit: null, operatingIncome: null, revenuePct: null, operatingIncomePct: null, grossMarginPct: null, operatingMarginPct: null, metricBasis: "reported segment revenue", source: "NVIDIA FY2026 results", sourceDate: "FY2026", confidence: "High", note: "Segment operating income not disclosed." },
+      { company: "NVIDIA", ticker: "NVDA US", fiscalYear: 2026, period: "FY2026", segment: "Automotive", segmentGroup: "Auto", currency: "USD", revenue: 2300, grossProfit: null, operatingIncome: null, revenuePct: null, operatingIncomePct: null, grossMarginPct: null, operatingMarginPct: null, metricBasis: "reported segment revenue", source: "NVIDIA FY2026 results", sourceDate: "FY2026", confidence: "High", note: "Segment operating income not disclosed." },
+      { company: "AMD", ticker: "AMD US", fiscalYear: 2025, period: "FY2025", segment: "Data Center", segmentGroup: "Data Center", currency: "USD", revenue: 16635, grossProfit: null, operatingIncome: 3603, revenuePct: null, operatingIncomePct: null, grossMarginPct: null, operatingMarginPct: null, metricBasis: "reported segment revenue and operating income", source: "AMD FY2025 results", sourceDate: "FY2025", confidence: "High", note: "Segment revenue and operating income disclosed." },
+      { company: "AMD", ticker: "AMD US", fiscalYear: 2025, period: "FY2025", segment: "Client + Gaming", segmentGroup: "Client + Gaming", currency: "USD", revenue: 14550, grossProfit: null, operatingIncome: 2855, revenuePct: null, operatingIncomePct: null, grossMarginPct: null, operatingMarginPct: null, metricBasis: "reported segment revenue and operating income", source: "AMD FY2025 results", sourceDate: "FY2025", confidence: "High", note: "Segment revenue and operating income disclosed." },
+      { company: "AMD", ticker: "AMD US", fiscalYear: 2025, period: "FY2025", segment: "Embedded", segmentGroup: "Embedded", currency: "USD", revenue: 3454, grossProfit: null, operatingIncome: 1243, revenuePct: null, operatingIncomePct: null, grossMarginPct: null, operatingMarginPct: null, metricBasis: "reported segment revenue and operating income", source: "AMD FY2025 results", sourceDate: "FY2025", confidence: "High", note: "Segment revenue and operating income disclosed." },
+      { company: "AMD", ticker: "AMD US", fiscalYear: 2025, period: "FY2025", segment: "All Other", segmentGroup: "Corporate adjustment", currency: "USD", revenue: 0, grossProfit: null, operatingIncome: -4007, revenuePct: null, operatingIncomePct: null, grossMarginPct: null, operatingMarginPct: null, metricBasis: "reported segment operating income adjustment", source: "AMD FY2025 results", sourceDate: "FY2025", confidence: "High", note: "Negative adjustment shown separately; not stacked with positive segment profit." },
+      { company: "Broadcom", ticker: "AVGO US", fiscalYear: 2025, period: "FY2025", segment: "Semiconductor Solutions", segmentGroup: "Semiconductor", currency: "USD", revenue: 36858, grossProfit: null, operatingIncome: null, revenuePct: null, operatingIncomePct: null, grossMarginPct: null, operatingMarginPct: null, metricBasis: "reported segment revenue", source: "Broadcom FY2025 results", sourceDate: "FY2025", confidence: "High", note: "Segment operating income should be added from 10-K if needed." },
+      { company: "Broadcom", ticker: "AVGO US", fiscalYear: 2025, period: "FY2025", segment: "Infrastructure Software", segmentGroup: "Software", currency: "USD", revenue: 27029, grossProfit: null, operatingIncome: null, revenuePct: null, operatingIncomePct: null, grossMarginPct: null, operatingMarginPct: null, metricBasis: "reported segment revenue", source: "Broadcom FY2025 results", sourceDate: "FY2025", confidence: "High", note: "Segment operating income should be added from 10-K if needed." },
+      { company: "TSMC", ticker: "TSM US", fiscalYear: 2025, period: "FY2025", segment: "HPC", segmentGroup: "Platform", currency: "TWD", revenue: null, grossProfit: null, operatingIncome: null, revenuePct: 58, operatingIncomePct: null, grossMarginPct: null, operatingMarginPct: null, metricBasis: "platform revenue mix", source: "TSMC 4Q25 Management Report", sourceDate: "FY2025", confidence: "High", note: "Revenue can be mechanically calculated from company total revenue and disclosed platform mix." },
+      { company: "TSMC", ticker: "TSM US", fiscalYear: 2025, period: "FY2025", segment: "Smartphone", segmentGroup: "Platform", currency: "TWD", revenue: null, grossProfit: null, operatingIncome: null, revenuePct: 29, operatingIncomePct: null, grossMarginPct: null, operatingMarginPct: null, metricBasis: "platform revenue mix", source: "TSMC 4Q25 Management Report", sourceDate: "FY2025", confidence: "High", note: "Platform operating income not disclosed." },
+      { company: "TSMC", ticker: "TSM US", fiscalYear: 2025, period: "FY2025", segment: "IoT", segmentGroup: "Platform", currency: "TWD", revenue: null, grossProfit: null, operatingIncome: null, revenuePct: 5, operatingIncomePct: null, grossMarginPct: null, operatingMarginPct: null, metricBasis: "platform revenue mix", source: "TSMC 4Q25 Management Report", sourceDate: "FY2025", confidence: "High", note: "Platform operating income not disclosed." },
+      { company: "TSMC", ticker: "TSM US", fiscalYear: 2025, period: "FY2025", segment: "Automotive", segmentGroup: "Platform", currency: "TWD", revenue: null, grossProfit: null, operatingIncome: null, revenuePct: 5, operatingIncomePct: null, grossMarginPct: null, operatingMarginPct: null, metricBasis: "platform revenue mix", source: "TSMC 4Q25 Management Report", sourceDate: "FY2025", confidence: "High", note: "Platform operating income not disclosed." },
+      { company: "TSMC", ticker: "TSM US", fiscalYear: 2025, period: "FY2025", segment: "DCE", segmentGroup: "Platform", currency: "TWD", revenue: null, grossProfit: null, operatingIncome: null, revenuePct: 1, operatingIncomePct: null, grossMarginPct: null, operatingMarginPct: null, metricBasis: "platform revenue mix", source: "TSMC 4Q25 Management Report", sourceDate: "FY2025", confidence: "High", note: "Platform operating income not disclosed." },
+      { company: "TSMC", ticker: "TSM US", fiscalYear: 2025, period: "FY2025", segment: "Others", segmentGroup: "Platform", currency: "TWD", revenue: null, grossProfit: null, operatingIncome: null, revenuePct: 2, operatingIncomePct: null, grossMarginPct: null, operatingMarginPct: null, metricBasis: "platform revenue mix", source: "TSMC 4Q25 Management Report", sourceDate: "FY2025", confidence: "High", note: "Platform operating income not disclosed." },
+      { company: "Micron", ticker: "MU US", fiscalYear: 2025, period: "FQ4-25", segment: "Cloud Memory", segmentGroup: "Business Unit", currency: "USD", revenue: 4543, grossProfit: null, operatingIncome: null, revenuePct: null, operatingIncomePct: null, grossMarginPct: 59, operatingMarginPct: 48, metricBasis: "business unit quarterly result", source: "Micron FQ4-25 results", sourceDate: "FQ4-25", confidence: "High", note: "Quarterly segment data; do not mix with FY2025 total without period badge." },
+      { company: "Micron", ticker: "MU US", fiscalYear: 2025, period: "FQ4-25", segment: "Core Data Center", segmentGroup: "Business Unit", currency: "USD", revenue: 1577, grossProfit: null, operatingIncome: null, revenuePct: null, operatingIncomePct: null, grossMarginPct: 41, operatingMarginPct: 25, metricBasis: "business unit quarterly result", source: "Micron FQ4-25 results", sourceDate: "FQ4-25", confidence: "High", note: "Quarterly segment data; do not mix with FY2025 total without period badge." },
+      { company: "Micron", ticker: "MU US", fiscalYear: 2025, period: "FQ4-25", segment: "Mobile and Client", segmentGroup: "Business Unit", currency: "USD", revenue: 3760, grossProfit: null, operatingIncome: null, revenuePct: null, operatingIncomePct: null, grossMarginPct: 36, operatingMarginPct: 29, metricBasis: "business unit quarterly result", source: "Micron FQ4-25 results", sourceDate: "FQ4-25", confidence: "High", note: "Quarterly segment data; do not mix with FY2025 total without period badge." },
+      { company: "Micron", ticker: "MU US", fiscalYear: 2025, period: "FQ4-25", segment: "Automotive and Embedded", segmentGroup: "Business Unit", currency: "USD", revenue: 1434, grossProfit: null, operatingIncome: null, revenuePct: null, operatingIncomePct: null, grossMarginPct: 31, operatingMarginPct: 20, metricBasis: "business unit quarterly result", source: "Micron FQ4-25 results", sourceDate: "FQ4-25", confidence: "High", note: "Quarterly segment data; do not mix with FY2025 total without period badge." }
+    ];
+
+    const latestHbmExposureSeed = [
+      { market: "Memory", subMarket: "HBM", company: "SK Hynix", ticker: "000660 KS", country: "Korea", marketSharePct: 58, shareType: "HBM market share", sharePeriod: "2026 latest", linkedFinancialSegment: "Memory manufacturing", exposureBasis: "company/product exposure; HBM revenue not separately disclosed", source: "Reuters / company IR / existing seed", sourceDate: "2026-06-02", confidence: "Mid", note: "HBM share is product-market share, not company revenue mix.", financialCompany: "SK Hynix" },
+      { market: "Memory", subMarket: "HBM", company: "Samsung Electronics", ticker: "005930 KS", country: "Korea", marketSharePct: 21, shareType: "HBM market share", sharePeriod: "2026 latest", linkedFinancialSegment: "Memory manufacturing", exposureBasis: "company/product exposure; HBM revenue not separately disclosed", source: "Reuters / company IR / existing seed", sourceDate: "2026-06-02", confidence: "Mid", note: "HBM share is product-market share, not company revenue mix.", financialCompany: "Samsung Electronics" },
+      { market: "Memory", subMarket: "HBM", company: "Micron", ticker: "MU US", country: "US", marketSharePct: 21, shareType: "HBM market share", sharePeriod: "2026 latest", linkedFinancialSegment: "Memory manufacturing", exposureBasis: "company/product exposure; HBM revenue not separately disclosed", source: "Reuters / company IR / existing seed", sourceDate: "2026-06-02", confidence: "Mid", note: "HBM share is product-market share, not company revenue mix.", financialCompany: "Micron" }
+    ];
+
+    const companyMarketExposureSeed = [
+      ...latestHbmExposureSeed,
+      ...marketShareSeed.map(row => ({
+        market: row.theme,
+        subMarket: row.subMarket,
+        company: row.company,
+        ticker: row.ticker,
+        country: row.country,
+        marketSharePct: row.share,
+        shareType: row.type,
+        sharePeriod: row.period,
+        linkedFinancialSegment: linkedFinancialSegment(row.company),
+        exposureBasis: exposureBasis(row.subMarket, row.type),
+        source: row.source,
+        sourceDate: row.period,
+        confidence: row.confidence,
+        note: `${row.note}. ${marketExposureCaveat(row.subMarket, row.type)}`,
+        financialCompany: financialCompanyName(row.company)
+      }))
+    ];
+
     const prioritySeed = {
       short: [
         "HBM / DRAM / 서버 메모리",
@@ -970,6 +1273,7 @@
 
     const chartColors = ["#172554", "#28776f", "#c49a41", "#c8664b", "#6c5a92", "#789c45", "#805a3b", "#4f6f9f", "#9a6d2d"];
     const chartInstances = {};
+    const financialState = { market: "HBM", company: "SK Hynix" };
 
     document.addEventListener("DOMContentLoaded", () => {
       if (!window.Chart || !window.html2canvas) {
@@ -979,6 +1283,7 @@
       setupFilters();
       renderMarketSizeDashboard();
       renderShareDashboard();
+      renderFinancialDrilldown();
       renderThemeScoreTable();
       renderValueChainMap();
       renderPriorities();
@@ -1000,6 +1305,17 @@
         themeFilter.insertAdjacentHTML("beforeend", `<option value="${escapeHtml(theme)}">${escapeHtml(theme)}</option>`);
       });
       themeFilter.addEventListener("change", renderCompanyTable);
+
+      const financialMarketSelector = document.getElementById("financialMarketSelector");
+      unique(companyMarketExposureSeed.map(row => row.subMarket)).sort().forEach(market => {
+        financialMarketSelector.insertAdjacentHTML("beforeend", `<option value="${escapeHtml(market)}">${escapeHtml(market)}</option>`);
+      });
+      financialMarketSelector.value = financialState.market;
+      financialMarketSelector.addEventListener("change", () => {
+        financialState.market = financialMarketSelector.value;
+        financialState.company = "";
+        renderFinancialDrilldown();
+      });
     }
 
     function renderKpis() {
@@ -1120,6 +1436,188 @@
           <p>${formatNumber(row.share)}% ${escapeHtml(row.type)} / ${escapeHtml(row.period)} / ${confidenceBadge(row.confidence)}<br>${escapeHtml(row.note)}</p>
         </div>
       `).join("");
+    }
+
+    function renderFinancialDrilldown() {
+      const market = document.getElementById("financialMarketSelector").value || financialState.market;
+      financialState.market = market;
+      const allRows = companyMarketExposureSeed.filter(row => row.subMarket === market);
+      const rows = allRows.filter(row => row.company !== "Others" && row.company !== "N/A");
+      renderFinancialMarketSummary(market, allRows);
+      renderFinancialPlayerTable(market, rows);
+      const selected = rows.find(row => row.financialCompany === financialState.company && hasFinancials(row.financialCompany))
+        || rows.find(row => hasFinancials(row.financialCompany));
+      if (selected) financialState.company = selected.financialCompany;
+      renderPlayerDetail(selected || null, rows);
+      highlightFinancialRows();
+    }
+
+    function renderFinancialMarketSummary(market, rows) {
+      const sizeRows = marketSizeRowsFor(market);
+      const primarySize = sizeRows[0];
+      const exposureCaveat = marketExposureCaveat(market, rows[0]?.shareType || "");
+      const cards = [
+        ["시장", market, rows.length ? `${unique(rows.map(row => row.shareType)).join(" / ")}` : "No commercial share seed"],
+        ["Base TAM", primarySize ? `${primarySize.baseYear}: $${formatNumber(primarySize.baseValue)}bn` : "TAM seed pending", primarySize?.definition || "수동 시장 정의 필요"],
+        ["Target TAM", primarySize ? `${primarySize.targetYear}: $${formatNumber(primarySize.targetValue)}bn` : "Not available", primarySize?.scenario || "Add source before comparison"],
+        ["CAGR", primarySize ? `${formatNumber(primarySize.cagr)}%` : "N/A", primarySize ? `${primarySize.source} / ${primarySize.confidence}` : "No market-size source"],
+        ["Caveat", exposureCaveat, rows[0]?.note || "시장 비중과 기업 매출은 분리해서 해석합니다."]
+      ];
+      document.getElementById("financialMarketSummary").innerHTML = cards.map(([label, value, detail]) => `
+        <article class="financial-summary-card">
+          <span>${escapeHtml(label)}</span>
+          <strong>${escapeHtml(value)}</strong>
+          <small class="card-note">${escapeHtml(detail || "")}</small>
+        </article>
+      `).join("");
+    }
+
+    function renderFinancialPlayerTable(market, rows) {
+      const headers = ["Company", "Ticker", "Country", "Market share", "Share type", "Period", "FY revenue", "FY OP", "GM", "OM", "Basis", "Source", "Confidence"];
+      const tableRows = rows.length ? rows.map(row => {
+        const financial = findFinancial(row.financialCompany);
+        const clickable = !!financial;
+        return `
+          <tr class="${clickable ? "" : "is-muted"}" data-financial-company="${escapeHtml(row.financialCompany || "")}">
+            <td><strong>${escapeHtml(row.company)}</strong><br><span class="table-note">${escapeHtml(row.exposureBasis)}</span></td>
+            <td>${escapeHtml(row.ticker)}</td>
+            <td>${escapeHtml(row.country)}</td>
+            <td>${formatPct(row.marketSharePct)}</td>
+            <td>${escapeHtml(row.shareType)}</td>
+            <td>${escapeHtml(row.sharePeriod)}</td>
+            <td>${financial ? formatFinancialValue(financial.currency, financial.revenue) : "No seed"}</td>
+            <td>${financial ? formatFinancialValue(financial.currency, financial.operatingIncome) : "No seed"}</td>
+            <td>${financial ? formatPct(financial.grossMarginPct) : "N/A"}</td>
+            <td>${financial ? formatPct(financial.operatingMarginPct) : "N/A"}</td>
+            <td>${financial ? escapeHtml(financial.accountingBasis) : "N/A"}</td>
+            <td>${escapeHtml(financial?.source || row.source)}</td>
+            <td>${confidenceBadge(financial?.confidence || row.confidence)}</td>
+          </tr>
+        `;
+      }).join("") : `
+        <tr><td colspan="${headers.length}">상용 market share가 없는 시장입니다. roadmap/status로 추적하세요.</td></tr>
+      `;
+
+      const table = document.getElementById("financialPlayerTable");
+      table.innerHTML = `
+        <thead><tr>${headers.map(header => `<th>${escapeHtml(header)}</th>`).join("")}</tr></thead>
+        <tbody>${tableRows}</tbody>
+      `;
+
+      table.querySelectorAll("tbody tr[data-financial-company]").forEach(row => {
+        if (!hasFinancials(row.dataset.financialCompany)) return;
+        row.addEventListener("click", () => {
+          financialState.company = row.dataset.financialCompany;
+          const selected = rows.find(item => item.financialCompany === financialState.company) || null;
+          renderPlayerDetail(selected, rows);
+          highlightFinancialRows();
+        });
+      });
+    }
+
+    function renderPlayerDetail(exposure, marketRows) {
+      destroyChart("revenueMixChart");
+      destroyChart("operatingIncomeChart");
+      const panel = document.getElementById("playerDetailPanel");
+      if (!exposure) {
+        panel.innerHTML = `
+          <div class="drawer-header">
+            <h3>${escapeHtml(financialState.market)} 상세</h3>
+            <p>선택된 시장에 연결 가능한 기업 재무 seed가 아직 없습니다.</p>
+          </div>
+          <div class="drawer-body">
+            <div class="disclosure-card"><strong>Roadmap/status market</strong>Glass-core substrate처럼 상용 점유율이 없는 시장은 제품 roadmap과 상업화 이벤트를 추적합니다.</div>
+          </div>
+        `;
+        return;
+      }
+
+      const companyName = exposure.financialCompany;
+      const financial = findFinancial(companyName);
+      const master = findCompanyMaster(companyName);
+      if (!financial) return;
+      const segments = companySegmentSeed.filter(row => financialCompanyName(row.company) === companyName);
+      const segmentRows = segments.map(segment => decorateSegment(segment, financial));
+      const revenueRows = segmentRows.filter(row => Number.isFinite(row.revenue) && row.revenue > 0);
+      const operatingRows = segmentRows.filter(row => Number.isFinite(row.operatingIncome));
+      const positiveOperatingRows = operatingRows.filter(row => row.operatingIncome > 0);
+      const negativeOperatingRows = operatingRows.filter(row => row.operatingIncome < 0);
+      const marketPeers = marketRows.filter(row => row.financialCompany === companyName);
+
+      panel.innerHTML = `
+        <div class="drawer-header">
+          <p class="kicker">Player Detail</p>
+          <h3>${escapeHtml(financial.company)}</h3>
+          <p>${escapeHtml(financial.ticker)} / ${escapeHtml(financial.country)} / ${escapeHtml(master?.theme || "Theme seed pending")}</p>
+          <div class="detail-pill-row">
+            <span class="detail-pill">${escapeHtml(financial.period)}</span>
+            <span class="detail-pill">${escapeHtml(financial.accountingBasis)}</span>
+            <span class="detail-pill">${confidenceBadge(financial.confidence)}</span>
+          </div>
+          <p>${escapeHtml(financial.source)} / ${escapeHtml(financial.note)}</p>
+        </div>
+        <div class="drawer-body">
+          <div class="metric-grid">
+            ${metricCard("Revenue", formatFinancialValue(financial.currency, financial.revenue))}
+            ${metricCard("Gross profit", formatFinancialValue(financial.currency, financial.grossProfit))}
+            ${metricCard("Operating income", formatFinancialValue(financial.currency, financial.operatingIncome))}
+            ${metricCard("Gross margin", formatPct(financial.grossMarginPct))}
+            ${metricCard("Operating margin", formatPct(financial.operatingMarginPct))}
+            ${metricCard("Market exposure", marketPeers.map(row => `${row.subMarket} ${formatPct(row.marketSharePct)} ${row.sharePeriod}`).join(" / ") || "N/A")}
+          </div>
+
+          <div class="mix-grid">
+            <div class="mix-block">
+              <h3>Revenue Mix</h3>
+              ${revenueRows.length ? `<div class="chart-box short"><canvas id="revenueMixChart"></canvas></div>` : disclosureCard("Segment revenue mix not disclosed", "공시 세그먼트 매출 seed가 없는 기업입니다.")}
+            </div>
+            <div class="mix-block">
+              <h3>Operating Income Mix</h3>
+              ${positiveOperatingRows.length ? `<div class="chart-box short"><canvas id="operatingIncomeChart"></canvas></div>` : disclosureCard("Segment operating income not disclosed", `Company operating margin: ${formatPct(financial.operatingMarginPct)}`)}
+              ${negativeOperatingRows.length ? `<div class="adjustment-list">${negativeOperatingRows.map(row => `<div class="adjustment-row"><strong>${escapeHtml(row.segment)}</strong>: ${formatFinancialValue(row.currency, row.operatingIncome)} adjustment. ${escapeHtml(row.note)}</div>`).join("")}</div>` : ""}
+            </div>
+          </div>
+
+          <div>
+            <h3>Margin Lens</h3>
+            <div class="table-wrap" style="margin-top: 8px">
+              <table class="margin-table">
+                <thead>
+                  <tr><th>Segment</th><th>Period</th><th>Revenue</th><th>Revenue %</th><th>Operating income</th><th>OI %</th><th>GM</th><th>OM</th><th>Basis</th></tr>
+                </thead>
+                <tbody>
+                  ${segmentRows.length ? segmentRows.map(row => `
+                    <tr>
+                      <td><strong>${escapeHtml(row.segment)}</strong><br><span class="table-note">${escapeHtml(row.note)}</span></td>
+                      <td>${escapeHtml(row.period)}</td>
+                      <td>${formatFinancialValue(row.currency, row.revenue)}</td>
+                      <td>${formatPct(row.revenuePct)}</td>
+                      <td>${formatFinancialValue(row.currency, row.operatingIncome)}</td>
+                      <td>${formatPct(row.operatingIncomePct)}</td>
+                      <td>${formatPct(row.grossMarginPct)}</td>
+                      <td class="${row.operatingMarginPct >= 30 ? "strong-margin" : ""}">${formatPct(row.operatingMarginPct)}</td>
+                      <td>${escapeHtml(row.metricBasis)} / ${confidenceBadge(row.confidence)}</td>
+                    </tr>
+                  `).join("") : `<tr><td colspan="9">Segment seed not disclosed. 공시 또는 Bloomberg segment data를 추가해야 합니다.</td></tr>`}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      `;
+
+      if (revenueRows.length) {
+        createSegmentMixChart("revenueMixChart", revenueRows, "revenue", "Revenue mix");
+      }
+      if (positiveOperatingRows.length) {
+        createSegmentMixChart("operatingIncomeChart", positiveOperatingRows, "operatingIncome", "Operating income mix");
+      }
+    }
+
+    function highlightFinancialRows() {
+      document.querySelectorAll("#financialPlayerTable tbody tr[data-financial-company]").forEach(row => {
+        row.classList.toggle("is-selected", row.dataset.financialCompany === financialState.company);
+      });
     }
 
     function renderThemeScoreTable() {
@@ -1258,8 +1756,9 @@
     }
 
     function confidenceBadge(confidence) {
-      const cls = confidence.includes("High") ? "high" : confidence.includes("Low") ? "low" : "mid";
-      return `<span class="badge ${cls}">${escapeHtml(confidence)}</span>`;
+      const value = confidence || "N/A";
+      const cls = value.includes("High") ? "high" : value.includes("Low") ? "low" : "mid";
+      return `<span class="badge ${cls}">${escapeHtml(value)}</span>`;
     }
 
     function confidenceColor(confidence) {
@@ -1304,11 +1803,176 @@
       return map[stage] || "data quality";
     }
 
+    function financialCompanyName(company) {
+      const aliases = {
+        "SK Hynix/Solidigm": "SK Hynix",
+        "Samsung Electronics": "Samsung Electronics",
+        NVIDIA: "NVIDIA",
+        Broadcom: "Broadcom",
+        Marvell: "Marvell",
+        AMD: "AMD",
+        Micron: "Micron",
+        TSMC: "TSMC"
+      };
+      return aliases[company] || company;
+    }
+
+    function findFinancial(company) {
+      const name = financialCompanyName(company);
+      return companyFinancialsSeed.find(row => row.company === name) || null;
+    }
+
+    function hasFinancials(company) {
+      return !!findFinancial(company);
+    }
+
+    function findCompanyMaster(company) {
+      const name = financialCompanyName(company);
+      return companySeed.find(row => financialCompanyName(row.company) === name) || null;
+    }
+
+    function linkedFinancialSegment(company) {
+      return findCompanyMaster(company)?.stage || "Financial segment seed pending";
+    }
+
+    function exposureBasis(subMarket, shareType) {
+      if (subMarket === "HBM") return "product-market exposure; HBM revenue not separately disclosed";
+      if (subMarket === "CoWoS") return "customer capacity allocation at TSMC; not supplier market share";
+      if (subMarket === "x86 Server CPU") return "unit and revenue share are displayed separately";
+      if (subMarket === "Glass-core Substrate") return "roadmap/status market; no commercial share";
+      if (shareType?.includes("revenue")) return "market revenue share; not company revenue mix";
+      if (shareType?.includes("unit")) return "unit share; not revenue share";
+      return "market exposure bridge; do not infer product operating income";
+    }
+
+    function marketExposureCaveat(subMarket, shareType) {
+      if (subMarket === "HBM") return "HBM share is product-market share, not company revenue mix.";
+      if (subMarket === "CoWoS") return "CoWoS allocation is TSMC capacity allocation, not supplier market share.";
+      if (subMarket === "x86 Server CPU") return "x86 Server CPU has unit share and revenue share; show both separately.";
+      if (subMarket === "Glass-core Substrate") return "Glass-core substrate has no commercial market share; use roadmap/status.";
+      if (subMarket === "CPO") return "CPO is early-stage; keep source confidence visible.";
+      if (shareType?.includes("revenue")) return `${subMarket} uses revenue share; do not treat it as company revenue mix.`;
+      return "Market share and company financials are separate layers.";
+    }
+
+    function marketSizeRowsFor(market) {
+      const aliases = {
+        CoWoS: ["High-end Packaging", "Advanced Packaging"],
+        "AI Accelerator": [],
+        "x86 Server CPU": ["Server CPU", "Data Center CPU"],
+        "Glass-core Substrate": ["Glass-core Substrate"],
+        "Enterprise SSD": ["Enterprise SSD"]
+      };
+      const candidates = aliases[market] || [market];
+      return marketSizeSeed
+        .filter(row => candidates.includes(row.subTheme))
+        .sort((a, b) => b.targetValue - a.targetValue);
+    }
+
+    function metricCard(label, value) {
+      return `
+        <article class="metric-card">
+          <span>${escapeHtml(label)}</span>
+          <strong>${escapeHtml(value)}</strong>
+        </article>
+      `;
+    }
+
+    function disclosureCard(title, body) {
+      return `<div class="disclosure-card"><strong>${escapeHtml(title)}</strong>${escapeHtml(body)}</div>`;
+    }
+
+    function decorateSegment(segment, financial) {
+      const revenue = segmentRevenue(segment, financial);
+      const operatingIncome = segmentOperatingIncome(segment, financial);
+      const revenuePct = segment.revenuePct ?? (financial.revenue && revenue != null ? revenue / financial.revenue * 100 : null);
+      const positiveOperatingRows = companySegmentSeed
+        .filter(row => financialCompanyName(row.company) === financial.company)
+        .map(row => segmentOperatingIncome(row, financial))
+        .filter(value => Number.isFinite(value) && value > 0);
+      const positiveOperatingTotal = positiveOperatingRows.reduce((sum, value) => sum + value, 0);
+      const operatingIncomePct = segment.operatingIncomePct ?? (operatingIncome > 0 && positiveOperatingTotal ? operatingIncome / positiveOperatingTotal * 100 : null);
+      const operatingMarginPct = segment.operatingMarginPct ?? (revenue && operatingIncome != null ? operatingIncome / revenue * 100 : null);
+      return {
+        ...segment,
+        revenue,
+        operatingIncome,
+        revenuePct,
+        operatingIncomePct,
+        operatingMarginPct
+      };
+    }
+
+    function segmentRevenue(segment, financial) {
+      if (Number.isFinite(segment.revenue)) return segment.revenue;
+      if (Number.isFinite(segment.revenuePct) && Number.isFinite(financial?.revenue)) return financial.revenue * segment.revenuePct / 100;
+      return null;
+    }
+
+    function segmentOperatingIncome(segment, financial) {
+      if (Number.isFinite(segment.operatingIncome)) return segment.operatingIncome;
+      const revenue = segmentRevenue(segment, financial);
+      if (Number.isFinite(revenue) && Number.isFinite(segment.operatingMarginPct)) return revenue * segment.operatingMarginPct / 100;
+      return null;
+    }
+
+    function createSegmentMixChart(id, rows, amountKey, label) {
+      const total = rows.reduce((sum, row) => sum + Math.max(row[amountKey], 0), 0);
+      const chartRows = rows.map((row, index) => ({
+        ...row,
+        mixPct: total ? row[amountKey] / total * 100 : 0,
+        color: chartColors[index % chartColors.length]
+      }));
+      createChart(id, {
+        type: "bar",
+        data: {
+          labels: [label],
+          datasets: chartRows.map(row => ({
+            label: row.segment,
+            data: [row.mixPct],
+            backgroundColor: row.color,
+            borderColor: "#ffffff",
+            borderWidth: 1
+          }))
+        },
+        options: {
+          indexAxis: "y",
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: "bottom", labels: { boxWidth: 10, color: "#374151" } },
+            tooltip: {
+              callbacks: {
+                label: context => {
+                  const row = chartRows[context.datasetIndex];
+                  return `${row.segment}: ${formatFinancialValue(row.currency, row[amountKey])} / ${formatPct(row.mixPct)}`;
+                }
+              }
+            }
+          },
+          responsive: true,
+          scales: {
+            x: { stacked: true, beginAtZero: true, max: 100, ticks: { callback: value => `${value}%` }, grid: { color: "#edf1ea" } },
+            y: { stacked: true, grid: { display: false } }
+          }
+        }
+      });
+    }
+
+    function destroyChart(id) {
+      if (chartInstances[id]) {
+        chartInstances[id].destroy();
+        delete chartInstances[id];
+      }
+    }
+
     function downloadTableCsv(kind) {
       const rowsByKind = {
         "market-size": marketSizeSeed,
         "market-share": marketShareSeed,
-        "company-master": companySeed
+        "company-master": companySeed,
+        financials: companyFinancialsSeed,
+        segments: companySegmentSeed,
+        "market-exposure": companyMarketExposureSeed
       };
       downloadRowsAsCsv(rowsByKind[kind], `ai_semiconductor_${kind}.csv`);
     }
@@ -1318,7 +1982,10 @@
         ...marketSizeSeed.map(row => ({ dataset: "market_size", ...row })),
         ...marketShareSeed.map(row => ({ dataset: "market_share", ...row })),
         ...themeScoreSeed.map(row => ({ dataset: "theme_score", ...row })),
-        ...companySeed.map(row => ({ dataset: "company_master", ...row }))
+        ...companySeed.map(row => ({ dataset: "company_master", ...row })),
+        ...companyFinancialsSeed.map(row => ({ dataset: "company_financials", ...row })),
+        ...companySegmentSeed.map(row => ({ dataset: "company_segments", ...row })),
+        ...companyMarketExposureSeed.map(row => ({ dataset: "company_market_exposure", ...row }))
       ];
       downloadRowsAsCsv(rows, "ai_semiconductor_seed_data.csv");
     }
@@ -1359,6 +2026,16 @@
 
     function formatNumber(value) {
       return Number(value).toLocaleString("en-US", { maximumFractionDigits: value < 10 ? 2 : 1 });
+    }
+
+    function formatFinancialValue(currency, value) {
+      if (!Number.isFinite(value)) return "Not disclosed";
+      return `${currency} ${formatNumber(value)}mn`;
+    }
+
+    function formatPct(value) {
+      if (!Number.isFinite(value)) return "N/A";
+      return `${formatNumber(value)}%`;
     }
 
     function csvCell(value) {
