@@ -1,0 +1,68 @@
+[
+  {
+    "segment_id": "power_cooling",
+    "name_ko": "전력 / 냉각 / 데이터센터 인프라",
+    "value_chain_stage": "Infrastructure",
+    "description_ko": "AI 데이터센터의 전력 수요, 냉각, 전력 설비, UPS, 전력망 병목을 추적합니다."
+  },
+  {
+    "segment_id": "semiconductor_market",
+    "name_ko": "반도체 전체 시장",
+    "value_chain_stage": "Semiconductor",
+    "description_ko": "AI 수요가 전체 반도체 시장과 메모리 사이클에 미치는 영향을 추적합니다."
+  },
+  {
+    "segment_id": "memory",
+    "name_ko": "Memory / DRAM / NAND",
+    "value_chain_stage": "Memory",
+    "description_ko": "DRAM, NAND, 서버 메모리, 엔터프라이즈 SSD 가격과 수급 병목을 추적합니다."
+  },
+  {
+    "segment_id": "hbm",
+    "name_ko": "HBM",
+    "value_chain_stage": "Memory",
+    "description_ko": "AI accelerator에 필수적인 HBM 시장 규모, 가격 프리미엄, 공급 집중도를 추적합니다."
+  },
+  {
+    "segment_id": "ai_accelerator",
+    "name_ko": "AI Accelerator / GPU",
+    "value_chain_stage": "Compute",
+    "description_ko": "GPU, accelerator, 데이터센터 compute revenue, AI server 수요를 추적합니다."
+  },
+  {
+    "segment_id": "networking_asic",
+    "name_ko": "Networking ASIC / Custom ASIC",
+    "value_chain_stage": "Compute",
+    "description_ko": "Custom XPU, Ethernet switch ASIC, AI networking 반도체 수요를 추적합니다."
+  },
+  {
+    "segment_id": "cowos",
+    "name_ko": "CoWoS / Advanced Packaging",
+    "value_chain_stage": "Packaging",
+    "description_ko": "2.5D/3D advanced packaging, CoWoS, OSAT spillover, 패키징 병목을 추적합니다."
+  },
+  {
+    "segment_id": "foundry",
+    "name_ko": "Foundry / Advanced Node",
+    "value_chain_stage": "Foundry",
+    "description_ko": "3nm/2nm, HPC 공정 수요, wafer revenue mix, capacity ramp를 추적합니다."
+  },
+  {
+    "segment_id": "abf_substrate",
+    "name_ko": "ABF / FC-BGA Substrate",
+    "value_chain_stage": "Substrate",
+    "description_ko": "AI package에 필요한 ABF, FC-BGA, substrate capacity와 공급 병목을 추적합니다."
+  },
+  {
+    "segment_id": "optical_cpo",
+    "name_ko": "Optical / CPO",
+    "value_chain_stage": "Networking",
+    "description_ko": "AI cluster optical transceiver, CPO, DSP, optical connectivity 수요를 추적합니다."
+  },
+  {
+    "segment_id": "server_odm_oem",
+    "name_ko": "Server ODM / OEM",
+    "value_chain_stage": "Server",
+    "description_ko": "AI-optimized server revenue, server order backlog, ODM/OEM 생산 병목을 추적합니다."
+  }
+]

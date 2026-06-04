@@ -744,6 +744,26 @@
       투자 판단 전 최신 S-1/A 원문, Reuters/거래소 보도, 규제 문서를 다시 대조해야 합니다. 첨부 텍스트의 2026-06-03 accession은 이 작업 중 SEC 검색으로 확인되지 않아 2026-06-01 S-1/A를 최신 SEC verified filing으로 표시했습니다.
     </div>
 
+    <section class="section" id="data-version">
+      <div class="section-header">
+        <div>
+          <p class="kicker">Data Version & Filing Status</p>
+          <h2>SEC filing fact와 reported IPO terms를 분리</h2>
+          <p class="section-subtitle">SEC-filed facts, SEC-derived calculations, reported secondary IPO terms, analyst assumptions를 별도 태그로 표시합니다.</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Filing status</h3>
+          <div id="dataVersionPanel" class="roadmap"></div>
+        </div>
+        <div class="card">
+          <h3>Presentation warnings</h3>
+          <div id="presentationWarnings" class="roadmap"></div>
+        </div>
+      </div>
+    </section>
+
     <section class="hero-grid" id="executive">
       <div class="hero-panel">
         <div class="hero-copy">
@@ -782,6 +802,9 @@
           <div class="chart-box tall"><canvas id="capexIntensityChart"></canvas></div>
           <p class="analyst-read">What it means: Q1 2026 capex/revenue는 215% 수준으로 AI compute 투자 속도가 손익보다 빠릅니다.</p>
         </div>
+      </div>
+      <div class="notice" style="margin-top:14px">
+        FCF framing: Operating FCF proxy = CFO minus purchases of PPE. This simple proxy includes growth capex for satellite deployment, AI compute buildout, and infrastructure expansion. It should not be interpreted as normalized maintenance FCF.
       </div>
     </section>
 
@@ -873,6 +896,9 @@
           <p class="section-subtitle">AI 부문은 2025 revenue $3.201B 대비 operating loss -$6.355B, capex $12.727B를 기록했습니다.</p>
         </div>
       </div>
+      <div class="notice" style="margin-bottom:14px">
+        AI segment revenue is not necessarily pure AI compute revenue. It may include legacy advertising and platform revenue. Revenue quality, customer concentration, contract durability, cancellation rights, and utilization should be verified before assigning a high recurring-revenue multiple.
+      </div>
       <div class="grid-3">
         <div class="card">
           <h3>AI Revenue Split</h3>
@@ -896,8 +922,8 @@
       <div class="section-header">
         <div>
           <p class="kicker">Valuation Stress Test</p>
-          <h2>$1.75T IPO target이 요구하는 가정</h2>
-          <p class="section-subtitle">사용자가 SOTP 값을 직접 바꾸면 total equity value와 IPO target 대비 gap이 자동 계산됩니다.</p>
+          <h2>$1.75T~$2.0T reported IPO range가 요구하는 가정</h2>
+          <p class="section-subtitle">$1.75T는 base reported reference, $2.0T는 secondary upper marker로 분리합니다. SEC-filed final IPO terms가 아닙니다.</p>
         </div>
       </div>
       <div class="grid-2">
@@ -926,6 +952,9 @@
           <p class="section-subtitle">dual class 구조와 Musk voting control은 valuation discount 논의에서 별도 입력값으로 다뤄야 합니다.</p>
         </div>
       </div>
+      <div class="notice" style="margin-bottom:14px">
+        Lock-up release percentages may be overlapping or conditional. Do not sum them mechanically without verifying the exact prospectus language.
+      </div>
       <div class="grid-2">
         <div class="card">
           <h3>IPO Terms</h3>
@@ -939,6 +968,38 @@
             <table id="lockupTable"></table>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section class="section" id="dilution-watch">
+      <div class="section-header">
+        <div>
+          <p class="kicker">Dilution / Contract / Related-Party Watch</p>
+          <h2>아직 수치 확정 전인 material item은 검증 대기 항목으로 분리</h2>
+          <p class="section-subtitle">Cursor acquisition option, Anthropic compute contract, related-party transactions, 5-for-1 split은 최종 prospectus 문구와 exhibit 확인 전까지 open verification item으로 취급합니다.</p>
+        </div>
+      </div>
+      <div class="risk-grid">
+        <article class="risk-card medium">
+          <span class="badge review">Unverified / needs exhibit check</span>
+          <h3 style="margin-top:10px">Cursor acquisition option</h3>
+          <p>Deal structure, Class A share consideration, implied value, timing, dilution, binding/optional status를 SEC exhibit에서 재확인해야 합니다.</p>
+        </article>
+        <article class="risk-card high">
+          <span class="badge warn">Contract-quality review</span>
+          <h3 style="margin-top:10px">Anthropic compute contract</h3>
+          <p>Monthly size, duration, cancellation rights, take-or-pay vs usage-based structure, customer concentration, margin implication을 확인해야 합니다.</p>
+        </article>
+        <article class="risk-card high">
+          <span class="badge warn">Governance discount</span>
+          <h3 style="margin-top:10px">Related-party transactions</h3>
+          <p>Related-party categories should be summarized separately because they affect governance discount and minority-shareholder protection analysis.</p>
+        </article>
+        <article class="risk-card medium">
+          <span class="badge review">Per-share comparability</span>
+          <h3 style="margin-top:10px">5-for-1 stock split</h3>
+          <p>All per-share price and share-count figures should be confirmed as post-split before comparing Reuters/Bloomberg/SEC references.</p>
+        </article>
       </div>
     </section>
 
@@ -1003,7 +1064,36 @@
         title: "SpaceX S-1/A 기업분석 대시보드",
         currency: "USD",
         unit: "bn unless otherwise stated",
-        warning: "Data should be verified against the latest SEC S-1/A before investment use."
+        warning: "Data should be verified against the latest SEC S-1/A before investment use.",
+        lastChecked: "2026-06-04",
+        basisOfPresentation: "common-control retrospectively recast consolidated basis",
+        caveat: "Investment research dashboard; not investment advice."
+      },
+
+      dataVersion: {
+        lastChecked: "2026-06-04",
+        latestSecFiling: {
+          form: "S-1/A",
+          filingDate: "2026-06-01",
+          accession: "0001628280-26-039276",
+          fileNo: "333-296070",
+          status: "SEC filed"
+        },
+        originalS1: {
+          form: "S-1",
+          filingDate: "2026-05-20",
+          accession: "0001628280-26-036936",
+          fileNo: "333-296070",
+          status: "SEC filed"
+        },
+        unverifiedCandidate: {
+          form: "S-1/A",
+          filingDate: "2026-06-03",
+          accession: "0001628280-26-040364",
+          status: "Unverified / needs EDGAR recheck"
+        },
+        ipoTermsStatus: "Reported / secondary; not fully SEC-filed final terms",
+        basisOfPresentation: "Historical consolidated financials are presented on a common-control retrospectively recast basis."
       },
 
       filings: [
@@ -1045,17 +1135,23 @@
       ipoTerms: {
         pricePerShare: 135,
         sharesOfferedM: 555.6,
-        grossProceeds: 75.0,
-        proceedsWithGreenshoe: 86.7,
+        baseGrossProceeds: 75.0,
+        overAllotmentPct: 15,
+        overAllotmentProceeds: 11.25,
+        grossProceedsInclOverAllotment: 86.25,
+        reportedGrossInclOverAllotment: 86.7,
         targetValuation: 1750,
-        alternateReportedValuation: 1770,
+        valuationLow: 1750,
+        valuationHigh: 2000,
+        alternateReportedValuation: 2000,
         pricingDate: "2026-06-11",
         tradingDate: "2026-06-12",
         roadshowStart: "2026-06-04",
         ticker: "SPCX",
         exchange: "Nasdaq",
         retailAllocationPct: 30,
-        sourceStatus: "reported_news_needs_s1a_crosscheck"
+        stockSplit: "5-for-1 stock split; confirm all per-share figures are post-split before use",
+        sourceStatus: "Reported / secondary; needs final prospectus cross-check"
       },
 
       consolidatedIncome: [
@@ -1114,7 +1210,7 @@
         },
 
         ai: {
-          label: "AI / xAI / Compute",
+          label: "AI / xAI / Platform",
           role: "High-risk growth option and capex sink",
           analystRead: "시장 기회는 크지만 현재는 손실과 capex가 앞서는 부문입니다.",
           annual: [
@@ -1138,6 +1234,8 @@
       governance: {
         classAVotes: 1,
         classBVotes: 10,
+        muskEconomicOwnershipPreIpoPct: null,
+        muskEconomicOwnershipPostIpoPct: null,
         muskVotingControlPreIpoPct: 85.1,
         muskVotingControlPostIpoReportedPct: 82.4,
         controlledCompany: true,
@@ -1145,11 +1243,12 @@
       },
 
       lockup: [
-        { event: "Headline lock-up", timing: "180 days", releasePct: 100, note: "Remaining lock-up released after 180 days" },
-        { event: "After Q2 2026 results", timing: "Second trading day after Q2 results", releasePct: 20, note: "Up to 20% may be released" },
-        { event: "30% above IPO trigger", timing: "5 of 10 trading days after Q2 results", releasePct: 10, note: "Additional 10% may be released if stock trades 30% above IPO price" },
-        { event: "Time-based releases", timing: "70/90/105/120/135 days", releasePct: 7, note: "7% each release tranche" },
-        { event: "After Q3 2026 results", timing: "Second trading day after Q3 results", releasePct: 28, note: "Up to 28% may be released" }
+        { event: "Total locked pool", timing: "Initial lock-up", releasePct: 100, trancheType: "Reference pool", cumulativeStatus: "Base denominator", note: "Shows total locked shares; not a release tranche." },
+        { event: "After Q2 2026 results", timing: "Second trading day after Q2 results", releasePct: 20, trancheType: "Conditional early release", cumulativeStatus: "May overlap / verify prospectus", note: "Up to 20% may be released if conditions are met." },
+        { event: "30% above IPO trigger", timing: "5 of 10 trading days after Q2 results", releasePct: 10, trancheType: "Price-condition release", cumulativeStatus: "Conditional; do not mechanically add", note: "Additional release depends on trading price condition." },
+        { event: "Time-based releases", timing: "70/90/105/120/135 days", releasePct: 7, trancheType: "Staged time-based release", cumulativeStatus: "Five separate windows; verify overlap", note: "7% each release window; cumulative mechanics require prospectus language." },
+        { event: "After Q3 2026 results", timing: "Second trading day after Q3 results", releasePct: 28, trancheType: "Conditional release", cumulativeStatus: "Conditional; do not mechanically add", note: "Up to 28% may be released." },
+        { event: "Remaining release", timing: "180 days", releasePct: null, trancheType: "Residual release", cumulativeStatus: "Residual after earlier conditions", note: "Use residual framing rather than adding all early-release percentages." }
       ],
 
       starshipEconomics: {
@@ -1229,7 +1328,7 @@
           name: "SEC EDGAR S-1/A filing index",
           type: "Primary",
           status: "verified",
-          note: "2026-06-01 S-1/A, accession 0001628280-26-039276, file no. 333-296070.",
+          note: "SEC filed. 2026-06-01 S-1/A, accession 0001628280-26-039276, file no. 333-296070.",
           url: "https://www.sec.gov/Archives/edgar/data/1181412/000162828026039276/0001628280-26-039276-index.htm"
         },
         {
@@ -1238,6 +1337,20 @@
           status: "verified",
           note: "2026-05-20 original S-1, accession 0001628280-26-036936.",
           url: "https://www.sec.gov/Archives/edgar/data/1181412/000162828026036936/0001628280-26-036936-index.htm"
+        },
+        {
+          name: "User-provided 2026-06-03 candidate accession",
+          type: "Unverified",
+          status: "needs EDGAR recheck",
+          note: "Accession 0001628280-26-040364 was not verified in SEC search during this update. Preserve only as an open verification item.",
+          url: "https://www.sec.gov/Archives/edgar/data/1181412/000162828026040364/0001628280-26-040364-index.htm"
+        },
+        {
+          name: "Basis of presentation note",
+          type: "SEC filed",
+          status: "analytical caveat",
+          note: "Historical consolidated financials are treated as common-control retrospectively recast consolidated basis in this dashboard.",
+          url: "https://www.sec.gov/Archives/edgar/data/1181412/000162828026039276/spaceexplorationtechnologi.htm"
         },
         {
           name: "Reuters / CNA IPO price report",
@@ -1286,6 +1399,7 @@
     const chartInstances = {};
 
     document.addEventListener("DOMContentLoaded", () => {
+      renderDataVersion();
       renderThesisCards();
       renderFilingPanel();
       renderKpis();
@@ -1311,6 +1425,32 @@
       ].map(row => ({ ...row, capex: capexFor(row.key, period), capexIntensity: calcCapexIntensity(capexFor(row.key, period), row.revenue) }));
     }
 
+    function renderDataVersion() {
+      const version = DATA.dataVersion;
+      const rows = [
+        ["Last checked", version.lastChecked],
+        ["Latest SEC verified", `${version.latestSecFiling.form} / ${version.latestSecFiling.filingDate} / ${version.latestSecFiling.accession}`],
+        ["Original S-1", `${version.originalS1.filingDate} / ${version.originalS1.accession}`],
+        ["Unverified candidate", `${version.unverifiedCandidate.filingDate} / ${version.unverifiedCandidate.accession} / ${version.unverifiedCandidate.status}`],
+        ["IPO terms status", version.ipoTermsStatus],
+        ["Basis", version.basisOfPresentation]
+      ];
+      document.getElementById("dataVersionPanel").innerHTML = rows.map(([label, value]) => `
+        <div class="roadmap-step"><strong>${escapeHtml(label)}</strong><p>${escapeHtml(value)}</p></div>
+      `).join("");
+
+      const warnings = [
+        ["Common-control recast basis", "Historical consolidated financials are presented on a common-control retrospectively recast basis. 2023-2025 figures may not represent standalone historical SpaceX."],
+        ["Reported vs SEC-filed IPO terms", "IPO price, share count, proceeds, and valuation range are reported/secondary until final SEC-filed pricing documents are available."],
+        ["AI revenue quality", "AI segment revenue may include legacy X/Twitter advertising and platform revenue, not only high-quality compute lease revenue."],
+        ["FCF proxy limitation", "Operating FCF proxy = CFO minus purchases of PPE. It includes growth capex and is not normalized maintenance FCF."],
+        ["Lock-up interpretation", "Early-release percentages may be conditional or overlapping. Do not sum them mechanically."]
+      ];
+      document.getElementById("presentationWarnings").innerHTML = warnings.map(([label, value]) => `
+        <div class="roadmap-step"><strong>${escapeHtml(label)}</strong><p>${escapeHtml(value)}</p></div>
+      `).join("");
+    }
+
     function renderThesisCards() {
       const c2025 = DATA.segments.connectivity.annual.find(row => row.period === "2025");
       const s2025 = DATA.segments.space.annual.find(row => row.period === "2025");
@@ -1319,9 +1459,9 @@
       const cards = [
         ["Starlink is the cash engine", `${formatBn(c2025.revenue)} revenue`, `${formatBn(c2025.operatingIncome)} OI / ${formatBn(c2025.adjEbitda)} Adj. EBITDA`],
         ["AI is the burn engine", `${formatBn(a2025.operatingIncome)} OI`, `${formatBn(capexFor("ai", "2025"))} capex / ${formatPct(calcCapexIntensity(capexFor("ai", "2025"), a2025.revenue))} capex intensity`],
-        ["EBITDA is not FCF", `${formatBn(DATA.consolidatedIncome[2].adjEbitda)} EBITDA`, `${formatBn(cash2025.cfo)} CFO vs ${formatBn(cash2025.impliedFcf)} simple FCF`],
+        ["EBITDA is not FCF", `${formatBn(DATA.consolidatedIncome[2].adjEbitda)} EBITDA`, `${formatBn(cash2025.cfo)} CFO vs ${formatBn(cash2025.impliedFcf)} operating FCF proxy`],
         ["Starship is the bottleneck", `${formatBn(s2025.operatingIncome)} OI`, `${s2025.launches} launches / ${formatBn(s2025.rd)} R&D`],
-        ["IPO requires bull case", `${formatBn(DATA.valuation.ipoTargetValue)} target`, `${formatBn(DATA.valuation.morningstarFairValue)} Morningstar anchor`]
+        ["IPO requires bull case", `${formatBn(DATA.ipoTerms.valuationLow)}-${formatBn(DATA.ipoTerms.valuationHigh)} reported range`, `${formatBn(DATA.valuation.morningstarFairValue)} Morningstar anchor`]
       ];
       document.getElementById("thesisCards").innerHTML = cards.map(([label, value, detail]) => `
         <article class="thesis-card">
@@ -1340,11 +1480,11 @@
         ["Accession no.", verified.accessionNo],
         ["Original S-1", `${original.filingDate} / ${original.accessionNo}`],
         ["File no.", verified.fileNo],
-        ["IPO terms", `$${DATA.ipoTerms.pricePerShare}/share / ${formatM(DATA.ipoTerms.sharesOfferedM)} shares`],
-        ["Target valuation", formatBn(DATA.ipoTerms.targetValuation)],
+        ["Reported IPO terms", `$${DATA.ipoTerms.pricePerShare}/share / ${formatM(DATA.ipoTerms.sharesOfferedM)} shares`],
+        ["Reported valuation range", `${formatBn(DATA.ipoTerms.valuationLow)}-${formatBn(DATA.ipoTerms.valuationHigh)}`],
         ["Pricing / trading", `${DATA.ipoTerms.pricingDate} / ${DATA.ipoTerms.tradingDate}`],
         ["Ticker", `${DATA.ipoTerms.ticker} / ${DATA.ipoTerms.exchange}`],
-        ["Verification", `<span class="badge review">${DATA.ipoTerms.sourceStatus}</span>`],
+        ["Terms status", `<span class="badge review">${DATA.ipoTerms.sourceStatus}</span>`],
         ["SEC Link", `<a href="${verified.url}" target="_blank" rel="noreferrer">EDGAR S-1/A</a>`]
       ];
       document.getElementById("filingPanel").innerHTML = rows.map(([label, value]) => `
@@ -1359,12 +1499,12 @@
       const a2025 = DATA.segments.ai.annual.find(row => row.period === "2025");
       const cash2025 = DATA.cashFlow.find(row => row.period === "2025");
       const kpis = [
-        ["2025 Revenue", formatBn(income2025.revenue), "연결 매출"],
-        ["2025 Adj. EBITDA", formatBn(income2025.adjEbitda), "positive EBITDA"],
-        ["2025 simple FCF", formatBn(cash2025.impliedFcf), "CFO - PPE capex"],
+        ["2025 Revenue", formatBn(income2025.revenue), "Recast consolidated basis"],
+        ["2025 Adj. EBITDA", formatBn(income2025.adjEbitda), "SEC filed / recast basis"],
+        ["2025 operating FCF proxy", formatBn(cash2025.impliedFcf), "CFO minus purchases of PPE"],
         ["Starlink OPM", formatPct(c2025.opm), "2025 Connectivity"],
-        ["AI capex share", formatPct(capexFor("ai", "2025") / capexTotal("2025") * 100), "2025 total capex 기준"],
-        ["Q1 2026 net loss", formatBn(q12026.netIncome), "분기 순손실"]
+        ["AI capex share", formatPct(capexFor("ai", "2025") / capexTotal("2025") * 100), "2025 total capex basis"],
+        ["Q1 2026 net loss", formatBn(q12026.netIncome), "Recast consolidated basis"]
       ];
       document.getElementById("kpiGrid").innerHTML = kpis.map(([label, value, detail]) => `
         <article class="metric-card">
@@ -1419,17 +1559,17 @@
     function renderStarshipTable() {
       const row = DATA.starshipEconomics;
       const rows = [
-        ["Cumulative R&D/cost", `Over ${formatBn(row.cumulativeCostOver)}`],
-        ["Q1 2026 Starship R&D", formatBn(row.q12026Rd)],
-        ["Public commercial launch cost cited", `$${formatNumber(row.publicCommercialLaunchCostM, 0)}M`],
-        ["Payload assumption", `${formatNumber(row.v3PayloadTonsAssumption, 0)}t for Starship V3`],
-        ["Implied current cost", `About $${formatNumber(row.impliedCostPerKg, 0)}/kg before full reuse`],
-        ["Theoretical variable cost", `$${formatNumber(row.theoreticalVariableCostPerKg, 0)}/kg at 100t payload`],
-        ["Fixed-cost recovery problem", `${formatNumber(row.launchesNeededFor100PerKgAt100t, 0)} launches for $100/kg breakeven including variable cost`]
+        ["Cumulative Starship R&D/cost estimate", `Over ${formatBn(row.cumulativeCostOver)}`, "Reported / secondary", "Medium", "Cost estimate; not current unit economics"],
+        ["Q1 2026 Starship R&D", formatBn(row.q12026Rd), "SEC filed", "High", "Filed period expense"],
+        ["Public commercial launch cost cited", `$${formatNumber(row.publicCommercialLaunchCostM, 0)}M`, "Reported / secondary", "Medium", "Public price/cost proxy"],
+        ["Payload assumption", `${formatNumber(row.v3PayloadTonsAssumption, 0)}t for Starship V3`, "Analyst assumption", "Low", "Model input, highly sensitive"],
+        ["Current implied cost/kg", `About $${formatNumber(row.impliedCostPerKg, 0)}/kg`, "Analyst estimate", "Low", "Model-derived, not disclosed economics"],
+        ["Theoretical variable cost/kg", `$${formatNumber(row.theoreticalVariableCostPerKg, 0)}/kg`, "Analyst assumption", "Low", "Depends on reuse, payload, refurbishment, cadence"],
+        ["Fixed-cost recovery math", `${formatNumber(row.launchesNeededFor100PerKgAt100t, 0)} launches`, "Analyst estimate", "Low", "Fixed-cost allocation exercise"]
       ];
       document.getElementById("starshipEconomicsTable").innerHTML = `
-        <thead><tr><th>항목</th><th>수치 / 해석</th></tr></thead>
-        <tbody>${rows.map(([label, value]) => `<tr><td><strong>${label}</strong></td><td>${value}</td></tr>`).join("")}</tbody>
+        <thead><tr><th>Item</th><th>Value</th><th>Source type</th><th>Confidence</th><th>Interpretation</th></tr></thead>
+        <tbody>${rows.map(([label, value, sourceType, confidence, interpretation]) => `<tr><td><strong>${label}</strong></td><td>${value}</td><td>${sourceType}</td><td>${confidence}</td><td>${interpretation}</td></tr>`).join("")}</tbody>
       `;
     }
 
@@ -1437,28 +1577,32 @@
       const terms = DATA.ipoTerms;
       const gov = DATA.governance;
       const rows = [
-        ["IPO price", `$${formatNumber(terms.pricePerShare, 0)}/share`],
-        ["Shares offered", formatM(terms.sharesOfferedM)],
-        ["Gross proceeds", formatBn(terms.grossProceeds)],
-        ["Greenshoe proceeds", formatBn(terms.proceedsWithGreenshoe)],
-        ["Target valuation", formatBn(terms.targetValuation)],
+        ["Reported IPO price", `$${formatNumber(terms.pricePerShare, 0)}/share`, "Reported / secondary"],
+        ["Reported shares offered", formatM(terms.sharesOfferedM), "Reported / secondary"],
+        ["Base gross proceeds", formatBn(terms.baseGrossProceeds), "Formula: IPO price x shares offered"],
+        ["Over-allotment / greenshoe option", `${formatPct(terms.overAllotmentPct)} / ${formatBn(terms.overAllotmentProceeds)}`, "Formula: base gross proceeds x over-allotment %"],
+        ["Gross proceeds incl. over-allotment", formatBn(terms.grossProceedsInclOverAllotment), "Formula-based"],
+        ["Reported gross incl. over-allotment", `${formatBn(terms.reportedGrossInclOverAllotment)} reported / unreconciled`, "Reported / secondary"],
+        ["Reported valuation range", `${formatBn(terms.valuationLow)}-${formatBn(terms.valuationHigh)}`, "Reported / secondary"],
         ["Roadshow / pricing / trading", `${terms.roadshowStart} / ${terms.pricingDate} / ${terms.tradingDate}`],
         ["Ticker / exchange", `${terms.ticker} / ${terms.exchange}`],
         ["Retail allocation", `Up to ${formatPct(terms.retailAllocationPct)} reported`],
+        ["Stock split", terms.stockSplit],
         ["Class A / B votes", `${gov.classAVotes} vote / ${gov.classBVotes} votes`],
+        ["Musk economic ownership", `${formatPct(gov.muskEconomicOwnershipPreIpoPct)} pre / ${formatPct(gov.muskEconomicOwnershipPostIpoPct)} post`],
         ["Musk voting control", `${formatPct(gov.muskVotingControlPreIpoPct)} pre reference / ${formatPct(gov.muskVotingControlPostIpoReportedPct)} post reported`]
       ];
       document.getElementById("ipoTermsTable").innerHTML = `
-        <thead><tr><th>항목</th><th>값</th></tr></thead>
-        <tbody>${rows.map(([label, value]) => `<tr><td><strong>${label}</strong></td><td>${value}</td></tr>`).join("")}</tbody>
+        <thead><tr><th>Item</th><th>Value</th><th>Status / formula</th></tr></thead>
+        <tbody>${rows.map(([label, value, note]) => `<tr><td><strong>${label}</strong></td><td>${value}</td><td>${note || DATA.ipoTerms.sourceStatus}</td></tr>`).join("")}</tbody>
       `;
     }
 
     function renderLockup() {
       document.getElementById("lockupTable").innerHTML = `
-        <thead><tr><th>Event</th><th>Timing</th><th>Release</th><th>Note</th></tr></thead>
+        <thead><tr><th>Event</th><th>Timing</th><th>Release</th><th>Tranche type</th><th>Cumulative status</th><th>Note</th></tr></thead>
         <tbody>
-          ${DATA.lockup.map(row => `<tr><td><strong>${row.event}</strong></td><td>${row.timing}</td><td>${formatPct(row.releasePct)}</td><td>${row.note}</td></tr>`).join("")}
+          ${DATA.lockup.map(row => `<tr><td><strong>${row.event}</strong></td><td>${row.timing}</td><td>${formatPct(row.releasePct)}</td><td>${escapeHtml(row.trancheType)}</td><td>${escapeHtml(row.cumulativeStatus)}</td><td>${escapeHtml(row.note)}</td></tr>`).join("")}
         </tbody>
       `;
     }
@@ -1485,16 +1629,18 @@
 
     function renderValuationMultiples() {
       const rows = [
-        ["IPO / 2025 Revenue", `${formatNumber(DATA.valuation.derived.ipoEvSales2025, 1)}x`],
-        ["IPO / 2025 Adj. EBITDA", `${formatNumber(DATA.valuation.derived.ipoEvAdjEbitda2025, 1)}x`],
-        ["Morningstar / Revenue", `${formatNumber(DATA.valuation.derived.morningstarSalesMultiple2025, 1)}x`],
-        ["Morningstar / Adj. EBITDA", `${formatNumber(DATA.valuation.derived.morningstarAdjEbitdaMultiple2025, 1)}x`]
+        ["Low IPO / 2025 recast revenue", `${formatNumber(DATA.ipoTerms.valuationLow / DATA.valuation.revenue2025, 1)}x`, "Reported / secondary valuation"],
+        ["High IPO / 2025 recast revenue", `${formatNumber(DATA.ipoTerms.valuationHigh / DATA.valuation.revenue2025, 1)}x`, "Reported / secondary valuation"],
+        ["Low IPO / 2025 recast Adj. EBITDA", `${formatNumber(DATA.ipoTerms.valuationLow / DATA.valuation.adjEbitda2025, 1)}x`, "Reported / secondary valuation"],
+        ["Standalone SpaceX revenue multiple", "N/A", "Standalone revenue estimate not included in this seed"],
+        ["Morningstar / recast revenue", `${formatNumber(DATA.valuation.derived.morningstarSalesMultiple2025, 1)}x`, "Secondary valuation estimate"],
+        ["Morningstar / recast Adj. EBITDA", `${formatNumber(DATA.valuation.derived.morningstarAdjEbitdaMultiple2025, 1)}x`, "Secondary valuation estimate"]
       ];
-      document.getElementById("valuationMultiples").innerHTML = rows.map(([label, value]) => `
+      document.getElementById("valuationMultiples").innerHTML = rows.map(([label, value, note]) => `
         <article class="metric-card">
           <span>${label}</span>
           <strong>${value}</strong>
-          <small>2025 metric 기준</small>
+          <small>${note}</small>
         </article>
       `).join("");
     }
@@ -1505,9 +1651,9 @@
         return acc;
       }, {});
       const total = Object.values(values).reduce((sum, value) => sum + value, 0);
-      const gap = total - DATA.valuation.ipoTargetValue;
+      const gap = total - DATA.ipoTerms.valuationLow;
       document.getElementById("sotpTotal").textContent = formatBn(total);
-      document.getElementById("sotpGap").textContent = `IPO target ${formatBn(DATA.valuation.ipoTargetValue)} 대비 ${gap >= 0 ? "+" : ""}${formatBn(gap)} gap`;
+      document.getElementById("sotpGap").textContent = `Reported low IPO reference ${formatBn(DATA.ipoTerms.valuationLow)} vs ${gap >= 0 ? "+" : ""}${formatBn(gap)} gap`;
     }
 
     function renderRisks() {
@@ -1552,11 +1698,30 @@
 
     function renderGenericTable(id, rows, keys) {
       document.getElementById(id).innerHTML = `
-        <thead><tr>${keys.map(key => `<th>${key}</th>`).join("")}</tr></thead>
+        <thead><tr>${keys.map(key => `<th>${tableLabel(key)}</th>`).join("")}</tr></thead>
         <tbody>
           ${rows.map(row => `<tr>${keys.map(key => `<td>${formatTableValue(key, row[key])}</td>`).join("")}</tr>`).join("")}
         </tbody>
       `;
+    }
+
+    function tableLabel(key) {
+      const labels = {
+        period: "Period",
+        revenue: "Revenue",
+        grossProfit: "Gross profit",
+        gpm: "Gross margin",
+        operatingIncome: "Operating income",
+        opm: "Operating margin",
+        netIncome: "Net income",
+        adjEbitda: "Adj. EBITDA",
+        cfo: "CFO",
+        purchasesOfPPE: "Purchases of PPE",
+        impliedFcf: "Operating FCF proxy",
+        capexIntensity: "Capex / revenue",
+        endingCash: "Ending cash"
+      };
+      return labels[key] || key;
     }
 
     function renderCharts() {
@@ -1603,7 +1768,7 @@
           datasets: [
             { label: "CFO", data: rows.map(row => row.cfo), backgroundColor: colors.teal },
             { label: "PPE Capex", data: rows.map(row => row.purchasesOfPPE), backgroundColor: colors.capex },
-            { label: "Simple FCF", data: rows.map(row => row.impliedFcf), backgroundColor: colors.coral }
+            { label: "Operating FCF proxy", data: rows.map(row => row.impliedFcf), backgroundColor: colors.coral }
           ]
         },
         options: chartOptions("$bn")
@@ -1728,7 +1893,7 @@
           labels: rows.map(row => row.period),
           datasets: [
             { label: "Advertising", data: rows.map(row => row.advertising), backgroundColor: colors.violet },
-            { label: "AI Solutions & Infrastructure", data: rows.map(row => row.aiSolutionsInfrastructure), backgroundColor: colors.coral }
+            { label: "AI solutions / infrastructure (not pure compute)", data: rows.map(row => row.aiSolutionsInfrastructure), backgroundColor: colors.coral }
           ]
         },
         options: stackedOptions("$bn")
@@ -1770,10 +1935,10 @@
       createChart("valuationAnchorChart", {
         type: "bar",
         data: {
-          labels: ["Morningstar", "Base SOTP", "IPO target", "Upper marker"],
+          labels: ["Morningstar", "Base SOTP", "Reported IPO low", "Reported IPO high"],
           datasets: [{
             label: "Equity value",
-            data: [DATA.valuation.morningstarFairValue, baseTotal, DATA.valuation.ipoTargetValue, DATA.valuation.possibleUpperMarketExpectation],
+            data: [DATA.valuation.morningstarFairValue, baseTotal, DATA.ipoTerms.valuationLow, DATA.ipoTerms.valuationHigh],
             backgroundColor: [colors.violet, colors.teal, colors.coral, colors.capex]
           }]
         },
@@ -1862,6 +2027,7 @@
     }
 
     function formatBn(value) {
+      if (!Number.isFinite(value)) return "N/A";
       const sign = value < 0 ? "-" : "";
       return `${sign}$${formatNumber(Math.abs(value), Math.abs(value) < 10 ? 3 : 1)}B`;
     }
@@ -1871,6 +2037,7 @@
     }
 
     function formatPct(value) {
+      if (!Number.isFinite(value)) return "N/A";
       return `${formatNumber(value, 1)}%`;
     }
 

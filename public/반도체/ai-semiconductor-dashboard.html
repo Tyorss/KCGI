@@ -912,9 +912,9 @@
 <body>
   <nav class="kcgi-site-nav" aria-label="KCGI site navigation">
     <div class="kcgi-site-nav-inner">
-      <a class="kcgi-site-brand" href="/" target="_top">KCGI Research Hub</a>
+      <a class="kcgi-site-brand" href="../index.html">KCGI Research Hub</a>
       <div class="kcgi-site-links">
-        <a href="/" target="_top">홈</a>
+        <a href="../index.html">홈</a>
       </div>
     </div>
   </nav>
@@ -986,6 +986,7 @@
           <button type="button" onclick="downloadTableCsv('market-size')">Market CSV</button>
         </div>
       </div>
+      <div id="dataQualityWarnings" class="disclosure-card" style="margin-bottom: 14px"></div>
       <div class="grid-3">
         <div class="card">
           <h3>Base vs Target TAM</h3>
@@ -1013,6 +1014,9 @@
           <p class="section-subtitle">share type이 revenue share, unit share, capacity allocation인지 분리해서 표시합니다.</p>
         </div>
         <div class="actions">
+          <select id="shareSnapshotSelector" aria-label="Share snapshot selector">
+            <option value="All">Show all snapshots</option>
+          </select>
           <select id="shareSelector" aria-label="Market share selector"></select>
           <button type="button" onclick="downloadTableCsv('market-share')">Share CSV</button>
         </div>
@@ -1076,6 +1080,8 @@
       <div class="table-wrap">
         <table id="themeScoreTable" class="heatmap"></table>
       </div>
+      <p class="footer-note">Valuation burden is a risk score: higher means more expensive or more crowded, unlike TAM, growth, visibility, and bottleneck scores.</p>
+      <p class="footer-note">6~18m priority = earnings visibility + bottleneck intensity + demand momentum - valuation burden. 3~5y priority = structural growth + TAM expansion + technology transition + option value - commercialization risk.</p>
     </section>
 
     <section class="section" aria-label="Value Chain Map">
@@ -1295,6 +1301,22 @@
       { market: "Memory", subMarket: "HBM", company: "Micron", ticker: "MU US", country: "US", marketSharePct: 21, shareType: "HBM market share", sharePeriod: "2026 latest", linkedFinancialSegment: "Memory manufacturing", exposureBasis: "company/product exposure; HBM revenue not separately disclosed", source: "Reuters / company IR / existing seed", sourceDate: "2026-06-02", confidence: "Mid", note: "HBM share is product-market share, not company revenue mix.", financialCompany: "Micron" }
     ];
 
+    const hbmShareSnapshotSeed = latestHbmExposureSeed.map(row => ({
+      theme: row.market,
+      subMarket: row.subMarket,
+      company: row.company,
+      ticker: row.ticker,
+      country: row.country,
+      share: row.marketSharePct,
+      type: "industry estimate",
+      metricBasis: "Latest snapshot",
+      period: row.sharePeriod,
+      asOfDate: row.sourceDate,
+      source: row.source,
+      confidence: row.confidence,
+      note: `${row.note} Use as latest snapshot, not directly comparable to 2Q25.`
+    }));
+
     const companyMarketExposureSeed = [
       ...latestHbmExposureSeed,
       ...marketShareSeed.map(row => ({
@@ -1315,6 +1337,32 @@
         financialCompany: financialCompanyName(row.company)
       }))
     ];
+
+    const marketShareDisplaySeed = [
+      ...marketShareSeed.map(row => ({
+        ...row,
+        metricBasis: row.subMarket === "HBM" ? "Counterpoint estimate" : row.type,
+        asOfDate: row.period
+      })),
+      ...hbmShareSnapshotSeed
+    ];
+
+    const SCORE_WEIGHTS = {
+      nearTerm: {
+        visibility: 0.30,
+        bottleneck: 0.25,
+        demandMomentum: 0.20,
+        earningsSensitivity: 0.15,
+        valuationBurden: -0.10
+      },
+      longTerm: {
+        structuralGrowth: 0.30,
+        tamExpansion: 0.25,
+        technologyTransition: 0.20,
+        optionValue: 0.15,
+        commercializationRisk: -0.10
+      }
+    };
 
     const prioritySeed = {
       short: [
@@ -1352,8 +1400,10 @@
       if (!window.Chart || !window.html2canvas) {
         document.getElementById("libraryWarning").style.display = "block";
       }
+      enrichMarketSizeSeed();
       renderKpis();
       setupFilters();
+      renderDataQualityWarnings();
       renderMarketSizeDashboard();
       renderShareDashboard();
       renderFinancialDrilldown();
@@ -1368,10 +1418,15 @@
       document.getElementById("scenarioFilter").addEventListener("change", renderMarketSizeDashboard);
 
       const shareSelector = document.getElementById("shareSelector");
-      unique(marketShareSeed.filter(row => row.type !== "not applicable").map(row => row.subMarket)).forEach(name => {
+      unique(marketShareDisplaySeed.filter(row => row.type !== "not applicable").map(row => row.subMarket)).forEach(name => {
         shareSelector.insertAdjacentHTML("beforeend", `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`);
       });
-      shareSelector.addEventListener("change", renderShareDashboard);
+      shareSelector.addEventListener("change", () => {
+        updateShareSnapshotOptions();
+        renderShareDashboard();
+      });
+      document.getElementById("shareSnapshotSelector").addEventListener("change", renderShareDashboard);
+      updateShareSnapshotOptions();
 
       const themeFilter = document.getElementById("companyThemeFilter");
       unique(companySeed.flatMap(row => row.theme.split("/").map(item => item.trim()))).sort().forEach(theme => {
@@ -1391,18 +1446,104 @@
       });
     }
 
+    function enrichMarketSizeSeed() {
+      marketSizeSeed.forEach(row => {
+        row.sourceCagr = row.sourceCagr ?? row.cagr;
+        row.calculatedCagr = calculateCagr(row.baseValue, row.targetValue, row.baseYear, row.targetYear);
+        row.cagrConsistencyFlag = Number.isFinite(row.calculatedCagr) && Math.abs(row.sourceCagr - row.calculatedCagr) >= 2 ? "Mismatch" : "OK";
+        row.cagrBasisNote = cagrBasisNote(row);
+        row.marketLevel = row.marketLevel || inferMarketLevel(row);
+        row.horizon = `${row.baseYear}-${row.targetYear}`;
+        row.calculationMethod = "source reported; calculated CAGR from displayed endpoints";
+        row.source_cagr = row.sourceCagr;
+        row.calculated_cagr = row.calculatedCagr;
+        row.cagr_basis_note = row.cagrBasisNote;
+        row.cagr_consistency_flag = row.cagrConsistencyFlag;
+        row.market_level = row.marketLevel;
+        row.calculation_method = row.calculationMethod;
+      });
+    }
+
+    function calculateCagr(baseValue, targetValue, baseYear, targetYear) {
+      if (!Number.isFinite(baseValue) || !Number.isFinite(targetValue) || !Number.isFinite(baseYear) || !Number.isFinite(targetYear)) return null;
+      const years = targetYear - baseYear;
+      if (baseValue <= 0 || targetValue <= 0 || years <= 0) return null;
+      return (Math.pow(targetValue / baseValue, 1 / years) - 1) * 100;
+    }
+
+    function cagrBasisNote(row) {
+      if (row.subTheme === "HBM") return "HBM source CAGR likely uses a 2024 base; displayed 2025-2030 endpoints imply lower CAGR.";
+      if (row.cagrConsistencyFlag === "Mismatch") return "Source CAGR appears to use a different base year, endpoint, or market definition.";
+      return "Source CAGR and endpoint-calculated CAGR are directionally consistent.";
+    }
+
+    function inferMarketLevel(row) {
+      const map = {
+        DRAM: "Total market",
+        NAND: "Total market",
+        HBM: "Sub-market",
+        "Enterprise SSD": "Product segment",
+        CPO: "Technology option",
+        "Server CPU": "Scenario / SAM",
+        "Data Center CPU": "Scenario / SAM",
+        "Glass-core Substrate": "Roadmap market",
+        "Glass Substrate": "Total market",
+        ABF: "Product segment",
+        "Advanced Packaging": "Total market",
+        "High-end Packaging": "Product segment"
+      };
+      return map[row.subTheme] || "Product segment";
+    }
+
+    function updateShareSnapshotOptions() {
+      const selected = document.getElementById("shareSelector").value || "HBM";
+      const selector = document.getElementById("shareSnapshotSelector");
+      const options = unique(marketShareDisplaySeed.filter(row => row.subMarket === selected && row.type !== "not applicable").map(row => row.period));
+      selector.innerHTML = `<option value="All">Show all snapshots</option>${options.map(period => `<option value="${escapeHtml(period)}">${escapeHtml(shareSnapshotLabel(period))}</option>`).join("")}`;
+      if (selected !== "HBM") selector.value = "All";
+    }
+
+    function shareSnapshotLabel(period) {
+      if (period === "2Q25") return "2Q25 Counterpoint";
+      if (period === "2026 latest") return "Latest snapshot";
+      return period;
+    }
+
+    function buildDataQualityWarnings() {
+      const warnings = marketSizeSeed
+        .filter(row => row.cagrConsistencyFlag === "Mismatch")
+        .map(row => `${row.subTheme}: Source CAGR ${formatNumber(row.sourceCagr)}% differs from calculated CAGR ${formatNumber(row.calculatedCagr)}%.`);
+      if (marketShareDisplaySeed.filter(row => row.subMarket === "HBM").length > 3) {
+        warnings.push("HBM: Multiple share snapshots exist. Use the period selector before comparing Samsung/SK Hynix/Micron shares.");
+      }
+      marketSizeSeed
+        .filter(row => row.scenario === "Bull" && row.confidence.includes("Low"))
+        .forEach(row => warnings.push(`${row.subTheme}: Low-confidence bull scenario; keep scenario and market-level badges visible.`));
+      return warnings;
+    }
+
+    function renderDataQualityWarnings() {
+      const warnings = buildDataQualityWarnings();
+      document.getElementById("dataQualityWarnings").innerHTML = `
+        <strong>Data Quality Warnings</strong>
+        ${warnings.length ? `<ol style="margin: 8px 0 0; padding-left: 18px">${warnings.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ol>` : "No warnings."}
+      `;
+    }
+
     function renderKpis() {
-      const largestTam = [...marketSizeSeed].sort((a, b) => b.targetValue - a.targetValue)[0];
-      const highestCagr = [...marketSizeSeed].sort((a, b) => b.cagr - a.cagr)[0];
+      const baseRows = marketSizeSeed.filter(row => row.scenario === "Base");
+      const largestTam = [...baseRows].sort((a, b) => b.targetValue - a.targetValue)[0];
+      const highestCagr = [...baseRows].sort((a, b) => b.sourceCagr - a.sourceCagr)[0];
+      const optionCagr = [...marketSizeSeed].filter(row => row.scenario === "Bull" || row.marketLevel.includes("option") || row.marketLevel.includes("Roadmap")).sort((a, b) => b.sourceCagr - a.sourceCagr)[0];
       const bestVisibility = [...themeScoreSeed].sort((a, b) => b.visibility - a.visibility || b.bottleneck - a.bottleneck)[0];
       const bottleneck = [...themeScoreSeed].sort((a, b) => b.bottleneck - a.bottleneck || b.growth - a.growth)[0];
       const earlyOption = marketSizeSeed.find(row => row.subTheme === "Glass-core Substrate");
       const cards = [
         ["실적 가시성 최상위", bestVisibility.theme, `${bestVisibility.note} / visibility ${bestVisibility.visibility}/5`],
-        ["최대 TAM", `${largestTam.subTheme} $${formatNumber(largestTam.targetValue)}bn`, `${largestTam.targetYear}E / ${largestTam.source}`],
-        ["최고 CAGR", `${highestCagr.subTheme} ${formatNumber(highestCagr.cagr)}%`, `${highestCagr.scenario} scenario / ${highestCagr.confidence}`],
-        ["병목 강도 최상위", bottleneck.theme, `bottleneck ${bottleneck.bottleneck}/5 / ${bottleneck.short}`],
-        ["장기 옵션", `${earlyOption.subTheme} $${formatNumber(earlyOption.targetValue)}bn`, `${earlyOption.targetYear}E / Low confidence`]
+        ["Base 최대 TAM", `${largestTam.subTheme} $${formatNumber(largestTam.targetValue)}bn`, `${largestTam.marketLevel} / ${largestTam.targetYear}E`],
+        ["Base 최고 CAGR", `${highestCagr.subTheme} ${formatNumber(highestCagr.sourceCagr)}%`, `${highestCagr.horizon} / ${highestCagr.confidence}`],
+        ["Bull/option CAGR", optionCagr ? `${optionCagr.subTheme} bull case ${formatNumber(optionCagr.sourceCagr)}%` : "N/A", optionCagr ? `${optionCagr.marketLevel} / ${optionCagr.confidence}` : "No option market"],
+        ["장기 옵션", `${earlyOption.subTheme}: $${formatNumber(earlyOption.targetValue)}bn ${earlyOption.targetYear}E bull`, `${earlyOption.marketLevel} / Low confidence`]
       ];
       document.getElementById("kpiGrid").innerHTML = cards.map(([label, value, detail]) => `
         <article class="kpi-card">
@@ -1431,12 +1572,15 @@
         options: horizontalOptions("USD bn")
       });
 
-      const cagrRows = [...rows].sort((a, b) => b.cagr - a.cagr);
+      const cagrRows = [...rows].sort((a, b) => b.sourceCagr - a.sourceCagr);
       createChart("cagrChart", {
         type: "bar",
         data: {
-          labels: cagrRows.map(row => `${row.subTheme} (${row.confidence})`),
-          datasets: [{ label: "CAGR", data: cagrRows.map(row => row.cagr), backgroundColor: cagrRows.map(row => confidenceColor(row.confidence)) }]
+          labels: cagrRows.map(row => `${row.subTheme} (${row.horizon}, ${row.marketLevel})`),
+          datasets: [
+            { label: "Source CAGR", data: cagrRows.map(row => row.sourceCagr), backgroundColor: cagrRows.map(row => confidenceColor(row.confidence)) },
+            { label: "Calc. CAGR", data: cagrRows.map(row => row.calculatedCagr), backgroundColor: "#aab7a3" }
+          ]
         },
         options: horizontalOptions("%")
       });
@@ -1446,7 +1590,7 @@
         data: {
           datasets: rows.map((row, index) => ({
             label: `${row.subTheme} (${row.scenario})`,
-            data: [{ x: row.targetValue, y: row.cagr, r: Math.max(5, Math.sqrt(row.targetValue) * 2.2) }],
+            data: [{ x: row.targetValue, y: row.sourceCagr, r: Math.max(5, Math.sqrt(row.targetValue) * 2.2) }],
             backgroundColor: colorWithAlpha(chartColors[index % chartColors.length], 0.7),
             borderColor: chartColors[index % chartColors.length],
             borderWidth: 1
@@ -1460,7 +1604,7 @@
               callbacks: {
                 label: context => {
                   const row = rows[context.datasetIndex];
-                  return `${row.subTheme}: TAM $${formatNumber(row.targetValue)}bn, CAGR ${formatNumber(row.cagr)}%, ${row.confidence}`;
+                  return `${row.subTheme}: TAM $${formatNumber(row.targetValue)}bn, Source CAGR ${formatNumber(row.sourceCagr)}%, Calc. CAGR ${formatNumber(row.calculatedCagr)}%, ${row.marketLevel}, ${row.confidence}`;
                 }
               }
             }
@@ -1475,19 +1619,20 @@
 
     function renderShareDashboard() {
       const selected = document.getElementById("shareSelector").value || "HBM";
-      const rows = marketShareSeed.filter(row => row.subMarket === selected && row.type !== "not applicable");
+      const snapshot = document.getElementById("shareSnapshotSelector").value || "All";
+      const rows = marketShareDisplaySeed.filter(row => row.subMarket === selected && row.type !== "not applicable" && (snapshot === "All" || row.period === snapshot));
       const types = unique(rows.map(row => row.type));
       const periods = unique(rows.map(row => row.period)).join(", ");
       const sources = unique(rows.map(row => row.source)).join(", ");
 
-      document.getElementById("shareTitle").textContent = `${selected} (${periods})`;
+      document.getElementById("shareTitle").textContent = `${selected} (${snapshot === "All" ? periods : shareSnapshotLabel(snapshot)})`;
       document.getElementById("shareNote").textContent = `${types.join(" / ")}. Source: ${sources}.`;
 
       if (types.length > 1) {
         createChart("shareChart", {
           type: "bar",
           data: {
-            labels: rows.map(row => `${row.company} / ${row.type.replace(" share", "")}`),
+            labels: rows.map(row => `${row.company} / ${row.period} / ${row.type.replace(" share", "")}`),
             datasets: [{ label: "Share", data: rows.map(row => row.share), backgroundColor: rows.map((_, index) => chartColors[index % chartColors.length]) }]
           },
           options: horizontalOptions("%")
@@ -1506,7 +1651,7 @@
       document.getElementById("shareCards").innerHTML = rows.map(row => `
         <div class="roadmap-step">
           <strong>${escapeHtml(row.company)}</strong>
-          <p>${formatNumber(row.share)}% ${escapeHtml(row.type)} / ${escapeHtml(row.period)} / ${confidenceBadge(row.confidence)}<br>${escapeHtml(row.note)}</p>
+          <p>${formatNumber(row.share)}% ${escapeHtml(row.type)} / ${escapeHtml(row.period)} / ${escapeHtml(row.metricBasis || row.type)} / ${confidenceBadge(row.confidence)}<br>${escapeHtml(row.note)}</p>
         </div>
       `).join("");
     }
@@ -1533,7 +1678,7 @@
         ["시장", market, rows.length ? `${unique(rows.map(row => row.shareType)).join(" / ")}` : "No commercial share seed"],
         ["Base TAM", primarySize ? `${primarySize.baseYear}: $${formatNumber(primarySize.baseValue)}bn` : "TAM seed pending", primarySize?.definition || "수동 시장 정의 필요"],
         ["Target TAM", primarySize ? `${primarySize.targetYear}: $${formatNumber(primarySize.targetValue)}bn` : "Not available", primarySize?.scenario || "Add source before comparison"],
-        ["CAGR", primarySize ? `${formatNumber(primarySize.cagr)}%` : "N/A", primarySize ? `${primarySize.source} / ${primarySize.confidence}` : "No market-size source"],
+        ["CAGR", primarySize ? `Source ${formatNumber(primarySize.sourceCagr)}% / Calc. ${formatNumber(primarySize.calculatedCagr)}%` : "N/A", primarySize ? `${primarySize.horizon} / ${primarySize.marketLevel} / ${primarySize.confidence}` : "No market-size source"],
         ["Caveat", exposureCaveat, rows[0]?.note || "시장 비중과 기업 매출은 분리해서 해석합니다."]
       ];
       document.getElementById("financialMarketSummary").innerHTML = cards.map(([label, value, detail]) => `
@@ -1546,7 +1691,7 @@
     }
 
     function renderFinancialPlayerTable(market, rows) {
-      const headers = ["Company", "Ticker", "Country", "Market share", "Share type", "Period", "FY revenue", "FY OP", "GM", "OM", "Basis", "Source", "Confidence"];
+      const headers = ["Company", "Ticker", "Country", "Market share", "Share type", "Share period", "Share source", "Financials", "FY revenue", "FY OP", "GM", "OM", "Basis", "Confidence"];
       const tableRows = rows.length ? rows.map(row => {
         const financial = findFinancial(row.financialCompany);
         const clickable = !!financial;
@@ -1558,12 +1703,13 @@
             <td>${formatPct(row.marketSharePct)}</td>
             <td>${escapeHtml(row.shareType)}</td>
             <td>${escapeHtml(row.sharePeriod)}</td>
+            <td>${escapeHtml(row.source)}</td>
+            <td>${financial ? `FY${escapeHtml(financial.fiscalYear)} / ${escapeHtml(financial.period)}` : "No seed"}</td>
             <td>${financial ? formatFinancialValue(financial.currency, financial.revenue) : "No seed"}</td>
             <td>${financial ? formatFinancialValue(financial.currency, financial.operatingIncome) : "No seed"}</td>
             <td>${financial ? formatPct(financial.grossMarginPct) : "N/A"}</td>
             <td>${financial ? formatPct(financial.operatingMarginPct) : "N/A"}</td>
             <td>${financial ? escapeHtml(financial.accountingBasis) : "N/A"}</td>
-            <td>${escapeHtml(financial?.source || row.source)}</td>
             <td>${confidenceBadge(financial?.confidence || row.confidence)}</td>
           </tr>
         `;
@@ -1623,7 +1769,8 @@
           <h3>${escapeHtml(financial.company)}</h3>
           <p>${escapeHtml(financial.ticker)} / ${escapeHtml(financial.country)} / ${escapeHtml(master?.theme || "Theme seed pending")}</p>
           <div class="detail-pill-row">
-            <span class="detail-pill">${escapeHtml(financial.period)}</span>
+            <span class="detail-pill">Financials: ${escapeHtml(financial.period)}</span>
+            <span class="detail-pill">Share snapshot: ${escapeHtml(exposure.sharePeriod || exposure.sourceDate || "N/A")}</span>
             <span class="detail-pill">${escapeHtml(financial.accountingBasis)}</span>
             <span class="detail-pill">${confidenceBadge(financial.confidence)}</span>
           </div>
@@ -1765,7 +1912,7 @@
     }
 
     function renderMarketSizeTable() {
-      const headers = ["Theme", "Sub theme", "Base", "Target TAM", "CAGR", "Scenario", "Source", "Confidence", "Note"];
+      const headers = ["Theme", "Sub theme", "Market level", "Base", "Target TAM", "Source CAGR", "Calc. CAGR", "Flag", "Horizon", "Scenario", "Source", "Confidence", "Note"];
       document.getElementById("marketSizeTable").innerHTML = `
         <thead><tr>${headers.map(header => `<th>${escapeHtml(header)}</th>`).join("")}</tr></thead>
         <tbody>
@@ -1773,13 +1920,17 @@
             <tr>
               <td>${escapeHtml(row.theme)}</td>
               <td><strong>${escapeHtml(row.subTheme)}</strong><br><span class="table-note">${escapeHtml(row.definition)}</span></td>
+              <td>${marketLevelBadge(row.marketLevel)}</td>
               <td>${row.baseYear}: $${formatNumber(row.baseValue)}bn</td>
               <td>${row.targetYear}: $${formatNumber(row.targetValue)}bn</td>
-              <td>${formatNumber(row.cagr)}%</td>
+              <td>${formatNumber(row.sourceCagr)}%</td>
+              <td>${formatNumber(row.calculatedCagr)}%</td>
+              <td>${escapeHtml(row.cagrConsistencyFlag)}</td>
+              <td>${escapeHtml(row.horizon)}</td>
               <td>${escapeHtml(row.scenario)}</td>
               <td>${escapeHtml(row.source)}</td>
               <td>${confidenceBadge(row.confidence)}</td>
-              <td>${escapeHtml(row.note)}</td>
+              <td>${escapeHtml(`${row.note}. ${row.cagrBasisNote}`)}</td>
             </tr>
           `).join("")}
         </tbody>
@@ -1832,6 +1983,11 @@
       const value = confidence || "N/A";
       const cls = value.includes("High") ? "high" : value.includes("Low") ? "low" : "mid";
       return `<span class="badge ${cls}">${escapeHtml(value)}</span>`;
+    }
+
+    function marketLevelBadge(level) {
+      const cls = level?.includes("Roadmap") || level?.includes("option") || level?.includes("Scenario") ? "low" : level?.includes("Total") ? "high" : "mid";
+      return `<span class="badge ${cls}">${escapeHtml(level || "N/A")}</span>`;
     }
 
     function confidenceColor(confidence) {
@@ -2041,7 +2197,7 @@
     function downloadTableCsv(kind) {
       const rowsByKind = {
         "market-size": marketSizeSeed,
-        "market-share": marketShareSeed,
+        "market-share": marketShareDisplaySeed,
         "company-master": companySeed,
         financials: companyFinancialsSeed,
         segments: companySegmentSeed,
@@ -2103,6 +2259,9 @@
 
     function formatFinancialValue(currency, value) {
       if (!Number.isFinite(value)) return "Not disclosed";
+      if (currency === "KRW") return `${currency} ${formatNumber(value / 1000000)}tn`;
+      if (currency === "TWD") return `${currency} ${formatNumber(value / 1000000)}tn`;
+      if (currency === "USD") return `${currency} ${formatNumber(value / 1000)}bn`;
       return `${currency} ${formatNumber(value)}mn`;
     }
 

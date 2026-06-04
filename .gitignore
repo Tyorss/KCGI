@@ -3,4 +3,5 @@ node_modules/
 out/
 dev-server.err.log
 dev-server.out.log
+AI-Bottleneck/logs/
 *.tsbuildinfo

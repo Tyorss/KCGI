@@ -8,7 +8,7 @@ export default function NeocloudPage() {
   return (
     <>
       <SiteNav />
-      <DashboardShell contracts={contracts as ContractRecord[]} projects={projects as Project[]} />
+      <DashboardShell contracts={contracts as ContractRecord[]} homeHref="/" projects={projects as Project[]} />
     </>
   );
 }

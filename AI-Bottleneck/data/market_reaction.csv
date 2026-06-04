@@ -1,0 +1,1 @@
+company,ticker,segment_ids,as_of,price,currency,return_1m_pct,return_3m_pct,return_6m_pct,return_12m_pct,return_ytd_pct,warnings,source_name,source_url_or_file,last_updated,confidence,note

@@ -1,0 +1,1228 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI 인프라 병목 밸류체인 대시보드</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0d1117;
+      --panel: #121821;
+      --panel-2: #161f2b;
+      --ink: #eef3f8;
+      --muted: #9aa8b7;
+      --line: #263240;
+      --blue: #5b8def;
+      --cyan: #38bdf8;
+      --green: #34d399;
+      --gold: #f4c95d;
+      --red: #f87171;
+      --violet: #a78bfa;
+      --shadow: 0 16px 40px rgba(0, 0, 0, 0.24);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Malgun Gothic", "맑은 고딕", Calibri, Arial, sans-serif;
+      letter-spacing: 0;
+    }
+
+    button,
+    select,
+    input {
+      font: inherit;
+    }
+
+    .page {
+      width: min(1680px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 18px 0 48px;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: end;
+      margin-bottom: 14px;
+    }
+
+    .kicker {
+      margin: 0 0 6px;
+      color: var(--cyan);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      font-size: clamp(28px, 2.7vw, 42px);
+      line-height: 1.12;
+    }
+
+    h2 {
+      font-size: 20px;
+      line-height: 1.25;
+    }
+
+    h3 {
+      font-size: 15px;
+      line-height: 1.3;
+    }
+
+    .subtitle {
+      max-width: 940px;
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    a,
+    button {
+      min-height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 7px 11px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel-2);
+      color: var(--ink);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    a:hover,
+    button:hover {
+      border-color: #4b5f78;
+      background: #1c2735;
+    }
+
+    select,
+    input {
+      min-height: 34px;
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #0f151d;
+      color: var(--ink);
+    }
+
+    .status-banner {
+      display: none;
+      margin-bottom: 12px;
+      padding: 10px 12px;
+      border: 1px solid #7c6425;
+      border-radius: 8px;
+      background: #211b0e;
+      color: #f7d47a;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(360px, 0.8fr);
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .hero-panel,
+    .section,
+    .card,
+    .kpi-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-panel {
+      min-height: 258px;
+      display: grid;
+      align-content: space-between;
+      padding: 22px;
+      background:
+        linear-gradient(135deg, rgba(16, 24, 39, 0.94), rgba(30, 64, 92, 0.8)),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 56px),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 56px);
+    }
+
+    .hero-panel h2 {
+      max-width: 920px;
+      font-size: clamp(24px, 2.5vw, 36px);
+    }
+
+    .hero-panel p {
+      max-width: 980px;
+      margin: 12px 0 0;
+      color: #c9d6e5;
+      line-height: 1.6;
+    }
+
+    .source-policy {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+    }
+
+    .policy-row {
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .policy-row:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .policy-row span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .policy-row strong {
+      display: block;
+      margin-top: 5px;
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(150px, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .kpi-card {
+      min-height: 108px;
+      padding: 13px;
+    }
+
+    .kpi-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .kpi-card strong {
+      display: block;
+      margin-top: 10px;
+      color: var(--ink);
+      font-size: 20px;
+      line-height: 1.15;
+    }
+
+    .kpi-card small {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .section {
+      margin-top: 14px;
+      padding: 14px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .section-subtitle {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .card {
+      min-width: 0;
+      padding: 13px;
+      box-shadow: none;
+    }
+
+    .chart-box {
+      position: relative;
+      height: 300px;
+      margin-top: 10px;
+    }
+
+    .chart-box.tall {
+      height: 420px;
+    }
+
+    .empty {
+      display: grid;
+      min-height: 180px;
+      place-items: center;
+      border: 1px dashed #35475c;
+      border-radius: 8px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .value-chain {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(150px, 1fr));
+      gap: 10px;
+    }
+
+    .chain-card {
+      min-height: 132px;
+      padding: 11px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #0f151d;
+    }
+
+    .chain-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .chain-card strong {
+      display: block;
+      margin-top: 7px;
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .chain-card small {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 22px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .badge.high {
+      background: rgba(52, 211, 153, 0.14);
+      color: #8ef2c4;
+    }
+
+    .badge.medium {
+      background: rgba(244, 201, 93, 0.14);
+      color: #f7d47a;
+    }
+
+    .badge.low {
+      background: rgba(248, 113, 113, 0.14);
+      color: #ffaaa8;
+    }
+
+    .badge.na {
+      background: rgba(154, 168, 183, 0.14);
+      color: #c8d2dc;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    table {
+      width: 100%;
+      min-width: 980px;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    th,
+    td {
+      padding: 8px 9px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      line-height: 1.45;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: #101821;
+      color: #b9c5d2;
+      font-weight: 900;
+    }
+
+    tbody tr:hover {
+      background: #151f2b;
+    }
+
+    .note {
+      margin: 9px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .detail-panel {
+      display: grid;
+      gap: 8px;
+      min-height: 300px;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .metric-card {
+      min-height: 78px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #0f151d;
+    }
+
+    .metric-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .metric-card strong {
+      display: block;
+      margin-top: 7px;
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.25;
+    }
+
+    @media (max-width: 1180px) {
+      .hero,
+      .grid-2,
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .kpi-grid {
+        grid-template-columns: repeat(3, minmax(150px, 1fr));
+      }
+
+      .value-chain {
+        grid-template-columns: repeat(3, minmax(150px, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        width: min(100% - 20px, 1680px);
+        padding-top: 12px;
+      }
+
+      .topbar,
+      .section-header {
+        display: grid;
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+
+      .actions {
+        justify-content: flex-start;
+      }
+
+      .kpi-grid,
+      .value-chain,
+      .metric-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .chart-box,
+      .chart-box.tall {
+        height: 340px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div id="loadWarning" class="status-banner">데이터 파일을 불러오지 못했습니다. 이 폴더에서 `python -m http.server 8000` 실행 후 브라우저로 접속하세요.</div>
+    <div id="libraryWarning" class="status-banner">Chart.js를 불러오지 못했습니다. 인터넷 연결 후 새로고침하면 차트가 활성화됩니다.</div>
+
+    <header class="topbar">
+      <div>
+        <p class="kicker">AI Infrastructure Bottleneck</p>
+        <h1>AI 인프라 병목 밸류체인 대시보드</h1>
+        <p class="subtitle">전력, HBM, GPU, ASIC, CoWoS, Foundry, Optical, Server ODM/OEM 지표를 공개 출처 기반 CSV에서 읽어 병목 강도와 가격·시장 반응을 함께 점검합니다.</p>
+      </div>
+      <div class="actions">
+        <a href="../index.html">홈</a>
+        <button type="button" onclick="downloadCsv('raw')">Raw CSV</button>
+        <button type="button" onclick="downloadCsv('scores')">Score CSV</button>
+      </div>
+    </header>
+
+    <section class="hero" aria-label="Executive summary">
+      <div class="hero-panel">
+        <div>
+          <p class="kicker">Research Board</p>
+          <h2>병목 점수는 수치가 모두 갖춰진 경우에만 total_score로 계산합니다</h2>
+          <p>현재 화면은 raw metric, source note, supply/demand, price indicator, stock reaction 파일을 결합합니다. 부족한 데이터는 임의 추정 없이 N/A 또는 insufficient_data로 남깁니다.</p>
+        </div>
+      </div>
+      <aside class="source-policy">
+        <div class="policy-row"><span>데이터 원칙</span><strong>분석 수치는 HTML에 직접 넣지 않고 CSV/JSON에서만 읽습니다.</strong></div>
+        <div class="policy-row"><span>출처 정책</span><strong>숫자 row는 source, confidence, last_updated를 유지합니다.</strong></div>
+        <div class="policy-row"><span>점수 정책</span><strong>필수 컴포넌트가 없으면 total_score는 N/A입니다.</strong></div>
+        <div class="policy-row"><span>주가 데이터</span><strong>Bloomberg export가 있으면 우선 사용하고, 없으면 yfinance로 업데이트합니다.</strong></div>
+      </aside>
+    </section>
+
+    <section id="kpiGrid" class="kpi-grid" aria-label="KPI cards"></section>
+
+    <section class="section" aria-label="AI bottleneck summary">
+      <div class="section-header">
+        <div>
+          <p class="kicker">Bottleneck Summary</p>
+          <h2>AI 병목 점수</h2>
+          <p class="section-subtitle">total_score가 없으면 partial component average를 별도 상태로 표시합니다.</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>병목 점수 / 부분 지표 평균</h3>
+          <div class="chart-box tall"><canvas id="scoreChart"></canvas></div>
+          <p class="note">막대는 total_score 우선, 없으면 available_component_avg를 사용합니다.</p>
+        </div>
+        <div class="card">
+          <h3>밸류체인 맵</h3>
+          <div id="valueChain" class="value-chain"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-label="Raw data explorer">
+      <div class="section-header">
+        <div>
+          <p class="kicker">Raw Metrics</p>
+          <h2>원천 데이터 테이블과 추세</h2>
+          <p class="section-subtitle">segment, entity, metric 기준으로 원천 지표를 확인합니다.</p>
+        </div>
+        <div class="actions">
+          <select id="segmentFilter" aria-label="Segment filter"></select>
+          <select id="entityFilter" aria-label="Entity filter"></select>
+          <select id="metricFilter" aria-label="Metric filter"></select>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Raw metric trend</h3>
+          <div class="chart-box"><canvas id="rawTrendChart"></canvas></div>
+        </div>
+        <div class="card">
+          <h3>원천 데이터</h3>
+          <div class="table-wrap">
+            <table id="rawTable"></table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-label="Demand supply gap">
+      <div class="section-header">
+        <div>
+          <p class="kicker">Demand / Supply Gap</p>
+          <h2>수요와 공급 지표</h2>
+          <p class="section-subtitle">단위가 같은 demand/supply pair만 shortage ratio를 계산합니다.</p>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <h3>Demand vs Supply</h3>
+          <div class="chart-box"><canvas id="demandSupplyChart"></canvas></div>
+        </div>
+        <div class="card">
+          <h3>Supply shortage ratio</h3>
+          <div class="chart-box"><canvas id="shortageChart"></canvas></div>
+        </div>
+        <div class="card">
+          <h3>Demand CAGR vs Supply Gap</h3>
+          <div class="chart-box"><canvas id="gapScatterChart"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-label="Price and market reaction">
+      <div class="section-header">
+        <div>
+          <p class="kicker">Price / Market Reaction</p>
+          <h2>가격 반응과 관련주 수익률</h2>
+          <p class="section-subtitle">주가 수익률은 `scripts/update_stocks.py` 실행 후 채워집니다.</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Price indicator trend</h3>
+          <div class="chart-box"><canvas id="priceChart"></canvas></div>
+        </div>
+        <div class="card">
+          <h3>Related stock return</h3>
+          <div class="chart-box"><canvas id="stockReturnChart"></canvas></div>
+        </div>
+        <div class="card">
+          <h3>Price momentum vs 6M return</h3>
+          <div class="chart-box"><canvas id="priceReturnScatterChart"></canvas></div>
+        </div>
+        <div class="card">
+          <h3>Company detail</h3>
+          <select id="companySelector" aria-label="Company selector"></select>
+          <div id="companyDetail" class="detail-panel" style="margin-top: 10px"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-label="Sources and confidence">
+      <div class="section-header">
+        <div>
+          <p class="kicker">Source / Confidence</p>
+          <h2>출처와 신뢰도</h2>
+          <p class="section-subtitle">source_notes.csv는 raw_metrics.csv에서 생성됩니다.</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Source confidence breakdown</h3>
+          <div class="chart-box"><canvas id="confidenceChart"></canvas></div>
+        </div>
+        <div class="card">
+          <h3>Source notes</h3>
+          <div class="table-wrap">
+            <table id="sourceTable"></table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const chartInstances = {};
+    const state = {
+      raw: [],
+      scores: [],
+      supplyDemand: [],
+      priceIndicators: [],
+      sources: [],
+      companies: [],
+      marketReaction: [],
+      segments: []
+    };
+
+    const files = {
+      raw: "data/raw_metrics.csv",
+      scores: "data/bottleneck_scores.csv",
+      supplyDemand: "data/supply_demand.csv",
+      priceIndicators: "data/price_indicators.csv",
+      sources: "data/source_notes.csv",
+      companies: "data/companies.csv",
+      marketReaction: "data/market_reaction.csv",
+      segments: "data/segments.json"
+    };
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      if (!window.Chart) document.getElementById("libraryWarning").style.display = "block";
+      try {
+        const [raw, scores, supplyDemand, priceIndicators, sources, companies, marketReaction, segments] = await Promise.all([
+          loadCsv(files.raw),
+          loadCsv(files.scores),
+          loadCsv(files.supplyDemand),
+          loadCsv(files.priceIndicators),
+          loadCsv(files.sources),
+          loadCsv(files.companies),
+          loadCsv(files.marketReaction),
+          loadJson(files.segments)
+        ]);
+        Object.assign(state, { raw, scores, supplyDemand, priceIndicators, sources, companies, marketReaction, segments });
+        setupFilters();
+        renderAll();
+      } catch (error) {
+        document.getElementById("loadWarning").style.display = "block";
+        console.error(error);
+      }
+    });
+
+    async function loadCsv(path) {
+      const response = await fetch(path, { cache: "no-store" });
+      if (!response.ok) throw new Error(`${path} ${response.status}`);
+      return parseCsv(await response.text());
+    }
+
+    async function loadJson(path) {
+      const response = await fetch(path, { cache: "no-store" });
+      if (!response.ok) throw new Error(`${path} ${response.status}`);
+      return response.json();
+    }
+
+    function parseCsv(text) {
+      const rows = [];
+      let row = [];
+      let cell = "";
+      let quote = false;
+      for (let index = 0; index < text.length; index += 1) {
+        const char = text[index];
+        const next = text[index + 1];
+        if (char === '"' && quote && next === '"') {
+          cell += '"';
+          index += 1;
+        } else if (char === '"') {
+          quote = !quote;
+        } else if (char === "," && !quote) {
+          row.push(cell);
+          cell = "";
+        } else if ((char === "\n" || char === "\r") && !quote) {
+          if (char === "\r" && next === "\n") index += 1;
+          row.push(cell);
+          if (row.some(value => value !== "")) rows.push(row);
+          row = [];
+          cell = "";
+        } else {
+          cell += char;
+        }
+      }
+      if (cell || row.length) {
+        row.push(cell);
+        rows.push(row);
+      }
+      const headers = rows.shift()?.map(header => header.replace(/^\uFEFF/, "")) || [];
+      return rows.map(values => Object.fromEntries(headers.map((header, index) => [header, values[index] ?? ""])));
+    }
+
+    function setupFilters() {
+      const segmentFilter = document.getElementById("segmentFilter");
+      const entityFilter = document.getElementById("entityFilter");
+      const metricFilter = document.getElementById("metricFilter");
+      segmentFilter.innerHTML = `<option value="All">전체 Segment</option>${unique(state.raw.map(row => row.segment_id)).map(id => `<option value="${escapeHtml(id)}">${escapeHtml(segmentName(id))}</option>`).join("")}`;
+      entityFilter.innerHTML = `<option value="All">전체 Entity</option>`;
+      metricFilter.innerHTML = `<option value="All">전체 Metric</option>`;
+      segmentFilter.addEventListener("change", updateDependentFilters);
+      entityFilter.addEventListener("change", renderRawExplorer);
+      metricFilter.addEventListener("change", renderRawExplorer);
+
+      const companySelector = document.getElementById("companySelector");
+      companySelector.innerHTML = state.companies.map(row => `<option value="${escapeHtml(row.ticker)}">${escapeHtml(row.company)} (${escapeHtml(row.ticker)})</option>`).join("");
+      companySelector.addEventListener("change", renderCompanyDetail);
+      updateDependentFilters();
+    }
+
+    function updateDependentFilters() {
+      const selectedSegment = document.getElementById("segmentFilter").value;
+      const rows = state.raw.filter(row => selectedSegment === "All" || row.segment_id === selectedSegment);
+      document.getElementById("entityFilter").innerHTML = `<option value="All">전체 Entity</option>${unique(rows.map(row => row.entity)).map(entity => `<option value="${escapeHtml(entity)}">${escapeHtml(entity)}</option>`).join("")}`;
+      document.getElementById("metricFilter").innerHTML = `<option value="All">전체 Metric</option>${unique(rows.map(row => row.metric_id)).map(metric => `<option value="${escapeHtml(metric)}">${escapeHtml(metric)}</option>`).join("")}`;
+      renderRawExplorer();
+    }
+
+    function renderAll() {
+      renderKpis();
+      renderScoreChart();
+      renderValueChain();
+      renderRawExplorer();
+      renderDemandSupply();
+      renderPriceAndMarket();
+      renderCompanyDetail();
+      renderSources();
+    }
+
+    function renderKpis() {
+      const numericRaw = state.raw.filter(row => isFiniteNumber(row.value));
+      const completedScores = state.scores.filter(row => isFiniteNumber(row.total_score));
+      const insufficientScores = state.scores.filter(row => row.status === "insufficient_data");
+      const maxPartial = [...state.scores].filter(row => isFiniteNumber(row.available_component_avg)).sort((a, b) => toNumber(b.available_component_avg) - toNumber(a.available_component_avg))[0];
+      const maxPrice = [...state.priceIndicators].filter(row => isFiniteNumber(row.value)).sort((a, b) => toNumber(b.value) - toNumber(a.value))[0];
+      const stockRows = state.marketReaction.filter(row => isFiniteNumber(row.return_6m_pct));
+      const bestStock = [...stockRows].sort((a, b) => toNumber(b.return_6m_pct) - toNumber(a.return_6m_pct))[0];
+
+      const cards = [
+        ["원천 지표", `${numericRaw.length}개`, `${state.raw.length}개 row 중 숫자 지표`],
+        ["출처 수", `${state.sources.length}개`, "source_notes.csv 기준"],
+        ["완성 점수", `${completedScores.length}개`, `부족 segment ${insufficientScores.length}개`],
+        ["부분 지표 상위", maxPartial ? segmentName(maxPartial.segment_id) : "N/A", maxPartial ? `${formatNumber(maxPartial.available_component_avg)}점 / ${maxPartial.component_count}개 컴포넌트` : "score update 필요"],
+        ["가격 압력 상위", maxPrice ? segmentName(maxPrice.segment_id) : "N/A", maxPrice ? `${maxPrice.metric_name}: ${formatNumber(maxPrice.value)} ${maxPrice.unit}` : "price indicator 없음"],
+        ["6M 수익률 상위", bestStock ? bestStock.company : "N/A", bestStock ? `${formatNumber(bestStock.return_6m_pct)}% / ${bestStock.as_of}` : "update_stocks.py 실행 필요"]
+      ];
+      document.getElementById("kpiGrid").innerHTML = cards.map(([label, value, detail]) => `
+        <article class="kpi-card">
+          <span>${escapeHtml(label)}</span>
+          <strong>${escapeHtml(value)}</strong>
+          <small>${escapeHtml(detail)}</small>
+        </article>
+      `).join("");
+    }
+
+    function renderScoreChart() {
+      const rows = [...state.scores]
+        .filter(row => isFiniteNumber(row.total_score) || isFiniteNumber(row.available_component_avg))
+        .sort((a, b) => scoreValue(b) - scoreValue(a));
+      createBarChart("scoreChart", rows.map(row => segmentName(row.segment_id)), rows.map(scoreValue), rows.map(row => row.status === "complete" ? "#34d399" : "#f4c95d"), "Score");
+    }
+
+    function renderValueChain() {
+      const scoreBySegment = Object.fromEntries(state.scores.map(row => [row.segment_id, row]));
+      document.getElementById("valueChain").innerHTML = state.segments.map(segment => {
+        const score = scoreBySegment[segment.segment_id];
+        const value = score ? scoreValue(score) : "";
+        return `
+          <article class="chain-card">
+            <span>${escapeHtml(segment.value_chain_stage)}</span>
+            <strong>${escapeHtml(segment.name_ko)}</strong>
+            <small>${escapeHtml(segment.description_ko)}</small>
+            <small>${value === "" ? badge("N/A", "na") : badge(`${formatNumber(value)}점`, score.status === "complete" ? "high" : "medium")}</small>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function renderRawExplorer() {
+      const selectedSegment = document.getElementById("segmentFilter").value;
+      const selectedEntity = document.getElementById("entityFilter").value;
+      const selectedMetric = document.getElementById("metricFilter").value;
+      const rows = state.raw.filter(row =>
+        (selectedSegment === "All" || row.segment_id === selectedSegment) &&
+        (selectedEntity === "All" || row.entity === selectedEntity) &&
+        (selectedMetric === "All" || row.metric_id === selectedMetric)
+      );
+      renderRawTrend(rows);
+      renderTable("rawTable", rows, ["segment_id", "entity", "metric_name", "period", "value", "unit", "confidence", "source_name", "note"]);
+    }
+
+    function renderRawTrend(rows) {
+      const numericRows = rows.filter(row => isFiniteNumber(row.value));
+      const grouped = groupBy(numericRows, row => row.metric_id);
+      const selectedMetricRows = grouped[Object.keys(grouped)[0]] || [];
+      const labels = selectedMetricRows.map(row => row.period);
+      const values = selectedMetricRows.map(row => toNumber(row.value));
+      createLineChart("rawTrendChart", labels, [{ label: selectedMetricRows[0]?.metric_name || "N/A", data: values, color: "#5b8def" }]);
+    }
+
+    function renderDemandSupply() {
+      const rows = state.supplyDemand.filter(row => isFiniteNumber(row.demand_value) || isFiniteNumber(row.supply_value));
+      const labels = rows.map(row => `${segmentName(row.segment_id)} / ${row.period}`);
+      createLineChart("demandSupplyChart", labels, [
+        { label: "Demand", data: rows.map(row => isFiniteNumber(row.demand_value) ? toNumber(row.demand_value) : null), color: "#38bdf8" },
+        { label: "Supply", data: rows.map(row => isFiniteNumber(row.supply_value) ? toNumber(row.supply_value) : null), color: "#34d399" }
+      ]);
+
+      const shortageRows = state.supplyDemand.filter(row => isFiniteNumber(row.supply_shortage_ratio));
+      createBarChart(
+        "shortageChart",
+        shortageRows.map(row => `${segmentName(row.segment_id)} / ${row.period}`),
+        shortageRows.map(row => toNumber(row.supply_shortage_ratio) * 100),
+        shortageRows.map(() => "#f87171"),
+        "Shortage ratio %"
+      );
+
+      const growthBySegment = maxRawGrowthBySegment();
+      const shortageBySegment = Object.fromEntries(shortageRows.map(row => [row.segment_id, toNumber(row.supply_shortage_ratio) * 100]));
+      const points = Object.keys(growthBySegment)
+        .filter(segmentId => isFiniteNumber(shortageBySegment[segmentId]))
+        .map(segmentId => ({ x: growthBySegment[segmentId], y: shortageBySegment[segmentId], label: segmentName(segmentId) }));
+      createScatterChart("gapScatterChart", points, "Demand growth", "Supply gap");
+    }
+
+    function renderPriceAndMarket() {
+      const priceRows = state.priceIndicators.filter(row => isFiniteNumber(row.value));
+      createBarChart(
+        "priceChart",
+        priceRows.map(row => `${segmentName(row.segment_id)} / ${row.metric_name}`),
+        priceRows.map(row => toNumber(row.value)),
+        priceRows.map(row => row.is_proxy === "true" ? "#f4c95d" : "#5b8def"),
+        "Price indicator"
+      );
+
+      const returnRows = state.marketReaction.filter(row => isFiniteNumber(row.return_6m_pct));
+      createBarChart(
+        "stockReturnChart",
+        returnRows.map(row => row.company),
+        returnRows.map(row => toNumber(row.return_6m_pct)),
+        returnRows.map(row => toNumber(row.return_6m_pct) >= 0 ? "#34d399" : "#f87171"),
+        "6M return %"
+      );
+
+      const priceBySegment = maxPriceBySegment();
+      const returnBySegment = averageReturnBySegment();
+      const points = Object.keys(priceBySegment)
+        .filter(segmentId => isFiniteNumber(returnBySegment[segmentId]))
+        .map(segmentId => ({ x: priceBySegment[segmentId], y: returnBySegment[segmentId], label: segmentName(segmentId) }));
+      createScatterChart("priceReturnScatterChart", points, "Price pressure", "6M return");
+    }
+
+    function renderCompanyDetail() {
+      const ticker = document.getElementById("companySelector").value || state.companies[0]?.ticker;
+      const company = state.companies.find(row => row.ticker === ticker);
+      const reaction = state.marketReaction.find(row => row.ticker === ticker);
+      if (!company) {
+        document.getElementById("companyDetail").innerHTML = `<div class="empty">회사 데이터 없음</div>`;
+        return;
+      }
+      document.getElementById("companyDetail").innerHTML = `
+        <div class="metric-grid">
+          ${metricCard("Ticker", company.ticker)}
+          ${metricCard("Country", company.country)}
+          ${metricCard("Segment", company.segment_ids.split(";").map(segmentName).join(" / "))}
+          ${metricCard("Role", company.role)}
+          ${metricCard("Price", reaction ? `${formatNumber(reaction.price)} ${reaction.currency || ""}` : "N/A")}
+          ${metricCard("6M return", reaction && reaction.return_6m_pct ? `${formatNumber(reaction.return_6m_pct)}%` : "N/A")}
+        </div>
+        <p class="note">${escapeHtml(company.note || "")}</p>
+        <p class="note">Source: <a href="${escapeAttr(company.source_url_or_file)}" target="_blank" rel="noreferrer">${escapeHtml(company.source_name)}</a></p>
+      `;
+    }
+
+    function renderSources() {
+      const counts = countBy(state.sources, row => row.confidence || "N/A");
+      createDoughnutChart("confidenceChart", Object.keys(counts), Object.values(counts));
+      renderTable("sourceTable", state.sources, ["source_name", "source_type", "source_date", "confidence", "metrics_count", "numeric_metrics_count", "segments", "source_url_or_file"]);
+    }
+
+    function createBarChart(id, labels, values, colors, label) {
+      if (!window.Chart) return;
+      const canvas = document.getElementById(id);
+      if (!labels.length || !values.length) {
+        replaceCanvasWithEmpty(canvas, "표시할 수 있는 숫자 데이터가 없습니다");
+        return;
+      }
+      ensureCanvas(id);
+      resetChart(id);
+      chartInstances[id] = new Chart(document.getElementById(id), {
+        type: "bar",
+        data: { labels, datasets: [{ label, data: values, backgroundColor: colors }] },
+        options: {
+          indexAxis: "y",
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { callbacks: { label: context => `${context.dataset.label}: ${formatNumber(context.raw)}` } } },
+          scales: {
+            x: { grid: { color: "#243244" }, ticks: { color: "#b9c5d2" } },
+            y: { grid: { display: false }, ticks: { color: "#b9c5d2" } }
+          }
+        }
+      });
+    }
+
+    function createLineChart(id, labels, datasets) {
+      if (!window.Chart) return;
+      const valid = datasets.some(dataset => dataset.data.some(value => value !== null && Number.isFinite(value)));
+      const canvas = document.getElementById(id);
+      if (!labels.length || !valid) {
+        replaceCanvasWithEmpty(canvas, "표시할 수 있는 숫자 데이터가 없습니다");
+        return;
+      }
+      ensureCanvas(id);
+      resetChart(id);
+      chartInstances[id] = new Chart(document.getElementById(id), {
+        type: "line",
+        data: {
+          labels,
+          datasets: datasets.map(dataset => ({
+            label: dataset.label,
+            data: dataset.data,
+            borderColor: dataset.color,
+            backgroundColor: `${dataset.color}33`,
+            tension: 0.25,
+            spanGaps: true
+          }))
+        },
+        options: {
+          maintainAspectRatio: false,
+          plugins: { legend: { position: "bottom", labels: { color: "#b9c5d2", boxWidth: 10 } } },
+          scales: {
+            x: { grid: { color: "#243244" }, ticks: { color: "#b9c5d2" } },
+            y: { grid: { color: "#243244" }, ticks: { color: "#b9c5d2" } }
+          }
+        }
+      });
+    }
+
+    function createScatterChart(id, points, xTitle, yTitle) {
+      if (!window.Chart) return;
+      const canvas = document.getElementById(id);
+      if (!points.length) {
+        replaceCanvasWithEmpty(canvas, "표시할 수 있는 숫자 데이터가 없습니다");
+        return;
+      }
+      ensureCanvas(id);
+      resetChart(id);
+      chartInstances[id] = new Chart(document.getElementById(id), {
+        type: "scatter",
+        data: {
+          datasets: [{
+            label: `${xTitle} x ${yTitle}`,
+            data: points,
+            backgroundColor: "#a78bfa",
+            pointRadius: 6
+          }]
+        },
+        options: {
+          maintainAspectRatio: false,
+          parsing: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: context => `${context.raw.label}: ${formatNumber(context.raw.x)}, ${formatNumber(context.raw.y)}` } }
+          },
+          scales: {
+            x: { title: { display: true, text: xTitle, color: "#b9c5d2" }, grid: { color: "#243244" }, ticks: { color: "#b9c5d2" } },
+            y: { title: { display: true, text: yTitle, color: "#b9c5d2" }, grid: { color: "#243244" }, ticks: { color: "#b9c5d2" } }
+          }
+        }
+      });
+    }
+
+    function createDoughnutChart(id, labels, values) {
+      if (!window.Chart) return;
+      const canvas = document.getElementById(id);
+      if (!labels.length || !values.length) {
+        replaceCanvasWithEmpty(canvas, "표시할 수 있는 데이터가 없습니다");
+        return;
+      }
+      ensureCanvas(id);
+      resetChart(id);
+      chartInstances[id] = new Chart(document.getElementById(id), {
+        type: "doughnut",
+        data: { labels, datasets: [{ data: values, backgroundColor: ["#34d399", "#f4c95d", "#f87171", "#9aa8b7"] }] },
+        options: {
+          maintainAspectRatio: false,
+          plugins: { legend: { position: "bottom", labels: { color: "#b9c5d2", boxWidth: 10 } } },
+          cutout: "58%"
+        }
+      });
+    }
+
+    function resetChart(id) {
+      if (chartInstances[id]) {
+        chartInstances[id].destroy();
+        delete chartInstances[id];
+      }
+    }
+
+    function replaceCanvasWithEmpty(canvas, message) {
+      resetChart(canvas.id);
+      const parent = canvas.parentElement;
+      if (!parent.querySelector(".empty")) {
+        canvas.style.display = "none";
+        parent.insertAdjacentHTML("beforeend", `<div class="empty">${escapeHtml(message)}<br>N/A</div>`);
+      }
+    }
+
+    function ensureCanvas(id) {
+      const canvas = document.getElementById(id);
+      canvas.style.display = "block";
+      const empty = canvas.parentElement.querySelector(".empty");
+      if (empty) empty.remove();
+    }
+
+    function renderTable(id, rows, columns) {
+      const table = document.getElementById(id);
+      table.innerHTML = `
+        <thead><tr>${columns.map(column => `<th>${escapeHtml(columnLabel(column))}</th>`).join("")}</tr></thead>
+        <tbody>
+          ${rows.length ? rows.map(row => `
+            <tr>${columns.map(column => `<td>${formatCell(column, row[column])}</td>`).join("")}</tr>
+          `).join("") : `<tr><td colspan="${columns.length}">N/A</td></tr>`}
+        </tbody>
+      `;
+    }
+
+    function formatCell(column, value) {
+      if (column === "confidence") return confidenceBadge(value);
+      if (column === "source_url_or_file" && value) return `<a href="${escapeAttr(value)}" target="_blank" rel="noreferrer">source</a>`;
+      if (column === "segment_id") return escapeHtml(segmentName(value));
+      if (column === "segments") return escapeHtml(String(value || "").split(";").map(segmentName).join(" / "));
+      return escapeHtml(value || "N/A");
+    }
+
+    function columnLabel(column) {
+      const labels = {
+        segment_id: "Segment",
+        entity: "Entity",
+        metric_name: "Metric",
+        period: "기간",
+        value: "값",
+        unit: "단위",
+        confidence: "신뢰도",
+        source_name: "출처",
+        note: "메모",
+        source_type: "출처 유형",
+        source_date: "출처 기준일",
+        metrics_count: "지표 수",
+        numeric_metrics_count: "숫자 지표",
+        segments: "Segments",
+        source_url_or_file: "링크"
+      };
+      return labels[column] || column;
+    }
+
+    function metricCard(label, value) {
+      return `<article class="metric-card"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value || "N/A")}</strong></article>`;
+    }
+
+    function scoreValue(row) {
+      if (isFiniteNumber(row.total_score)) return toNumber(row.total_score);
+      if (isFiniteNumber(row.available_component_avg)) return toNumber(row.available_component_avg);
+      return "";
+    }
+
+    function maxRawGrowthBySegment() {
+      const result = {};
+      state.raw.forEach(row => {
+        const metricId = row.metric_id.toLowerCase();
+        if (!metricId.includes("cagr") && !metricId.includes("growth")) return;
+        if (!isFiniteNumber(row.value)) return;
+        result[row.segment_id] = Math.max(result[row.segment_id] || -Infinity, toNumber(row.value));
+      });
+      return Object.fromEntries(Object.entries(result).filter(([, value]) => value !== -Infinity));
+    }
+
+    function maxPriceBySegment() {
+      const result = {};
+      state.priceIndicators.forEach(row => {
+        if (!isFiniteNumber(row.value)) return;
+        result[row.segment_id] = Math.max(result[row.segment_id] || -Infinity, toNumber(row.value));
+      });
+      return Object.fromEntries(Object.entries(result).filter(([, value]) => value !== -Infinity));
+    }
+
+    function averageReturnBySegment() {
+      const grouped = {};
+      state.marketReaction.forEach(row => {
+        if (!isFiniteNumber(row.return_6m_pct)) return;
+        row.segment_ids.split(";").filter(Boolean).forEach(segmentId => {
+          grouped[segmentId] = grouped[segmentId] || [];
+          grouped[segmentId].push(toNumber(row.return_6m_pct));
+        });
+      });
+      return Object.fromEntries(Object.entries(grouped).map(([segmentId, values]) => [segmentId, values.reduce((sum, value) => sum + value, 0) / values.length]));
+    }
+
+    function segmentName(segmentId) {
+      const segment = state.segments.find(row => row.segment_id === segmentId);
+      return segment ? segment.name_ko : segmentId;
+    }
+
+    function confidenceBadge(value) {
+      const normalized = value || "N/A";
+      const cls = normalized === "High" ? "high" : normalized === "Medium" ? "medium" : normalized === "Low" ? "low" : "na";
+      return badge(normalized, cls);
+    }
+
+    function badge(text, cls) {
+      return `<span class="badge ${cls}">${escapeHtml(text)}</span>`;
+    }
+
+    function countBy(rows, getter) {
+      return rows.reduce((acc, row) => {
+        const key = getter(row);
+        acc[key] = (acc[key] || 0) + 1;
+        return acc;
+      }, {});
+    }
+
+    function groupBy(rows, getter) {
+      return rows.reduce((acc, row) => {
+        const key = getter(row);
+        acc[key] = acc[key] || [];
+        acc[key].push(row);
+        return acc;
+      }, {});
+    }
+
+    function unique(items) {
+      return [...new Set(items.filter(Boolean))];
+    }
+
+    function isFiniteNumber(value) {
+      return value !== "" && value != null && Number.isFinite(Number(value));
+    }
+
+    function toNumber(value) {
+      return Number(value);
+    }
+
+    function formatNumber(value) {
+      if (!isFiniteNumber(value)) return "N/A";
+      return Number(value).toLocaleString("en-US", { maximumFractionDigits: Math.abs(Number(value)) < 10 ? 2 : 1 });
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function escapeAttr(value) {
+      return escapeHtml(value).replace(/`/g, "&#096;");
+    }
+
+    function downloadCsv(kind) {
+      const path = kind === "scores" ? files.scores : files.raw;
+      const link = document.createElement("a");
+      link.href = path;
+      link.download = path.split("/").pop();
+      link.click();
+    }
+  </script>
+</body>
+</html>

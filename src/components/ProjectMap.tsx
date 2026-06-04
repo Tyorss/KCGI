@@ -6,7 +6,7 @@ import type { Project } from "@/types/project";
 const LeafletMapInner = dynamic(() => import("@/components/LeafletMapInner"), {
   ssr: false,
   loading: () => (
-    <div className="grid min-h-[520px] place-items-center rounded-lg border border-line bg-[#e7ece9] text-sm font-bold text-muted">
+    <div className="grid min-h-[640px] place-items-center rounded-lg border border-line bg-[#e7ece9] text-sm font-bold text-muted">
       지도 로딩 중
     </div>
   )

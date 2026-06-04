@@ -22,9 +22,10 @@ import type { ContractRecord, Project, ProjectFilters as ProjectFiltersType } fr
 type DashboardShellProps = {
   projects: Project[];
   contracts: ContractRecord[];
+  homeHref?: string;
 };
 
-export default function DashboardShell({ contracts, projects }: DashboardShellProps) {
+export default function DashboardShell({ contracts, homeHref = "/", projects }: DashboardShellProps) {
   const [filters, setFilters] = useState<ProjectFiltersType>(defaultFilters);
   const [selectedProjectId, setSelectedProjectId] = useState<string | undefined>();
   const [mapExpanded, setMapExpanded] = useState(false);
@@ -74,6 +75,14 @@ export default function DashboardShell({ contracts, projects }: DashboardShellPr
 
   return (
     <main className="page-shell">
+      <div className="mb-3 flex justify-start">
+        <a
+          className="inline-flex min-h-9 items-center justify-center rounded-lg border border-line bg-white px-4 py-2 text-[13px] font-black text-navy shadow-panel transition hover:border-teal hover:bg-[#f8fbf9]"
+          href={homeHref}
+        >
+          홈
+        </a>
+      </div>
       <header className="mb-4 grid gap-4 xl:grid-cols-[minmax(0,1fr)_auto] xl:items-end">
         <div>
           <p className="kicker">Neocloud / AI Infrastructure</p>
@@ -104,7 +113,7 @@ export default function DashboardShell({ contracts, projects }: DashboardShellPr
           aria-modal={mapExpanded ? true : undefined}
           className={
             mapExpanded
-              ? "fixed inset-3 z-[1000] overflow-auto rounded-lg border border-line bg-panel p-4 shadow-panel md:inset-6"
+              ? "fixed inset-2 z-[1000] overflow-auto rounded-lg border border-line bg-panel p-3 shadow-panel md:inset-4 md:p-4"
               : "panel p-4"
           }
           role={mapExpanded ? "dialog" : undefined}
