@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NeoCloud 앱 안내</title>
+  <style>
+    body { margin: 0; background: #f5f7f5; color: #151a23; font-family: "Malgun Gothic", "맑은 고딕", Calibri, Arial, sans-serif; }
+    .page { width: min(980px, calc(100% - 28px)); margin: 0 auto; padding: 28px 0 52px; }
+    .nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+    .nav a, .btn { border: 1px solid #d9e1df; border-radius: 8px; background: #fff; color: #151a23; text-decoration: none; font-weight: 800; }
+    .nav a { padding: 8px 12px; font-size: 13px; }
+    .panel { border: 1px solid #d9e1df; border-radius: 8px; background: #fff; padding: 18px; box-shadow: 0 12px 28px rgba(15,23,42,0.07); }
+    h1 { margin: 0; color: #172554; font-size: clamp(28px, 3vw, 40px); }
+    p { color: #667085; line-height: 1.65; }
+    code { border-radius: 6px; background: #eef3ef; padding: 2px 5px; color: #172554; }
+    pre { overflow-x: auto; border-radius: 8px; background: #172554; color: #fff; padding: 14px; line-height: 1.55; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .btn { display: inline-flex; min-height: 38px; align-items: center; justify-content: center; padding: 8px 12px; }
+    .primary { background: #172554; color: #fff; border-color: #172554; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <nav class="nav" aria-label="KCGI navigation">
+      <a href="/" target="_top">홈</a>
+      <a href="/market" target="_top">시장 대시보드</a>
+      <a href="/semiconductor" target="_top">AI 반도체</a>
+      <a href="/study/spacex" target="_top">SpaceX</a>
+    </nav>
+    <section class="panel">
+      <h1>NeoCloud 프로젝트 대시보드</h1>
+      <p>NeoCloud는 Next.js 앱입니다. 정적 HTML처럼 파일을 바로 여는 방식이 아니라 로컬 개발 서버를 실행한 뒤 접속합니다.</p>
+      <pre><code>cd C:\Users\kcgi\Desktop\KCGI\NeoCloud
+npm.cmd run dev</code></pre>
+      <p>서버가 실행되면 아래 버튼으로 이동하세요.</p>
+      <div class="actions">
+        <a class="btn primary" href="http://localhost:3000">NeoCloud 앱 열기</a>
+        <a class="btn" href="README.md">README 보기</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

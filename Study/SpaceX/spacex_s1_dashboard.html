@@ -1,0 +1,1953 @@
+<!-- Data should be verified against the latest SEC S-1/A before investment use. -->
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SpaceX S-1/A 기업분석 대시보드</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f7f5;
+      --panel: #ffffff;
+      --panel-2: #eef3f1;
+      --ink: #151a23;
+      --muted: #667085;
+      --line: #d9e1df;
+      --navy: #172554;
+      --blue: #2f5f9f;
+      --teal: #28776f;
+      --green: #668f45;
+      --amber: #b8872f;
+      --coral: #c8664b;
+      --red: #a43e35;
+      --violet: #67558a;
+      --gray: #6b7280;
+      --shadow: 0 10px 24px rgba(30, 41, 59, 0.07);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Malgun Gothic", "맑은 고딕", Calibri, Arial, sans-serif;
+      letter-spacing: 0;
+    }
+
+    a {
+      color: var(--teal);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(10px);
+    }
+
+    .site-nav-inner {
+      display: flex;
+      width: min(1540px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 10px 0;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .site-brand {
+      color: var(--navy);
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .site-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: flex-end;
+    }
+
+    .site-links a,
+    .btn {
+      display: inline-flex;
+      min-height: 34px;
+      align-items: center;
+      justify-content: center;
+      padding: 7px 11px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .btn.primary {
+      border-color: var(--navy);
+      background: var(--navy);
+      color: #ffffff;
+    }
+
+    .page {
+      width: min(1540px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 22px 0 58px;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: end;
+      margin-bottom: 16px;
+    }
+
+    .kicker {
+      margin: 0;
+      color: var(--teal);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      color: var(--navy);
+      letter-spacing: 0;
+    }
+
+    h1 {
+      margin-top: 7px;
+      font-size: clamp(30px, 3.5vw, 50px);
+      line-height: 1.1;
+    }
+
+    h2 {
+      font-size: 21px;
+      line-height: 1.25;
+    }
+
+    h3 {
+      font-size: 16px;
+      line-height: 1.32;
+    }
+
+    .subtitle {
+      max-width: 940px;
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .notice {
+      margin-bottom: 16px;
+      padding: 12px 14px;
+      border: 1px solid #e1c878;
+      border-radius: 8px;
+      background: #fff8db;
+      color: #6b4b05;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.6;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(360px, 0.65fr);
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .hero-panel,
+    .section,
+    .card,
+    .thesis-card,
+    .metric-card,
+    .source-card,
+    .risk-card,
+    .input-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-panel {
+      position: relative;
+      overflow: hidden;
+      min-height: 370px;
+      color: #ffffff;
+      background:
+        linear-gradient(135deg, rgba(23, 37, 84, 0.96), rgba(40, 119, 111, 0.9)),
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.10) 0 1px, transparent 1px 44px),
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.08) 0 1px, transparent 1px 44px);
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 2;
+      max-width: 980px;
+      padding: 28px;
+    }
+
+    .hero-copy h2 {
+      color: #ffffff;
+      font-size: clamp(25px, 3vw, 42px);
+      line-height: 1.16;
+    }
+
+    .hero-copy p {
+      max-width: 870px;
+      margin: 14px 0 0;
+      color: rgba(255, 255, 255, 0.84);
+      line-height: 1.7;
+    }
+
+    .thesis-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+      padding: 0 28px 28px;
+    }
+
+    .thesis-card {
+      min-height: 132px;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.24);
+      color: #ffffff;
+      box-shadow: none;
+      backdrop-filter: blur(8px);
+    }
+
+    .thesis-card span {
+      display: block;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .thesis-card strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 18px;
+      line-height: 1.24;
+    }
+
+    .thesis-card small {
+      display: block;
+      margin-top: 8px;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .filing-panel {
+      display: grid;
+      gap: 9px;
+      align-content: start;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      box-shadow: var(--shadow);
+    }
+
+    .filing-row {
+      display: grid;
+      gap: 4px;
+      padding-bottom: 9px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .filing-row:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .filing-row span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .filing-row strong {
+      color: var(--navy);
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .section {
+      margin-top: 14px;
+      padding: 16px;
+    }
+
+    .section-header {
+      display: flex;
+      gap: 14px;
+      align-items: end;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .section-subtitle,
+    .card-note,
+    .table-note {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .grid-2,
+    .grid-3,
+    .grid-4 {
+      display: grid;
+      gap: 14px;
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .grid-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .card {
+      min-width: 0;
+      padding: 14px;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(150px, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .metric-card {
+      min-height: 116px;
+      padding: 13px;
+      background: #fbfcfb;
+      box-shadow: none;
+    }
+
+    .metric-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1.35;
+    }
+
+    .metric-card strong {
+      display: block;
+      margin-top: 9px;
+      color: var(--navy);
+      font-size: 22px;
+      font-weight: 900;
+      line-height: 1.18;
+    }
+
+    .metric-card small {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .chart-box {
+      position: relative;
+      height: 330px;
+      margin-top: 12px;
+    }
+
+    .chart-box.tall {
+      height: 420px;
+    }
+
+    .chart-box.short {
+      height: 250px;
+    }
+
+    .analyst-read {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-left: 4px solid var(--teal);
+      border-radius: 8px;
+      background: #f3faf7;
+      color: #24423d;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.55;
+    }
+
+    .segment-score-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .score-card {
+      min-height: 340px;
+      padding: 15px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfb;
+    }
+
+    .score-card.connectivity {
+      border-top: 5px solid var(--teal);
+    }
+
+    .score-card.space {
+      border-top: 5px solid var(--navy);
+    }
+
+    .score-card.ai {
+      border-top: 5px solid var(--coral);
+    }
+
+    .score-card .role {
+      display: inline-flex;
+      min-height: 24px;
+      align-items: center;
+      margin: 8px 0 12px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #eef3f1;
+      color: #354151;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .score-list {
+      display: grid;
+      gap: 7px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .score-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding-bottom: 7px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .score-list strong {
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th,
+    td {
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      line-height: 1.45;
+    }
+
+    th {
+      background: #f9fbf8;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .badge {
+      display: inline-flex;
+      min-height: 23px;
+      align-items: center;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .badge.primary {
+      background: #e3eeeb;
+      color: #14564e;
+    }
+
+    .badge.warn {
+      background: #fae4df;
+      color: #8d3421;
+    }
+
+    .badge.review {
+      background: #f6eedc;
+      color: #765717;
+    }
+
+    .badge.neutral {
+      background: #edf0f3;
+      color: #394150;
+    }
+
+    .negative {
+      color: var(--red);
+      font-weight: 900;
+    }
+
+    .input-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .input-card {
+      display: grid;
+      gap: 6px;
+      padding: 10px;
+      box-shadow: none;
+      background: #fbfcfb;
+    }
+
+    .input-card label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .input-card input {
+      width: 100%;
+      min-height: 34px;
+      padding: 6px 8px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      color: var(--ink);
+    }
+
+    .sotp-result {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+      padding: 13px;
+      border: 1px solid var(--teal);
+      border-radius: 8px;
+      background: #f1faf7;
+    }
+
+    .sotp-result strong {
+      color: var(--navy);
+      font-size: 24px;
+      font-weight: 900;
+    }
+
+    .risk-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .risk-card {
+      min-height: 176px;
+      padding: 12px;
+      box-shadow: none;
+      background: #fbfcfb;
+    }
+
+    .risk-card.high {
+      border-color: #efc7bd;
+      background: #fff7f4;
+    }
+
+    .risk-card.medium {
+      border-color: #ecd9a8;
+      background: #fffaf0;
+    }
+
+    .risk-card p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .source-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .source-card {
+      min-height: 190px;
+      padding: 13px;
+      box-shadow: none;
+      background: #fbfcfb;
+    }
+
+    .source-card p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .question-list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding-left: 20px;
+      color: #273142;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .footer-note {
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1180px) {
+      .hero-grid,
+      .grid-2,
+      .grid-3,
+      .grid-4,
+      .segment-score-grid,
+      .source-grid,
+      .risk-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .thesis-grid,
+      .kpi-grid,
+      .input-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .site-nav-inner,
+      .topbar,
+      .section-header {
+        display: grid;
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+
+      .page,
+      .site-nav-inner {
+        width: min(100% - 22px, 1540px);
+      }
+
+      .thesis-grid,
+      .kpi-grid,
+      .input-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-copy,
+      .thesis-grid {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .chart-box,
+      .chart-box.tall,
+      .chart-box.short {
+        height: 330px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav" aria-label="KCGI site navigation">
+    <div class="site-nav-inner">
+      <a class="site-brand" href="../../index.html">KCGI Research Hub</a>
+      <div class="site-links">
+        <a href="../../index.html">홈</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="page">
+    <header class="topbar">
+      <div>
+        <p class="kicker">SpaceX S-1/A Research Dashboard</p>
+        <h1>SpaceX S-1/A 기업분석 대시보드</h1>
+        <p class="subtitle">Starlink cash engine, Starship bottleneck, AI compute burn, IPO valuation stress를 분리해서 보는 투자 리서치용 화면입니다.</p>
+      </div>
+      <div class="actions">
+        <button class="btn" type="button" onclick="downloadCsv('sources')">Source CSV</button>
+        <button class="btn" type="button" onclick="downloadCsv('segments')">Segment CSV</button>
+        <button class="btn primary" type="button" onclick="downloadCsv('full')">Full Data CSV</button>
+      </div>
+    </header>
+
+    <div class="notice">
+      검증 고지: 재무 수치와 운영 KPI는 첨부 seed data와 SEC S-1/A 확인값을 기반으로 구성했습니다.
+      투자 판단 전 최신 S-1/A 원문, Reuters/거래소 보도, 규제 문서를 다시 대조해야 합니다. 첨부 텍스트의 2026-06-03 accession은 이 작업 중 SEC 검색으로 확인되지 않아 2026-06-01 S-1/A를 최신 SEC verified filing으로 표시했습니다.
+    </div>
+
+    <section class="hero-grid" id="executive">
+      <div class="hero-panel">
+        <div class="hero-copy">
+          <p class="kicker" style="color:rgba(255,255,255,0.72)">Executive Board</p>
+          <h2>Starlink는 현금창출 엔진, Starship은 병목 옵션, AI는 upside이자 capex burn이다</h2>
+          <p>$1.75T IPO valuation은 Connectivity의 현재 수익성만으로 설명하기 어렵고, Starship 대량 재사용과 AI compute option까지 모두 성공하는 bull case에 가깝습니다.</p>
+        </div>
+        <div class="thesis-grid" id="thesisCards"></div>
+      </div>
+      <aside class="filing-panel" id="filingPanel" aria-label="Filing and IPO terms"></aside>
+    </section>
+
+    <section class="kpi-grid" id="kpiGrid" aria-label="KPI cards"></section>
+
+    <section class="section" id="financial">
+      <div class="section-header">
+        <div>
+          <p class="kicker">Financial Snapshot</p>
+          <h2>연결 손익과 현금흐름</h2>
+          <p class="section-subtitle">EBITDA는 양호해 보이지만 capex를 차감한 단순 FCF는 2025년에 크게 음수입니다.</p>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <h3>Revenue / Gross Profit / Operating Income</h3>
+          <div class="chart-box tall"><canvas id="incomeTrendChart"></canvas></div>
+          <p class="analyst-read">Analyst read: 2025 매출은 커졌지만 operating loss와 Q1 2026 손실 확대가 IPO valuation debate의 핵심입니다.</p>
+        </div>
+        <div class="card">
+          <h3>EBITDA vs Capex vs Implied FCF</h3>
+          <div class="chart-box tall"><canvas id="cashFlowChart"></canvas></div>
+          <p class="analyst-read">What it means: 2025 Adj. EBITDA $6.584B와 CFO $6.785B는 positive지만, PPE capex $20.737B 이후 단순 FCF는 -$13.952B입니다.</p>
+        </div>
+        <div class="card">
+          <h3>Capex Intensity</h3>
+          <div class="chart-box tall"><canvas id="capexIntensityChart"></canvas></div>
+          <p class="analyst-read">What it means: Q1 2026 capex/revenue는 215% 수준으로 AI compute 투자 속도가 손익보다 빠릅니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="segments">
+      <div class="section-header">
+        <div>
+          <p class="kicker">Segment Scorecard</p>
+          <h2>Connectivity, Space, AI를 서로 다른 투자 논리로 분리</h2>
+          <p class="section-subtitle">2025 기준 segment revenue, operating income, Adj. EBITDA, capex, capex/revenue를 비교합니다.</p>
+        </div>
+      </div>
+      <div class="segment-score-grid" id="segmentScoreGrid"></div>
+      <div class="grid-2" style="margin-top:14px">
+        <div class="card">
+          <h3>2025 Segment Financial Bridge</h3>
+          <div class="chart-box"><canvas id="segmentBridgeChart"></canvas></div>
+          <p class="analyst-read">Analyst read: Connectivity가 이익을 만들고, AI가 operating loss와 capex를 흡수합니다.</p>
+        </div>
+        <div class="card">
+          <h3>Segment Data Room</h3>
+          <div class="table-wrap">
+            <table id="segmentTable"></table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="starlink">
+      <div class="section-header">
+        <div>
+          <p class="kicker">Starlink Unit Economics</p>
+          <h2>가입자는 빠르게 증가하지만 ARPU는 하락 중</h2>
+          <p class="section-subtitle">Starlink는 현재 SpaceX valuation의 가장 검증 가능한 기반입니다. 다만 LEO replacement capex와 ARPU dilution을 같이 봐야 합니다.</p>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <h3>Subscribers vs ARPU</h3>
+          <div class="chart-box"><canvas id="starlinkSubscriberChart"></canvas></div>
+          <p class="analyst-read">What it means: 가입자 증가가 ARPU 하락을 상쇄하는지, enterprise/government mix가 방어력을 만드는지가 핵심입니다.</p>
+        </div>
+        <div class="card">
+          <h3>Consumer vs Enterprise/Government Revenue</h3>
+          <div class="chart-box"><canvas id="starlinkRevenueMixChart"></canvas></div>
+          <p class="analyst-read">Analyst read: 기업/정부 매출 mix 확대는 ARPU dilution 방어와 margin 지속성의 관찰 포인트입니다.</p>
+        </div>
+        <div class="card">
+          <h3>Connectivity Margin Trend</h3>
+          <div class="chart-box"><canvas id="starlinkMarginChart"></canvas></div>
+          <p class="analyst-read">What it means: 2025 OPM 38.8%는 cash engine 논리의 핵심이지만 Q1 2026에는 36.5%로 내려왔습니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="space">
+      <div class="section-header">
+        <div>
+          <p class="kicker">Space / Starship</p>
+          <h2>발사 매출보다 Starship cost curve option이 더 중요</h2>
+          <p class="section-subtitle">Space 부문은 높은 gross margin에도 Starship R&D 때문에 2025와 Q1 2026에 손실을 기록했습니다.</p>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <h3>Launches and Mass to Orbit</h3>
+          <div class="chart-box"><canvas id="launchCadenceChart"></canvas></div>
+          <p class="analyst-read">Analyst read: 총 발사는 증가하지만 commercial launch는 같은 속도로 늘지 않습니다. 내부 Starlink deployment 비중을 분리해서 봐야 합니다.</p>
+        </div>
+        <div class="card">
+          <h3>Space Segment P&L</h3>
+          <div class="chart-box"><canvas id="spacePnlChart"></canvas></div>
+          <p class="analyst-read">What it means: gross margin은 높지만 R&D가 segment operating loss를 만듭니다. 현재 이익 story보다 real option 성격이 큽니다.</p>
+        </div>
+        <div class="card">
+          <h3>Starship Cost Ladder</h3>
+          <div class="table-wrap">
+            <table id="starshipEconomicsTable"></table>
+          </div>
+          <p class="analyst-read">Analyst read: 완전 재사용 경제성은 fixed cost 회수와 발사 cadence가 동시에 풀려야 합니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="ai">
+      <div class="section-header">
+        <div>
+          <p class="kicker">AI Compute</p>
+          <h2>AI는 가장 큰 TAM claim이지만 가장 큰 capex sink</h2>
+          <p class="section-subtitle">AI 부문은 2025 revenue $3.201B 대비 operating loss -$6.355B, capex $12.727B를 기록했습니다.</p>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <h3>AI Revenue Split</h3>
+          <div class="chart-box"><canvas id="aiRevenueSplitChart"></canvas></div>
+          <p class="analyst-read">What it means: Advertising과 AI Solutions/Infrastructure가 섞여 있어 recurring compute revenue 품질을 따로 검증해야 합니다.</p>
+        </div>
+        <div class="card">
+          <h3>AI Operating Loss vs Capex</h3>
+          <div class="chart-box"><canvas id="aiBurnChart"></canvas></div>
+          <p class="analyst-read">Analyst read: AI capex는 2025 total capex의 61.4%, Q1 2026 total capex의 76.4%입니다.</p>
+        </div>
+        <div class="card">
+          <h3>Nameplate Compute Draw</h3>
+          <div class="chart-box"><canvas id="aiComputeDrawChart"></canvas></div>
+          <p class="analyst-read">What it means: compute capacity 증가는 빠르지만 utilization, lease durability, cancellation terms 검증 전에는 valuation premium보다 discount 요인이 될 수 있습니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="valuation">
+      <div class="section-header">
+        <div>
+          <p class="kicker">Valuation Stress Test</p>
+          <h2>$1.75T IPO target이 요구하는 가정</h2>
+          <p class="section-subtitle">사용자가 SOTP 값을 직접 바꾸면 total equity value와 IPO target 대비 gap이 자동 계산됩니다.</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Valuation Anchor</h3>
+          <div class="chart-box"><canvas id="valuationAnchorChart"></canvas></div>
+          <div id="valuationMultiples" class="grid-4" style="margin-top:12px"></div>
+        </div>
+        <div class="card">
+          <h3>SOTP Input</h3>
+          <div class="input-grid" id="sotpInputs"></div>
+          <div class="sotp-result">
+            <span class="table-note">Calculated equity value</span>
+            <strong id="sotpTotal">$0B</strong>
+            <span id="sotpGap" class="table-note"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="governance">
+      <div class="section-header">
+        <div>
+          <p class="kicker">Governance & IPO Terms</p>
+          <h2>의결권, lock-up, retail allocation을 별도로 확인</h2>
+          <p class="section-subtitle">dual class 구조와 Musk voting control은 valuation discount 논의에서 별도 입력값으로 다뤄야 합니다.</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>IPO Terms</h3>
+          <div class="table-wrap">
+            <table id="ipoTermsTable"></table>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Lock-up Release Map</h3>
+          <div class="table-wrap">
+            <table id="lockupTable"></table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="risk">
+      <div class="section-header">
+        <div>
+          <p class="kicker">Risk Dashboard</p>
+          <h2>Probability x Impact 관점의 핵심 리스크</h2>
+          <p class="section-subtitle">High risk는 valuation multiple과 IPO after-market overhang에 직접 연결되는 항목입니다.</p>
+        </div>
+      </div>
+      <div class="risk-grid" id="riskGrid"></div>
+    </section>
+
+    <section class="section" id="sources">
+      <div class="section-header">
+        <div>
+          <p class="kicker">Source Verification</p>
+          <h2>출처와 검증 상태</h2>
+          <p class="section-subtitle">SEC primary filing과 보도 기반 IPO 조건을 분리했습니다. 6월 3일 accession number는 추가 확인 필요로 보존했습니다.</p>
+        </div>
+      </div>
+      <div class="source-grid" id="sourceGrid"></div>
+    </section>
+
+    <section class="section" id="questions">
+      <div class="section-header">
+        <div>
+          <p class="kicker">Study Questions</p>
+          <h2>투자 토론 질문</h2>
+          <p class="section-subtitle">이 화면은 결론보다 valuation debate의 쟁점을 빠르게 구조화하는 용도입니다.</p>
+        </div>
+      </div>
+      <ol class="question-list" id="studyQuestions"></ol>
+    </section>
+
+    <section class="section" id="data-room">
+      <div class="section-header">
+        <div>
+          <p class="kicker">Full Data Room</p>
+          <h2>원천 수치 테이블</h2>
+          <p class="section-subtitle">업데이트 편의성을 위해 모든 차트는 아래 DATA 객체를 기반으로 자동 렌더링됩니다.</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Consolidated Income</h3>
+          <div class="table-wrap"><table id="incomeTable"></table></div>
+        </div>
+        <div class="card">
+          <h3>Cash Flow / Capex</h3>
+          <div class="table-wrap"><table id="cashFlowTable"></table></div>
+        </div>
+      </div>
+      <p class="footer-note">All figures are USD bn unless otherwise stated. Operational KPIs keep original units.</p>
+    </section>
+  </main>
+
+  <script>
+    const DATA = {
+      meta: {
+        title: "SpaceX S-1/A 기업분석 대시보드",
+        currency: "USD",
+        unit: "bn unless otherwise stated",
+        warning: "Data should be verified against the latest SEC S-1/A before investment use."
+      },
+
+      filings: [
+        {
+          label: "Latest SEC verified S-1/A",
+          form: "S-1/A",
+          filingDate: "2026-06-01",
+          accessionNo: "0001628280-26-039276",
+          fileNo: "333-296070",
+          cik: "0001181412",
+          company: "Space Exploration Technologies Corp.",
+          sourceStatus: "primary_sec_verified",
+          url: "https://www.sec.gov/Archives/edgar/data/1181412/000162828026039276/0001628280-26-039276-index.htm"
+        },
+        {
+          label: "Original S-1",
+          form: "S-1",
+          filingDate: "2026-05-20",
+          accessionNo: "0001628280-26-036936",
+          fileNo: "333-296070",
+          cik: "0001181412",
+          company: "Space Exploration Technologies Corp.",
+          sourceStatus: "primary_sec_verified",
+          url: "https://www.sec.gov/Archives/edgar/data/1181412/000162828026036936/0001628280-26-036936-index.htm"
+        },
+        {
+          label: "User-provided candidate S-1/A",
+          form: "S-1/A",
+          filingDate: "2026-06-03",
+          accessionNo: "0001628280-26-040364",
+          fileNo: "333-296070",
+          cik: "0001181412",
+          company: "Space Exploration Technologies Corp.",
+          sourceStatus: "needs_sec_crosscheck",
+          url: "https://www.sec.gov/Archives/edgar/data/1181412/000162828026040364/0001628280-26-040364-index.htm"
+        }
+      ],
+
+      ipoTerms: {
+        pricePerShare: 135,
+        sharesOfferedM: 555.6,
+        grossProceeds: 75.0,
+        proceedsWithGreenshoe: 86.7,
+        targetValuation: 1750,
+        alternateReportedValuation: 1770,
+        pricingDate: "2026-06-11",
+        tradingDate: "2026-06-12",
+        roadshowStart: "2026-06-04",
+        ticker: "SPCX",
+        exchange: "Nasdaq",
+        retailAllocationPct: 30,
+        sourceStatus: "reported_news_needs_s1a_crosscheck"
+      },
+
+      consolidatedIncome: [
+        { period: "2023", revenue: 10.387, costOfRevenue: 6.110, grossProfit: 4.277, gpm: 41.2, operatingExpense: 7.782, rd: 2.105, sga: 1.665, restructuring: 0.237, impairment: 3.775, totalCost: 13.892, operatingIncome: -3.505, opm: -33.7, preTaxIncome: -4.991, tax: -0.363, netIncome: -4.628, adjEbitda: 3.821 },
+        { period: "2024", revenue: 14.015, costOfRevenue: 7.996, grossProfit: 6.019, gpm: 42.9, operatingExpense: 5.553, rd: 3.464, sga: 1.813, restructuring: 0.213, impairment: 0.063, totalCost: 13.549, operatingIncome: 0.466, opm: 3.3, preTaxIncome: 0.242, tax: -0.549, netIncome: 0.791, adjEbitda: 5.350 },
+        { period: "2025", revenue: 18.674, costOfRevenue: 9.451, grossProfit: 9.223, gpm: 49.4, operatingExpense: 11.812, rd: 8.643, sga: 2.644, restructuring: 0.487, impairment: 0.038, totalCost: 21.263, operatingIncome: -2.589, opm: -13.9, preTaxIncome: -4.219, tax: 0.718, netIncome: -4.937, adjEbitda: 6.584 },
+        { period: "Q1 2025", revenue: 4.067, costOfRevenue: 1.962, grossProfit: 2.105, gpm: 51.8, operatingExpense: 2.078, rd: 1.557, sga: 0.493, restructuring: 0.004, impairment: 0.024, totalCost: 4.040, operatingIncome: 0.027, opm: 0.7, preTaxIncome: -0.514, tax: 0.014, netIncome: -0.528, adjEbitda: 1.730 },
+        { period: "Q1 2026", revenue: 4.694, costOfRevenue: 2.388, grossProfit: 2.306, gpm: 49.1, operatingExpense: 4.249, rd: 3.514, sga: 0.746, restructuring: -0.011, impairment: 0.000, totalCost: 6.637, operatingIncome: -1.943, opm: -41.4, preTaxIncome: -4.270, tax: 0.006, netIncome: -4.276, adjEbitda: 1.127 }
+      ],
+
+      cashFlow: [
+        { period: "2023", cfo: 4.520, purchasesOfPPE: -4.415, impliedFcf: 0.105, investingCashFlow: -4.867, financingCashFlow: 0.422, endingCash: 4.690 },
+        { period: "2024", cfo: 5.776, purchasesOfPPE: -11.163, impliedFcf: -5.387, investingCashFlow: -10.796, financingCashFlow: 11.830, endingCash: 11.501 },
+        { period: "2025", cfo: 6.785, purchasesOfPPE: -20.737, impliedFcf: -13.952, investingCashFlow: -19.575, financingCashFlow: 26.350, endingCash: 25.124 }
+      ],
+
+      balanceSheet: [
+        { period: "2024", currentAssets: 16.108, cash: 11.385, marketableSecurities: 0.800, accountsReceivable: 1.052, inventory: 2.003, ppe: 21.147, totalAssets: 57.062, currentLiabilities: 11.791, accountsPayable: 4.413, deferredRevenue: 5.498, shortTermDebt: 0.372, debtAndFinanceLeases: 13.421, totalLiabilities: 31.258, shareholderEquity: 4.863 },
+        { period: "2025", currentAssets: 30.952, cash: 24.747, marketableSecurities: 0.000, accountsReceivable: 1.579, inventory: 2.416, ppe: 42.602, totalAssets: 92.079, currentLiabilities: 21.400, accountsPayable: 11.792, deferredRevenue: 6.111, shortTermDebt: 0.928, debtAndFinanceLeases: 21.968, totalLiabilities: 50.754, shareholderEquity: 2.573 },
+        { period: "Q1 2026", currentAssets: 29.732, cash: 15.852, marketableSecurities: 7.823, accountsReceivable: 1.833, inventory: 2.588, ppe: 53.879, totalAssets: 102.094, currentLiabilities: 24.436, accountsPayable: 10.002, deferredRevenue: 7.207, shortTermDebt: 1.538, debtAndFinanceLeases: 28.727, totalLiabilities: 60.512, shareholderEquity: 34.533 }
+      ],
+
+      capexBreakdown: [
+        { period: "2023", total: 4.415, space: 1.497, connectivity: 2.455, ai: 0.463 },
+        { period: "2024", total: 11.163, space: 2.032, connectivity: 3.498, ai: 5.633 },
+        { period: "2025", total: 20.737, space: 3.832, connectivity: 4.178, ai: 12.727 },
+        { period: "Q1 2025", total: 4.140, space: 0.759, connectivity: 0.814, ai: 2.567 },
+        { period: "Q1 2026", total: 10.107, space: 1.052, connectivity: 1.332, ai: 7.723 }
+      ],
+
+      segments: {
+        connectivity: {
+          label: "Connectivity / Starlink",
+          role: "Cash engine",
+          analystRead: "현 시점 SpaceX의 경제성 중심. 고성장과 고마진이 동시에 확인되는 부문입니다.",
+          annual: [
+            { period: "2023", subscribersM: 2.3, arpu: 99, revenue: 3.869, consumer: 2.817, enterpriseGov: 1.052, costOfRevenue: 2.786, grossProfit: 1.083, gpm: 28.0, operatingExpense: 0.614, rd: 0.381, sga: 0.233, operatingIncome: 0.469, opm: 12.1, da: 0.884, sbc: 0.249, adjEbitda: 1.602 },
+            { period: "2024", subscribersM: 4.4, arpu: 91, revenue: 7.599, consumer: 4.830, enterpriseGov: 2.769, costOfRevenue: 4.768, grossProfit: 2.831, gpm: 37.3, operatingExpense: 0.825, rd: 0.453, sga: 0.333, operatingIncome: 2.006, opm: 26.4, da: 1.508, sbc: 0.296, adjEbitda: 3.849 },
+            { period: "2025", subscribersM: 8.9, arpu: 81, revenue: 11.387, consumer: 7.208, enterpriseGov: 4.179, costOfRevenue: 5.921, grossProfit: 5.466, gpm: 48.0, operatingExpense: 1.043, rd: 0.575, sga: 0.468, operatingIncome: 4.423, opm: 38.8, da: 2.376, sbc: 0.369, adjEbitda: 7.168 },
+            { period: "Q1 2025", subscribersM: 5.0, arpu: 86, revenue: 2.475, consumer: 1.492, enterpriseGov: 0.983, costOfRevenue: 1.214, grossProfit: 1.261, gpm: 50.9, operatingExpense: 0.228, rd: 0.123, sga: 0.105, operatingIncome: 1.033, opm: 41.7, da: 0.510, sbc: 0.075, adjEbitda: 1.618 },
+            { period: "Q1 2026", subscribersM: 10.3, arpu: 66, revenue: 3.257, consumer: 2.148, enterpriseGov: 1.109, costOfRevenue: 1.651, grossProfit: 1.606, gpm: 49.3, operatingExpense: 0.418, rd: 0.205, sga: 0.213, operatingIncome: 1.188, opm: 36.5, da: 0.783, sbc: 0.116, adjEbitda: 2.087 }
+          ]
+        },
+
+        space: {
+          label: "Space / Launch / Starship",
+          role: "Strategic infrastructure and Starship option",
+          analystRead: "외부 발사 사업만이 아니라 Starlink와 AI를 위한 운송 인프라 성격이 강합니다.",
+          annual: [
+            { period: "2023", launches: 98, falcon: 96, commercialLaunches: 33, starshipLaunches: 2, massToOrbitTons: 1210, revenue: 3.557, launchServices: 1.964, launchDevelopment: 1.593, costOfRevenue: 1.669, grossProfit: 1.888, gpm: 53.1, operatingExpense: 1.889, rd: 1.538, sga: 0.351, operatingIncome: -0.001, opm: -0.0, da: 0.571, sbc: 0.427, adjEbitda: 0.997 },
+            { period: "2024", launches: 138, falcon: 134, commercialLaunches: 44, starshipLaunches: 4, massToOrbitTons: 1699, revenue: 3.796, launchServices: 2.584, launchDevelopment: 1.212, costOfRevenue: 1.541, grossProfit: 2.255, gpm: 59.4, operatingExpense: 2.234, rd: 1.835, sga: 0.375, operatingIncome: 0.021, opm: 0.6, da: 0.637, sbc: 0.472, adjEbitda: 1.154 },
+            { period: "2025", launches: 170, falcon: 165, commercialLaunches: 43, starshipLaunches: 5, massToOrbitTons: 2213, revenue: 4.086, launchServices: 2.576, launchDevelopment: 1.510, costOfRevenue: 1.352, grossProfit: 2.734, gpm: 66.9, operatingExpense: 3.391, rd: 3.004, sga: 0.349, operatingIncome: -0.657, opm: -16.1, da: 0.757, sbc: 0.515, adjEbitda: 0.653 },
+            { period: "Q1 2025", launches: 38, falcon: 36, commercialLaunches: 12, starshipLaunches: 2, massToOrbitTons: 450, revenue: 0.865, launchServices: 0.566, launchDevelopment: 0.299, costOfRevenue: 0.297, grossProfit: 0.568, gpm: 65.7, operatingExpense: 0.638, rd: 0.526, sga: 0.088, operatingIncome: -0.070, opm: -8.1, da: 0.162, sbc: 0.108, adjEbitda: 0.224 },
+            { period: "Q1 2026", launches: 40, falcon: 40, commercialLaunches: 7, starshipLaunches: 0, massToOrbitTons: 556, revenue: 0.619, launchServices: 0.330, launchDevelopment: 0.289, costOfRevenue: 0.281, grossProfit: 0.338, gpm: 54.6, operatingExpense: 1.000, rd: 0.930, sga: 0.070, operatingIncome: -0.662, opm: -106.9, da: 0.166, sbc: 0.145, adjEbitda: -0.351 }
+          ]
+        },
+
+        ai: {
+          label: "AI / xAI / Compute",
+          role: "High-risk growth option and capex sink",
+          analystRead: "시장 기회는 크지만 현재는 손실과 capex가 앞서는 부문입니다.",
+          annual: [
+            { period: "2023", nameplateComputeGw: 0.0, revenue: 2.961, advertising: 2.323, aiSolutionsInfrastructure: 0.638, costOfRevenue: 1.655, grossProfit: 1.306, gpm: 44.1, operatingExpense: 5.279, rd: 0.186, sga: 1.081, restructuring: 0.237, impairment: 3.775, operatingIncome: -3.973, opm: -134.2, da: 1.180, sbc: 0.003, adjEbitda: 1.222 },
+            { period: "2024", nameplateComputeGw: 0.3, revenue: 2.620, advertising: 1.728, aiSolutionsInfrastructure: 0.892, costOfRevenue: 1.687, grossProfit: 0.933, gpm: 35.6, operatingExpense: 2.494, rd: 1.176, sga: 1.105, restructuring: 0.213, impairment: 0.000, operatingIncome: -1.561, opm: -59.6, da: 1.679, sbc: 0.016, adjEbitda: 0.347 },
+            { period: "2025", nameplateComputeGw: 0.8, revenue: 3.201, advertising: 1.844, aiSolutionsInfrastructure: 1.357, costOfRevenue: 2.178, grossProfit: 1.023, gpm: 32.0, operatingExpense: 7.378, rd: 5.064, sga: 1.827, restructuring: 0.487, impairment: 0.000, operatingIncome: -6.355, opm: -198.5, da: 3.568, sbc: 1.063, adjEbitda: -1.237 },
+            { period: "Q1 2025", nameplateComputeGw: 0.3, revenue: 0.727, advertising: 0.443, aiSolutionsInfrastructure: 0.284, costOfRevenue: 0.451, grossProfit: 0.276, gpm: 38.0, operatingExpense: 1.212, rd: 0.908, sga: 0.300, restructuring: 0.004, impairment: 0.000, operatingIncome: -0.936, opm: -128.7, da: 0.771, sbc: 0.049, adjEbitda: -0.112 },
+            { period: "Q1 2026", nameplateComputeGw: 1.0, revenue: 0.818, advertising: 0.343, aiSolutionsInfrastructure: 0.475, costOfRevenue: 0.456, grossProfit: 0.362, gpm: 44.3, operatingExpense: 2.831, rd: 2.379, sga: 0.463, restructuring: -0.011, impairment: 0.000, operatingIncome: -2.469, opm: -301.8, da: 1.493, sbc: 0.378, adjEbitda: -0.609 }
+          ]
+        }
+      },
+
+      tam: {
+        totalExChinaRussia: 28.5,
+        space: 0.370,
+        connectivity: 1.6,
+        ai: 26.5,
+        sourceStatus: "secondary_research_from_s1"
+      },
+
+      governance: {
+        classAVotes: 1,
+        classBVotes: 10,
+        muskVotingControlPreIpoPct: 85.1,
+        muskVotingControlPostIpoReportedPct: 82.4,
+        controlledCompany: true,
+        sourceStatus: "reported_and_needs_s1a_crosscheck"
+      },
+
+      lockup: [
+        { event: "Headline lock-up", timing: "180 days", releasePct: 100, note: "Remaining lock-up released after 180 days" },
+        { event: "After Q2 2026 results", timing: "Second trading day after Q2 results", releasePct: 20, note: "Up to 20% may be released" },
+        { event: "30% above IPO trigger", timing: "5 of 10 trading days after Q2 results", releasePct: 10, note: "Additional 10% may be released if stock trades 30% above IPO price" },
+        { event: "Time-based releases", timing: "70/90/105/120/135 days", releasePct: 7, note: "7% each release tranche" },
+        { event: "After Q3 2026 results", timing: "Second trading day after Q3 results", releasePct: 28, note: "Up to 28% may be released" }
+      ],
+
+      starshipEconomics: {
+        cumulativeCostOver: 15.0,
+        q12026Rd: 0.930,
+        publicCommercialLaunchCostM: 90,
+        v3PayloadTonsAssumption: 100,
+        impliedCostPerKg: 900,
+        fuelMaintenanceCostM: 2,
+        theoreticalVariableCostPerKg: 20,
+        launchesNeededFor100PerKgAt100t: 1875,
+        sourceStatus: "secondary_research_from_s1_and_estimates"
+      },
+
+      regulatory: [
+        {
+          item: "FAA Boca Chica Starship/Super Heavy increased cadence",
+          status: "Final Tiered EA and Mitigated FONSI/ROD available",
+          keyData: "Proposed action includes up to 25 annual Starship/Super Heavy orbital launches",
+          impact: "Starship launch cadence is a hard constraint for Starlink V3 and orbital compute ambitions",
+          sourceStatus: "primary_regulatory_verified"
+        },
+        {
+          item: "FCC Orbital Data Center NGSO application",
+          status: "Application filed January 30, 2026",
+          keyData: "Up to one million satellites for SpaceX Orbital Data Center system",
+          impact: "Long-term AI/orbital data center option is regulatory and execution heavy",
+          sourceStatus: "primary_regulatory_verified"
+        }
+      ],
+
+      valuation: {
+        ipoTargetValue: 1750,
+        morningstarFairValue: 780,
+        possibleUpperMarketExpectation: 2000,
+        revenue2025: 18.674,
+        adjEbitda2025: 6.584,
+        derived: {
+          ipoEvSales2025: 93.7,
+          ipoEvAdjEbitda2025: 265.8,
+          morningstarSalesMultiple2025: 41.8,
+          morningstarAdjEbitdaMultiple2025: 118.5
+        },
+        sotpScenarios: {
+          bear: { starlink: 250, space: 40, starshipOption: 100, ai: 100, netDebtOther: -25, governanceDiscount: -50 },
+          base: { starlink: 450, space: 75, starshipOption: 250, ai: 250, netDebtOther: -25, governanceDiscount: -50 },
+          bull: { starlink: 700, space: 120, starshipOption: 500, ai: 500, netDebtOther: -30, governanceDiscount: -50 }
+        }
+      },
+
+      risks: [
+        { title: "Starship execution risk", segment: "Space", probability: "High", impact: "High", monitor: "Orbital flight, reuse, payload capacity, propellant transfer, launch cadence" },
+        { title: "AI capex and profitability risk", segment: "AI", probability: "High", impact: "High", monitor: "AI capex, utilization, contract durability, gross margin" },
+        { title: "Starlink replacement capex", segment: "Connectivity", probability: "High", impact: "Medium-High", monitor: "Capex/revenue, satellite life, launch cost, V3 throughput" },
+        { title: "ARPU dilution", segment: "Connectivity", probability: "Medium", impact: "Medium", monitor: "Subscriber mix, regional pricing, enterprise/government share" },
+        { title: "Governance/control risk", segment: "Corporate", probability: "High", impact: "High", monitor: "Voting control, related-party deals, board independence" },
+        { title: "Regulatory risk", segment: "Space/Connectivity/AI", probability: "Medium", impact: "High", monitor: "FAA license, FCC approvals, country-level telecom approvals" },
+        { title: "Valuation compression", segment: "Corporate", probability: "High", impact: "High", monitor: "EV/Sales, EV/EBITDA, peer multiples, lock-up expiration" },
+        { title: "Contract durability", segment: "AI", probability: "Medium", impact: "Medium-High", monitor: "Anthropic lease duration, cancellation rights, utilization" }
+      ],
+
+      studyQuestions: [
+        "SpaceX의 현재 실적 기반 valuation은 Starlink만으로 설명 가능한가?",
+        "2025 Adj. EBITDA $6.584B와 implied FCF -$13.952B 중 어떤 지표를 더 중시해야 하는가?",
+        "Starlink 가입자 성장과 ARPU 하락을 동시에 어떻게 해석해야 하는가?",
+        "Connectivity 38.8% OPM은 지속 가능한가, 초기 고성장 구간의 일시적 leverage인가?",
+        "Space 부문은 독립 발사 사업인가, Starlink/AI를 위한 내부 인프라인가?",
+        "Starship이 지연되거나 실패하면 Starlink V3와 orbital AI compute valuation은 얼마나 훼손되는가?",
+        "AI 부문은 upside option인가, IPO valuation을 부담스럽게 만드는 cash burn 사업인가?",
+        "Anthropic compute lease를 recurring revenue로 봐도 되는가?",
+        "Musk voting control과 controlled-company structure에는 몇 % discount가 필요한가?",
+        "$1.75T IPO valuation을 정당화하려면 SOTP에서 어떤 가정이 필요한가?"
+      ],
+
+      sources: [
+        {
+          name: "SEC EDGAR S-1/A filing index",
+          type: "Primary",
+          status: "verified",
+          note: "2026-06-01 S-1/A, accession 0001628280-26-039276, file no. 333-296070.",
+          url: "https://www.sec.gov/Archives/edgar/data/1181412/000162828026039276/0001628280-26-039276-index.htm"
+        },
+        {
+          name: "SEC EDGAR original S-1 filing index",
+          type: "Primary",
+          status: "verified",
+          note: "2026-05-20 original S-1, accession 0001628280-26-036936.",
+          url: "https://www.sec.gov/Archives/edgar/data/1181412/000162828026036936/0001628280-26-036936-index.htm"
+        },
+        {
+          name: "Reuters / CNA IPO price report",
+          type: "Secondary",
+          status: "reported",
+          note: "$135/share, 555.6M shares, $75B raise, roughly $1.75T valuation reported. Cross-check against latest S-1/A before use.",
+          url: "https://www.channelnewsasia.com/business/spacex-sets-135-price-blockbuster-ipo-upending-wall-street-convention-5160541"
+        },
+        {
+          name: "FAA Starship/Super Heavy Boca Chica project",
+          type: "Primary",
+          status: "regulatory",
+          note: "Cadence and environmental review context for Starship/Super Heavy launches.",
+          url: "https://www.faa.gov/space/stakeholder_engagement/spacex_starship"
+        },
+        {
+          name: "FCC Space Bureau document",
+          type: "Primary",
+          status: "regulatory",
+          note: "Orbital data center / NGSO application context from user-provided source list.",
+          url: "https://docs.fcc.gov/public/attachments/DA-26-113A1.pdf"
+        },
+        {
+          name: "Morningstar / Investors valuation article",
+          type: "Secondary",
+          status: "reported",
+          note: "Morningstar fair value anchor cited as $780B; treat as secondary valuation reference.",
+          url: "https://www.investors.com/news/spacex-ipo-sell-555-6-million-shares-135/"
+        }
+      ]
+    };
+
+    const colors = {
+      navy: "#172554",
+      connectivity: "#28776f",
+      space: "#172554",
+      ai: "#c8664b",
+      capex: "#b8872f",
+      ebitda: "#668f45",
+      muted: "#8c98a8",
+      red: "#a43e35",
+      violet: "#67558a",
+      blue: "#2f5f9f"
+    };
+
+    const chartInstances = {};
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderThesisCards();
+      renderFilingPanel();
+      renderKpis();
+      renderSegmentScorecards();
+      renderSegmentTable();
+      renderStarshipTable();
+      renderIpoTerms();
+      renderLockup();
+      renderSotpInputs("base");
+      renderValuationMultiples();
+      renderRisks();
+      renderSources();
+      renderStudyQuestions();
+      renderDataTables();
+      renderCharts();
+    });
+
+    function segmentRows(period = "2025") {
+      return [
+        { key: "connectivity", ...DATA.segments.connectivity.annual.find(row => row.period === period), label: DATA.segments.connectivity.label, role: DATA.segments.connectivity.role, analystRead: DATA.segments.connectivity.analystRead },
+        { key: "space", ...DATA.segments.space.annual.find(row => row.period === period), label: DATA.segments.space.label, role: DATA.segments.space.role, analystRead: DATA.segments.space.analystRead },
+        { key: "ai", ...DATA.segments.ai.annual.find(row => row.period === period), label: DATA.segments.ai.label, role: DATA.segments.ai.role, analystRead: DATA.segments.ai.analystRead }
+      ].map(row => ({ ...row, capex: capexFor(row.key, period), capexIntensity: calcCapexIntensity(capexFor(row.key, period), row.revenue) }));
+    }
+
+    function renderThesisCards() {
+      const c2025 = DATA.segments.connectivity.annual.find(row => row.period === "2025");
+      const s2025 = DATA.segments.space.annual.find(row => row.period === "2025");
+      const a2025 = DATA.segments.ai.annual.find(row => row.period === "2025");
+      const cash2025 = DATA.cashFlow.find(row => row.period === "2025");
+      const cards = [
+        ["Starlink is the cash engine", `${formatBn(c2025.revenue)} revenue`, `${formatBn(c2025.operatingIncome)} OI / ${formatBn(c2025.adjEbitda)} Adj. EBITDA`],
+        ["AI is the burn engine", `${formatBn(a2025.operatingIncome)} OI`, `${formatBn(capexFor("ai", "2025"))} capex / ${formatPct(calcCapexIntensity(capexFor("ai", "2025"), a2025.revenue))} capex intensity`],
+        ["EBITDA is not FCF", `${formatBn(DATA.consolidatedIncome[2].adjEbitda)} EBITDA`, `${formatBn(cash2025.cfo)} CFO vs ${formatBn(cash2025.impliedFcf)} simple FCF`],
+        ["Starship is the bottleneck", `${formatBn(s2025.operatingIncome)} OI`, `${s2025.launches} launches / ${formatBn(s2025.rd)} R&D`],
+        ["IPO requires bull case", `${formatBn(DATA.valuation.ipoTargetValue)} target`, `${formatBn(DATA.valuation.morningstarFairValue)} Morningstar anchor`]
+      ];
+      document.getElementById("thesisCards").innerHTML = cards.map(([label, value, detail]) => `
+        <article class="thesis-card">
+          <span>${escapeHtml(label)}</span>
+          <strong>${escapeHtml(value)}</strong>
+          <small>${escapeHtml(detail)}</small>
+        </article>
+      `).join("");
+    }
+
+    function renderFilingPanel() {
+      const verified = DATA.filings[0];
+      const original = DATA.filings[1];
+      const rows = [
+        ["SEC verified latest", `${verified.form} / ${verified.filingDate}`],
+        ["Accession no.", verified.accessionNo],
+        ["Original S-1", `${original.filingDate} / ${original.accessionNo}`],
+        ["File no.", verified.fileNo],
+        ["IPO terms", `$${DATA.ipoTerms.pricePerShare}/share / ${formatM(DATA.ipoTerms.sharesOfferedM)} shares`],
+        ["Target valuation", formatBn(DATA.ipoTerms.targetValuation)],
+        ["Pricing / trading", `${DATA.ipoTerms.pricingDate} / ${DATA.ipoTerms.tradingDate}`],
+        ["Ticker", `${DATA.ipoTerms.ticker} / ${DATA.ipoTerms.exchange}`],
+        ["Verification", `<span class="badge review">${DATA.ipoTerms.sourceStatus}</span>`],
+        ["SEC Link", `<a href="${verified.url}" target="_blank" rel="noreferrer">EDGAR S-1/A</a>`]
+      ];
+      document.getElementById("filingPanel").innerHTML = rows.map(([label, value]) => `
+        <div class="filing-row"><span>${label}</span><strong>${value}</strong></div>
+      `).join("");
+    }
+
+    function renderKpis() {
+      const income2025 = DATA.consolidatedIncome.find(row => row.period === "2025");
+      const q12026 = DATA.consolidatedIncome.find(row => row.period === "Q1 2026");
+      const c2025 = DATA.segments.connectivity.annual.find(row => row.period === "2025");
+      const a2025 = DATA.segments.ai.annual.find(row => row.period === "2025");
+      const cash2025 = DATA.cashFlow.find(row => row.period === "2025");
+      const kpis = [
+        ["2025 Revenue", formatBn(income2025.revenue), "연결 매출"],
+        ["2025 Adj. EBITDA", formatBn(income2025.adjEbitda), "positive EBITDA"],
+        ["2025 simple FCF", formatBn(cash2025.impliedFcf), "CFO - PPE capex"],
+        ["Starlink OPM", formatPct(c2025.opm), "2025 Connectivity"],
+        ["AI capex share", formatPct(capexFor("ai", "2025") / capexTotal("2025") * 100), "2025 total capex 기준"],
+        ["Q1 2026 net loss", formatBn(q12026.netIncome), "분기 순손실"]
+      ];
+      document.getElementById("kpiGrid").innerHTML = kpis.map(([label, value, detail]) => `
+        <article class="metric-card">
+          <span>${escapeHtml(label)}</span>
+          <strong>${escapeHtml(value)}</strong>
+          <small>${escapeHtml(detail)}</small>
+        </article>
+      `).join("");
+    }
+
+    function renderSegmentScorecards() {
+      const rows = segmentRows("2025");
+      document.getElementById("segmentScoreGrid").innerHTML = rows.map(row => `
+        <article class="score-card ${row.key}">
+          <p class="kicker">${escapeHtml(row.label)}</p>
+          <h3>${escapeHtml(row.role)}</h3>
+          <span class="role">${segmentRoleLabel(row.key)}</span>
+          <ul class="score-list">
+            <li><span>Revenue</span><strong>${formatBn(row.revenue)}</strong></li>
+            <li><span>Operating income</span><strong class="${negativeClass(row.operatingIncome)}">${formatBn(row.operatingIncome)}</strong></li>
+            <li><span>Operating margin</span><strong class="${negativeClass(row.opm)}">${formatPct(row.opm)}</strong></li>
+            <li><span>Adj. EBITDA</span><strong class="${negativeClass(row.adjEbitda)}">${formatBn(row.adjEbitda)}</strong></li>
+            <li><span>Capex</span><strong>${formatBn(row.capex)}</strong></li>
+            <li><span>Capex / Revenue</span><strong>${formatPct(row.capexIntensity)}</strong></li>
+          </ul>
+          <p class="analyst-read">${escapeHtml(row.analystRead)}</p>
+        </article>
+      `).join("");
+    }
+
+    function renderSegmentTable() {
+      const rows = segmentRows("2025");
+      document.getElementById("segmentTable").innerHTML = `
+        <thead><tr><th>Segment</th><th>Role</th><th>Revenue</th><th>OI</th><th>OPM</th><th>Adj. EBITDA</th><th>Capex</th><th>Capex/Revenue</th></tr></thead>
+        <tbody>
+          ${rows.map(row => `
+            <tr>
+              <td><strong>${escapeHtml(row.label)}</strong></td>
+              <td>${escapeHtml(row.role)}</td>
+              <td>${formatBn(row.revenue)}</td>
+              <td class="${negativeClass(row.operatingIncome)}">${formatBn(row.operatingIncome)}</td>
+              <td class="${negativeClass(row.opm)}">${formatPct(row.opm)}</td>
+              <td class="${negativeClass(row.adjEbitda)}">${formatBn(row.adjEbitda)}</td>
+              <td>${formatBn(row.capex)}</td>
+              <td>${formatPct(row.capexIntensity)}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      `;
+    }
+
+    function renderStarshipTable() {
+      const row = DATA.starshipEconomics;
+      const rows = [
+        ["Cumulative R&D/cost", `Over ${formatBn(row.cumulativeCostOver)}`],
+        ["Q1 2026 Starship R&D", formatBn(row.q12026Rd)],
+        ["Public commercial launch cost cited", `$${formatNumber(row.publicCommercialLaunchCostM, 0)}M`],
+        ["Payload assumption", `${formatNumber(row.v3PayloadTonsAssumption, 0)}t for Starship V3`],
+        ["Implied current cost", `About $${formatNumber(row.impliedCostPerKg, 0)}/kg before full reuse`],
+        ["Theoretical variable cost", `$${formatNumber(row.theoreticalVariableCostPerKg, 0)}/kg at 100t payload`],
+        ["Fixed-cost recovery problem", `${formatNumber(row.launchesNeededFor100PerKgAt100t, 0)} launches for $100/kg breakeven including variable cost`]
+      ];
+      document.getElementById("starshipEconomicsTable").innerHTML = `
+        <thead><tr><th>항목</th><th>수치 / 해석</th></tr></thead>
+        <tbody>${rows.map(([label, value]) => `<tr><td><strong>${label}</strong></td><td>${value}</td></tr>`).join("")}</tbody>
+      `;
+    }
+
+    function renderIpoTerms() {
+      const terms = DATA.ipoTerms;
+      const gov = DATA.governance;
+      const rows = [
+        ["IPO price", `$${formatNumber(terms.pricePerShare, 0)}/share`],
+        ["Shares offered", formatM(terms.sharesOfferedM)],
+        ["Gross proceeds", formatBn(terms.grossProceeds)],
+        ["Greenshoe proceeds", formatBn(terms.proceedsWithGreenshoe)],
+        ["Target valuation", formatBn(terms.targetValuation)],
+        ["Roadshow / pricing / trading", `${terms.roadshowStart} / ${terms.pricingDate} / ${terms.tradingDate}`],
+        ["Ticker / exchange", `${terms.ticker} / ${terms.exchange}`],
+        ["Retail allocation", `Up to ${formatPct(terms.retailAllocationPct)} reported`],
+        ["Class A / B votes", `${gov.classAVotes} vote / ${gov.classBVotes} votes`],
+        ["Musk voting control", `${formatPct(gov.muskVotingControlPreIpoPct)} pre reference / ${formatPct(gov.muskVotingControlPostIpoReportedPct)} post reported`]
+      ];
+      document.getElementById("ipoTermsTable").innerHTML = `
+        <thead><tr><th>항목</th><th>값</th></tr></thead>
+        <tbody>${rows.map(([label, value]) => `<tr><td><strong>${label}</strong></td><td>${value}</td></tr>`).join("")}</tbody>
+      `;
+    }
+
+    function renderLockup() {
+      document.getElementById("lockupTable").innerHTML = `
+        <thead><tr><th>Event</th><th>Timing</th><th>Release</th><th>Note</th></tr></thead>
+        <tbody>
+          ${DATA.lockup.map(row => `<tr><td><strong>${row.event}</strong></td><td>${row.timing}</td><td>${formatPct(row.releasePct)}</td><td>${row.note}</td></tr>`).join("")}
+        </tbody>
+      `;
+    }
+
+    function renderSotpInputs(scenarioName) {
+      const scenario = DATA.valuation.sotpScenarios[scenarioName];
+      const labels = {
+        starlink: "Starlink value",
+        space: "Space launch value",
+        starshipOption: "Starship option value",
+        ai: "AI value",
+        netDebtOther: "Net debt / other",
+        governanceDiscount: "Governance discount"
+      };
+      document.getElementById("sotpInputs").innerHTML = Object.entries(scenario).map(([key, value]) => `
+        <div class="input-card">
+          <label for="sotp-${key}">${labels[key]} ($bn)</label>
+          <input id="sotp-${key}" data-sotp-key="${key}" type="number" step="5" value="${value}">
+        </div>
+      `).join("");
+      document.querySelectorAll("[data-sotp-key]").forEach(input => input.addEventListener("input", updateSotp));
+      updateSotp();
+    }
+
+    function renderValuationMultiples() {
+      const rows = [
+        ["IPO / 2025 Revenue", `${formatNumber(DATA.valuation.derived.ipoEvSales2025, 1)}x`],
+        ["IPO / 2025 Adj. EBITDA", `${formatNumber(DATA.valuation.derived.ipoEvAdjEbitda2025, 1)}x`],
+        ["Morningstar / Revenue", `${formatNumber(DATA.valuation.derived.morningstarSalesMultiple2025, 1)}x`],
+        ["Morningstar / Adj. EBITDA", `${formatNumber(DATA.valuation.derived.morningstarAdjEbitdaMultiple2025, 1)}x`]
+      ];
+      document.getElementById("valuationMultiples").innerHTML = rows.map(([label, value]) => `
+        <article class="metric-card">
+          <span>${label}</span>
+          <strong>${value}</strong>
+          <small>2025 metric 기준</small>
+        </article>
+      `).join("");
+    }
+
+    function updateSotp() {
+      const values = [...document.querySelectorAll("[data-sotp-key]")].reduce((acc, input) => {
+        acc[input.dataset.sotpKey] = Number(input.value) || 0;
+        return acc;
+      }, {});
+      const total = Object.values(values).reduce((sum, value) => sum + value, 0);
+      const gap = total - DATA.valuation.ipoTargetValue;
+      document.getElementById("sotpTotal").textContent = formatBn(total);
+      document.getElementById("sotpGap").textContent = `IPO target ${formatBn(DATA.valuation.ipoTargetValue)} 대비 ${gap >= 0 ? "+" : ""}${formatBn(gap)} gap`;
+    }
+
+    function renderRisks() {
+      document.getElementById("riskGrid").innerHTML = DATA.risks.map(risk => {
+        const isHigh = risk.probability === "High" || risk.impact === "High";
+        return `
+          <article class="risk-card ${isHigh ? "high" : "medium"}">
+            <span class="badge ${isHigh ? "warn" : "review"}">${risk.probability} probability / ${risk.impact} impact</span>
+            <h3 style="margin-top:10px">${escapeHtml(risk.title)}</h3>
+            <p><strong>${escapeHtml(risk.segment)}</strong></p>
+            <p>${escapeHtml(risk.monitor)}</p>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function renderSources() {
+      document.getElementById("sourceGrid").innerHTML = DATA.sources.map(source => {
+        const cls = source.type === "Primary" ? "primary" : "review";
+        return `
+          <article class="source-card">
+            <span class="badge ${cls}">${source.type} / ${source.status}</span>
+            <h3 style="margin-top:10px">${escapeHtml(source.name)}</h3>
+            <p>${escapeHtml(source.note)}</p>
+            <p><a href="${source.url}" target="_blank" rel="noreferrer">Source link</a></p>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function renderStudyQuestions() {
+      document.getElementById("studyQuestions").innerHTML = DATA.studyQuestions.map(question => `<li>${escapeHtml(question)}</li>`).join("");
+    }
+
+    function renderDataTables() {
+      renderGenericTable("incomeTable", DATA.consolidatedIncome, ["period", "revenue", "grossProfit", "gpm", "operatingIncome", "opm", "netIncome", "adjEbitda"]);
+      renderGenericTable("cashFlowTable", DATA.cashFlow.map(row => ({
+        ...row,
+        capexIntensity: calcCapexIntensity(Math.abs(row.purchasesOfPPE), DATA.consolidatedIncome.find(item => item.period === row.period)?.revenue)
+      })), ["period", "cfo", "purchasesOfPPE", "impliedFcf", "capexIntensity", "endingCash"]);
+    }
+
+    function renderGenericTable(id, rows, keys) {
+      document.getElementById(id).innerHTML = `
+        <thead><tr>${keys.map(key => `<th>${key}</th>`).join("")}</tr></thead>
+        <tbody>
+          ${rows.map(row => `<tr>${keys.map(key => `<td>${formatTableValue(key, row[key])}</td>`).join("")}</tr>`).join("")}
+        </tbody>
+      `;
+    }
+
+    function renderCharts() {
+      if (!window.Chart) return;
+      Chart.defaults.font.family = '"Malgun Gothic", "맑은 고딕", Calibri, Arial, sans-serif';
+      makeIncomeTrendChart();
+      makeCashFlowChart();
+      makeCapexIntensityChart();
+      makeSegmentBridgeChart();
+      makeStarlinkSubscriberChart();
+      makeStarlinkRevenueMixChart();
+      makeStarlinkMarginChart();
+      makeLaunchCadenceChart();
+      makeSpacePnlChart();
+      makeAiRevenueSplitChart();
+      makeAiBurnChart();
+      makeAiComputeDrawChart();
+      makeValuationAnchorChart();
+    }
+
+    function makeIncomeTrendChart() {
+      const rows = DATA.consolidatedIncome;
+      createChart("incomeTrendChart", {
+        type: "bar",
+        data: {
+          labels: rows.map(row => row.period),
+          datasets: [
+            { label: "Revenue", data: rows.map(row => row.revenue), backgroundColor: colors.teal },
+            { label: "Gross Profit", data: rows.map(row => row.grossProfit), backgroundColor: colors.green },
+            { label: "Operating Income", data: rows.map(row => row.operatingIncome), backgroundColor: colors.coral },
+            { label: "Adj. EBITDA", data: rows.map(row => row.adjEbitda), type: "line", borderColor: colors.navy, backgroundColor: colors.navy, tension: 0.25 }
+          ]
+        },
+        options: chartOptions("$bn")
+      });
+    }
+
+    function makeCashFlowChart() {
+      const rows = DATA.cashFlow;
+      createChart("cashFlowChart", {
+        type: "bar",
+        data: {
+          labels: rows.map(row => row.period),
+          datasets: [
+            { label: "CFO", data: rows.map(row => row.cfo), backgroundColor: colors.teal },
+            { label: "PPE Capex", data: rows.map(row => row.purchasesOfPPE), backgroundColor: colors.capex },
+            { label: "Simple FCF", data: rows.map(row => row.impliedFcf), backgroundColor: colors.coral }
+          ]
+        },
+        options: chartOptions("$bn")
+      });
+    }
+
+    function makeCapexIntensityChart() {
+      const rows = DATA.capexBreakdown;
+      createChart("capexIntensityChart", {
+        type: "bar",
+        data: {
+          labels: rows.map(row => row.period),
+          datasets: [
+            { label: "Total capex", data: rows.map(row => row.total), backgroundColor: colors.capex, yAxisID: "y" },
+            { label: "Capex / Revenue", data: rows.map(row => calcCapexIntensity(row.total, incomeFor(row.period)?.revenue)), type: "line", borderColor: colors.red, backgroundColor: colors.red, yAxisID: "y1", tension: 0.25 }
+          ]
+        },
+        options: dualAxisOptions("$bn", "%")
+      });
+    }
+
+    function makeSegmentBridgeChart() {
+      const rows = segmentRows("2025");
+      createChart("segmentBridgeChart", {
+        type: "bar",
+        data: {
+          labels: rows.map(row => row.label),
+          datasets: [
+            { label: "Revenue", data: rows.map(row => row.revenue), backgroundColor: colors.muted },
+            { label: "Operating Income", data: rows.map(row => row.operatingIncome), backgroundColor: colors.blue },
+            { label: "Adj. EBITDA", data: rows.map(row => row.adjEbitda), backgroundColor: colors.ebitda },
+            { label: "Capex", data: rows.map(row => row.capex), backgroundColor: colors.capex }
+          ]
+        },
+        options: chartOptions("$bn")
+      });
+    }
+
+    function makeStarlinkSubscriberChart() {
+      const rows = DATA.segments.connectivity.annual;
+      createChart("starlinkSubscriberChart", {
+        type: "bar",
+        data: {
+          labels: rows.map(row => row.period),
+          datasets: [
+            { label: "Subscribers (M)", data: rows.map(row => row.subscribersM), backgroundColor: colors.teal, yAxisID: "y" },
+            { label: "ARPU ($/mo)", data: rows.map(row => row.arpu), type: "line", borderColor: colors.capex, backgroundColor: colors.capex, yAxisID: "y1", tension: 0.25 }
+          ]
+        },
+        options: dualAxisOptions("M", "$")
+      });
+    }
+
+    function makeStarlinkRevenueMixChart() {
+      const rows = DATA.segments.connectivity.annual;
+      createChart("starlinkRevenueMixChart", {
+        type: "bar",
+        data: {
+          labels: rows.map(row => row.period),
+          datasets: [
+            { label: "Consumer", data: rows.map(row => row.consumer), backgroundColor: colors.teal },
+            { label: "Enterprise/Government", data: rows.map(row => row.enterpriseGov), backgroundColor: colors.green }
+          ]
+        },
+        options: stackedOptions("$bn")
+      });
+    }
+
+    function makeStarlinkMarginChart() {
+      const rows = DATA.segments.connectivity.annual;
+      createChart("starlinkMarginChart", {
+        type: "line",
+        data: {
+          labels: rows.map(row => row.period),
+          datasets: [
+            { label: "Gross Margin", data: rows.map(row => row.gpm), borderColor: colors.green, backgroundColor: colors.green, tension: 0.25 },
+            { label: "Operating Margin", data: rows.map(row => row.opm), borderColor: colors.teal, backgroundColor: colors.teal, tension: 0.25 }
+          ]
+        },
+        options: chartOptions("%")
+      });
+    }
+
+    function makeLaunchCadenceChart() {
+      const rows = DATA.segments.space.annual;
+      createChart("launchCadenceChart", {
+        type: "bar",
+        data: {
+          labels: rows.map(row => row.period),
+          datasets: [
+            { label: "Total launches", data: rows.map(row => row.launches), backgroundColor: colors.blue, yAxisID: "y" },
+            { label: "Commercial launches", data: rows.map(row => row.commercialLaunches), backgroundColor: colors.violet, yAxisID: "y" },
+            { label: "Mass to orbit (tons)", data: rows.map(row => row.massToOrbitTons), type: "line", borderColor: colors.capex, backgroundColor: colors.capex, yAxisID: "y1", tension: 0.25 }
+          ]
+        },
+        options: dualAxisOptions("launches", "tons")
+      });
+    }
+
+    function makeSpacePnlChart() {
+      const rows = DATA.segments.space.annual;
+      createChart("spacePnlChart", {
+        type: "bar",
+        data: {
+          labels: rows.map(row => row.period),
+          datasets: [
+            { label: "Revenue", data: rows.map(row => row.revenue), backgroundColor: colors.blue },
+            { label: "Launch services", data: rows.map(row => row.launchServices), backgroundColor: colors.teal },
+            { label: "R&D expense", data: rows.map(row => -row.rd), backgroundColor: colors.capex },
+            { label: "Operating Income", data: rows.map(row => row.operatingIncome), backgroundColor: colors.coral }
+          ]
+        },
+        options: chartOptions("$bn")
+      });
+    }
+
+    function makeAiRevenueSplitChart() {
+      const rows = DATA.segments.ai.annual;
+      createChart("aiRevenueSplitChart", {
+        type: "bar",
+        data: {
+          labels: rows.map(row => row.period),
+          datasets: [
+            { label: "Advertising", data: rows.map(row => row.advertising), backgroundColor: colors.violet },
+            { label: "AI Solutions & Infrastructure", data: rows.map(row => row.aiSolutionsInfrastructure), backgroundColor: colors.coral }
+          ]
+        },
+        options: stackedOptions("$bn")
+      });
+    }
+
+    function makeAiBurnChart() {
+      const rows = DATA.segments.ai.annual;
+      createChart("aiBurnChart", {
+        type: "bar",
+        data: {
+          labels: rows.map(row => row.period),
+          datasets: [
+            { label: "Revenue", data: rows.map(row => row.revenue), backgroundColor: colors.muted },
+            { label: "Operating Income", data: rows.map(row => row.operatingIncome), backgroundColor: colors.coral },
+            { label: "Capex", data: rows.map(row => capexFor("ai", row.period)), backgroundColor: colors.capex }
+          ]
+        },
+        options: chartOptions("$bn")
+      });
+    }
+
+    function makeAiComputeDrawChart() {
+      const rows = DATA.segments.ai.annual;
+      createChart("aiComputeDrawChart", {
+        type: "bar",
+        data: {
+          labels: rows.map(row => row.period),
+          datasets: [
+            { label: "Nameplate compute draw", data: rows.map(row => row.nameplateComputeGw), backgroundColor: colors.coral }
+          ]
+        },
+        options: chartOptions("GW")
+      });
+    }
+
+    function makeValuationAnchorChart() {
+      const baseTotal = Object.values(DATA.valuation.sotpScenarios.base).reduce((sum, value) => sum + value, 0);
+      createChart("valuationAnchorChart", {
+        type: "bar",
+        data: {
+          labels: ["Morningstar", "Base SOTP", "IPO target", "Upper marker"],
+          datasets: [{
+            label: "Equity value",
+            data: [DATA.valuation.morningstarFairValue, baseTotal, DATA.valuation.ipoTargetValue, DATA.valuation.possibleUpperMarketExpectation],
+            backgroundColor: [colors.violet, colors.teal, colors.coral, colors.capex]
+          }]
+        },
+        options: horizontalOptions("$bn")
+      });
+    }
+
+    function createChart(id, config) {
+      if (chartInstances[id]) chartInstances[id].destroy();
+      chartInstances[id] = new Chart(document.getElementById(id), config);
+    }
+
+    function chartOptions(unit) {
+      return {
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: "bottom", labels: { boxWidth: 10, color: "#374151" } },
+          tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${formatUnit(ctx.raw, unit)}` } }
+        },
+        scales: {
+          x: { grid: { display: false }, ticks: { color: "#374151" } },
+          y: { grid: { color: "#edf1ea" }, ticks: { callback: value => formatAxis(value, unit) } }
+        }
+      };
+    }
+
+    function dualAxisOptions(leftUnit, rightUnit) {
+      return {
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: "bottom", labels: { boxWidth: 10, color: "#374151" } },
+          tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${formatUnit(ctx.raw, ctx.dataset.yAxisID === "y1" ? rightUnit : leftUnit)}` } }
+        },
+        scales: {
+          x: { grid: { display: false }, ticks: { color: "#374151" } },
+          y: { position: "left", grid: { color: "#edf1ea" }, ticks: { callback: value => formatAxis(value, leftUnit) } },
+          y1: { position: "right", grid: { drawOnChartArea: false }, ticks: { callback: value => formatAxis(value, rightUnit) } }
+        }
+      };
+    }
+
+    function stackedOptions(unit) {
+      const options = chartOptions(unit);
+      options.scales.x.stacked = true;
+      options.scales.y.stacked = true;
+      return options;
+    }
+
+    function horizontalOptions(unit) {
+      const options = chartOptions(unit);
+      options.indexAxis = "y";
+      return options;
+    }
+
+    function capexFor(key, period) {
+      const row = DATA.capexBreakdown.find(item => item.period === period);
+      return row ? row[key] : 0;
+    }
+
+    function capexTotal(period) {
+      return DATA.capexBreakdown.find(item => item.period === period)?.total || 0;
+    }
+
+    function incomeFor(period) {
+      return DATA.consolidatedIncome.find(item => item.period === period);
+    }
+
+    function calcCapexIntensity(capex, revenue) {
+      return revenue ? capex / revenue * 100 : 0;
+    }
+
+    function segmentRoleLabel(key) {
+      const labels = {
+        connectivity: "Cash engine",
+        space: "Strategic infrastructure",
+        ai: "Burn engine / option"
+      };
+      return labels[key] || key;
+    }
+
+    function formatNumber(value, fractionDigits = 1) {
+      return Number(value).toLocaleString("en-US", {
+        maximumFractionDigits: fractionDigits,
+        minimumFractionDigits: fractionDigits
+      });
+    }
+
+    function formatBn(value) {
+      const sign = value < 0 ? "-" : "";
+      return `${sign}$${formatNumber(Math.abs(value), Math.abs(value) < 10 ? 3 : 1)}B`;
+    }
+
+    function formatM(value) {
+      return `${formatNumber(value, 1)}M`;
+    }
+
+    function formatPct(value) {
+      return `${formatNumber(value, 1)}%`;
+    }
+
+    function formatUnit(value, unit) {
+      if (unit === "$bn") return formatBn(value);
+      if (unit === "%") return formatPct(value);
+      if (unit === "$") return `$${formatNumber(value, 0)}`;
+      if (unit === "M") return `${formatNumber(value, 1)}M`;
+      if (unit === "GW") return `${formatNumber(value, 1)}GW`;
+      if (unit === "tons") return `${formatNumber(value, 0)}t`;
+      if (unit === "launches") return `${formatNumber(value, 0)} launches`;
+      return `${formatNumber(value, 1)} ${unit}`;
+    }
+
+    function formatAxis(value, unit) {
+      if (unit === "$bn") return `$${value}B`;
+      if (unit === "%") return `${value}%`;
+      if (unit === "$") return `$${value}`;
+      if (unit === "M") return `${value}M`;
+      if (unit === "GW") return `${value}GW`;
+      if (unit === "tons") return `${value}t`;
+      return value;
+    }
+
+    function formatTableValue(key, value) {
+      if (value == null) return "";
+      if (key.includes("margin") || key === "gpm" || key === "opm" || key === "capexIntensity") return formatPct(value);
+      if (typeof value === "number") return formatBn(value);
+      return escapeHtml(value);
+    }
+
+    function negativeClass(value) {
+      return Number(value) < 0 ? "negative" : "";
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function downloadCsv(kind) {
+      let rows;
+      if (kind === "sources") rows = DATA.sources;
+      if (kind === "segments") rows = segmentRows("2025");
+      if (kind === "full") {
+        rows = [
+          ...DATA.consolidatedIncome.map(row => ({ dataset: "income", ...row })),
+          ...DATA.cashFlow.map(row => ({ dataset: "cash_flow", ...row })),
+          ...DATA.capexBreakdown.map(row => ({ dataset: "capex", ...row })),
+          ...segmentRows("2025").map(row => ({ dataset: "segments_2025", ...row }))
+        ];
+      }
+      if (!rows?.length) return;
+      const headers = [...new Set(rows.flatMap(row => Object.keys(row)))];
+      const csv = [
+        headers.join(","),
+        ...rows.map(row => headers.map(header => csvCell(row[header])).join(","))
+      ].join("\n");
+      const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `spacex_s1a_${kind}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function csvCell(value) {
+      const text = value == null ? "" : String(value);
+      return /[",\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+    }
+  </script>
+</body>
+</html>

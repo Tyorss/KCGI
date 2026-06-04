@@ -1,0 +1,155 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --bg: #f5f7f5;
+  --panel: #ffffff;
+  --ink: #151a23;
+  --muted: #667085;
+  --line: #d9e1df;
+  --navy: #172554;
+  --teal: #28776f;
+  --gold: #b8872f;
+  --coral: #c8664b;
+  --violet: #67558a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Malgun Gothic", "맑은 고딕", Calibri, Arial, sans-serif;
+  letter-spacing: 0;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button,
+select,
+input {
+  border-radius: 8px;
+}
+
+.leaflet-container {
+  z-index: 1;
+  min-height: 520px;
+  width: 100%;
+  border-radius: 8px;
+  background: #e7ece9;
+}
+
+.leaflet-container.leaflet-expanded {
+  height: calc(100vh - 190px);
+  min-height: 640px;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 8px;
+}
+
+.leaflet-popup-content {
+  margin: 12px;
+}
+
+.map-popup {
+  min-width: 260px;
+  max-width: 330px;
+  color: #1f2937;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.map-popup h3 {
+  margin: 0 0 8px;
+  color: var(--navy);
+  font-size: 15px;
+}
+
+.map-popup dl {
+  display: grid;
+  grid-template-columns: 94px 1fr;
+  gap: 5px 8px;
+  margin: 0;
+}
+
+.map-popup dt {
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.map-popup dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+@layer components {
+  .page-shell {
+    @apply mx-auto w-[min(1540px,calc(100%-28px))] pb-12 pt-5;
+  }
+
+  .hub-shell {
+    @apply mx-auto w-[min(1320px,calc(100%-28px))] pb-12 pt-5;
+  }
+
+  .panel {
+    @apply rounded-lg border border-line bg-panel shadow-panel;
+  }
+
+  .section-title {
+    @apply text-[20px] font-black leading-tight text-navy;
+  }
+
+  .kicker {
+    @apply m-0 text-[12px] font-black uppercase tracking-[0.08em] text-teal;
+  }
+
+  .subcopy {
+    @apply text-[13px] leading-6 text-muted;
+  }
+
+  .control {
+    @apply min-h-9 w-full border border-line bg-white px-3 py-2 text-[13px] text-ink outline-none transition focus:border-teal focus:ring-2 focus:ring-teal/15;
+  }
+
+  .btn {
+    @apply inline-flex min-h-9 items-center justify-center rounded-lg border border-line bg-white px-3 py-2 text-[13px] font-bold text-ink transition hover:border-teal hover:bg-[#f8fbf9];
+  }
+
+  .table-wrap {
+    @apply overflow-x-auto rounded-lg border border-line;
+  }
+
+  .data-table {
+    @apply w-full min-w-[1080px] border-collapse text-left text-[13px];
+  }
+
+  .data-table th {
+    @apply border-b border-line bg-[#f9fbf8] px-3 py-2 text-[12px] font-black text-muted;
+  }
+
+  .data-table td {
+    @apply border-b border-line px-3 py-2 align-top leading-6;
+  }
+
+  .data-table tbody tr {
+    @apply transition hover:bg-[#f3f8f5];
+  }
+
+  .badge {
+    @apply inline-flex min-h-6 items-center rounded-full border px-2 py-1 text-[12px] font-black;
+  }
+}

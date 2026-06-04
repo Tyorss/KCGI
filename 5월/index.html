@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>5월 시장 대시보드 폴더</title>
+  <style>
+    body { margin: 0; background: #f8f8f9; color: #1a1a1a; font-family: "Malgun Gothic", "맑은 고딕", Calibri, Arial, sans-serif; }
+    .page { width: min(960px, calc(100% - 28px)); margin: 0 auto; padding: 28px 0 52px; }
+    .nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+    .nav a, .card a { border: 1px solid #e5e5e5; border-radius: 8px; background: #fff; color: #1a1a1a; text-decoration: none; font-weight: 800; }
+    .nav a { padding: 8px 12px; font-size: 13px; }
+    h1 { margin: 0; color: #191877; font-size: clamp(28px, 3vw, 40px); }
+    p { color: #595959; line-height: 1.65; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
+    .card { border: 1px solid #e5e5e5; border-radius: 8px; background: #fff; padding: 16px; box-shadow: 0 8px 22px rgba(25, 24, 119, 0.06); }
+    .card h2 { margin: 0; color: #191877; font-size: 19px; }
+    .card a { display: inline-flex; margin-top: 12px; min-height: 36px; align-items: center; padding: 8px 12px; background: #191877; color: #fff; }
+    @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <nav class="nav" aria-label="KCGI navigation">
+      <a href="../index.html">홈</a>
+      <a href="../반도체/ai-semiconductor-dashboard.html">AI 반도체</a>
+      <a href="../Study/SpaceX/spacex_s1_dashboard.html">SpaceX</a>
+      <a href="../NeoCloud/index.html">NeoCloud</a>
+    </nav>
+    <h1>5월 시장 대시보드</h1>
+    <p>월간 자산배분과 시장 데이터 페이지를 모아둔 폴더 홈입니다.</p>
+    <section class="grid">
+      <article class="card">
+        <h2>5월 시장 데이터 대시보드</h2>
+        <p>월간 자산배분전략용 시장 데이터와 차트입니다.</p>
+        <a href="market-dashboard.html">열기</a>
+      </article>
+      <article class="card">
+        <h2>4월 기준 KRW 자산 성과</h2>
+        <p>이전 기준월 시장 대시보드입니다.</p>
+        <a href="market-dashboard-2026-04.html">열기</a>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

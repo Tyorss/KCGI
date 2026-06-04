@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KCGI 리서치 대시보드 홈</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f7f5;
+      --panel: #ffffff;
+      --ink: #151a23;
+      --muted: #667085;
+      --line: #d9e1df;
+      --navy: #172554;
+      --teal: #28776f;
+      --gold: #b8872f;
+      --coral: #c8664b;
+      --shadow: 0 12px 28px rgba(15, 23, 42, 0.07);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Malgun Gothic", "맑은 고딕", Calibri, Arial, sans-serif;
+      letter-spacing: 0;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      width: min(1320px, calc(100% - 34px));
+      margin: 0 auto;
+      padding: 28px 0 56px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 18px;
+      align-items: stretch;
+      margin-bottom: 18px;
+    }
+
+    .hero-main,
+    .status-panel,
+    .card,
+    .quick-panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-main {
+      position: relative;
+      overflow: hidden;
+      min-height: 286px;
+      padding: 28px;
+      background:
+        linear-gradient(135deg, rgba(23, 37, 84, 0.96), rgba(40, 119, 111, 0.88)),
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.09) 0 1px, transparent 1px 44px),
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.07) 0 1px, transparent 1px 44px);
+      color: #ffffff;
+    }
+
+    .hero-main::after {
+      position: absolute;
+      right: 34px;
+      top: 34px;
+      width: 170px;
+      height: 170px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at center, rgba(255, 255, 255, 0.72) 0 7px, transparent 8px),
+        linear-gradient(90deg, transparent 49%, rgba(255, 255, 255, 0.22) 50%, transparent 51%),
+        linear-gradient(0deg, transparent 49%, rgba(255, 255, 255, 0.18) 50%, transparent 51%);
+      content: "";
+      opacity: 0.86;
+    }
+
+    .kicker {
+      margin: 0;
+      color: var(--teal);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .hero-main .kicker {
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      color: var(--navy);
+      letter-spacing: 0;
+    }
+
+    .hero-main h1 {
+      position: relative;
+      z-index: 1;
+      max-width: 780px;
+      margin-top: 8px;
+      color: #ffffff;
+      font-size: clamp(30px, 3vw, 48px);
+      line-height: 1.12;
+    }
+
+    .hero-main p:not(.kicker) {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      margin: 14px 0 0;
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .status-panel {
+      display: grid;
+      align-content: start;
+      gap: 10px;
+      padding: 16px;
+    }
+
+    .status-item {
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .status-item:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .status-item span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .status-item strong {
+      display: block;
+      margin-top: 5px;
+      color: var(--navy);
+      font-size: 15px;
+      line-height: 1.45;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 14px;
+      margin: 20px 0 12px;
+    }
+
+    .section-head p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .card {
+      min-height: 230px;
+      display: grid;
+      align-content: space-between;
+      gap: 14px;
+      padding: 16px;
+      transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(40, 119, 111, 0.45);
+      box-shadow: 0 16px 34px rgba(15, 23, 42, 0.09);
+      transform: translateY(-2px);
+    }
+
+    .card-band {
+      height: 54px;
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, var(--band-a), var(--band-b)),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.2) 0 1px, transparent 1px 24px);
+    }
+
+    .card h3 {
+      margin-top: 12px;
+      font-size: 18px;
+      line-height: 1.3;
+    }
+
+    .card p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 23px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #eef3ef;
+      color: #384151;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .open-link {
+      display: inline-flex;
+      min-height: 36px;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: var(--navy);
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .quick-panel {
+      margin-top: 18px;
+      padding: 16px;
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .quick-grid a {
+      display: inline-flex;
+      min-height: 38px;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfa;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .quick-grid a:hover {
+      border-color: rgba(40, 119, 111, 0.45);
+      background: #f3f8f5;
+      text-decoration: none;
+    }
+
+    .note {
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1180px) {
+      .hero,
+      .card-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .quick-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: min(100% - 22px, 1320px);
+        padding-top: 16px;
+      }
+
+      .hero,
+      .card-grid,
+      .quick-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-main {
+        min-height: 250px;
+        padding: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="hero-main">
+        <p class="kicker">KCGI Research Hub</p>
+        <h1>KCGI 리서치 대시보드 홈</h1>
+        <p>월간 시장 대시보드, AI 반도체 인프라, NeoCloud 프로젝트, SpaceX S-1 스터디를 한 곳에서 이동할 수 있게 묶은 로컬 홈페이지입니다.</p>
+      </div>
+      <aside class="status-panel" aria-label="Dashboard status">
+        <div class="status-item"><span>Standalone HTML</span><strong>시장, 반도체, SpaceX는 파일을 바로 열 수 있습니다.</strong></div>
+        <div class="status-item"><span>NeoCloud</span><strong>Next.js 앱입니다. `NeoCloud` 폴더에서 `npm.cmd run dev` 실행 후 접속합니다.</strong></div>
+        <div class="status-item"><span>주의</span><strong>리서치 데이터는 원문 source 확인 후 투자 활용해야 합니다.</strong></div>
+      </aside>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <p class="kicker">Dashboards</p>
+          <h2>주요 웹 페이지</h2>
+          <p>각 카드에서 폴더별 대시보드로 이동합니다.</p>
+        </div>
+      </div>
+      <div class="card-grid">
+        <a class="card" href="5월/market-dashboard.html" style="--band-a:#191877;--band-b:#c9a85b">
+          <div>
+            <div class="card-band"></div>
+            <h3>5월 시장 대시보드</h3>
+            <p>월간 자산배분, 글로벌 시장 수익률, KOSPI, 금리, 원자재, 차트 데이터를 보는 메인 시장 대시보드입니다.</p>
+            <div class="tag-row"><span class="tag">Market</span><span class="tag">자산배분</span><span class="tag">월간</span></div>
+          </div>
+          <span class="open-link">열기</span>
+        </a>
+
+        <a class="card" href="반도체/ai-semiconductor-dashboard.html" style="--band-a:#172554;--band-b:#28776f">
+          <div>
+            <div class="card-band"></div>
+            <h3>AI 반도체 인프라</h3>
+            <p>HBM, CoWoS, ASIC, CPU, NAND, 유리기판을 TAM, CAGR, player financial 관점에서 정리한 대시보드입니다.</p>
+            <div class="tag-row"><span class="tag">Semiconductor</span><span class="tag">HBM</span><span class="tag">AI infra</span></div>
+          </div>
+          <span class="open-link">열기</span>
+        </a>
+
+        <a class="card" href="Study/SpaceX/spacex_s1_dashboard.html" style="--band-a:#172554;--band-b:#c8664b">
+          <div>
+            <div class="card-band"></div>
+            <h3>SpaceX S-1 스터디</h3>
+            <p>Connectivity, Space, AI 부문별 재무와 valuation debate를 스터디용으로 시각화한 단일 HTML입니다.</p>
+            <div class="tag-row"><span class="tag">Study</span><span class="tag">SpaceX</span><span class="tag">S-1</span></div>
+          </div>
+          <span class="open-link">열기</span>
+        </a>
+
+        <a class="card" href="NeoCloud/index.html" style="--band-a:#28776f;--band-b:#67558a">
+          <div>
+            <div class="card-band"></div>
+            <h3>NeoCloud 프로젝트</h3>
+            <p>AI data center, GPU cloud, 전력, 계약, 위치 정확도, 신뢰도 점수를 추적하는 Next.js 앱입니다.</p>
+            <div class="tag-row"><span class="tag">NeoCloud</span><span class="tag">Map</span><span class="tag">Next.js</span></div>
+          </div>
+          <span class="open-link">안내 보기</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="quick-panel" aria-label="Quick links">
+      <p class="kicker">Quick Links</p>
+      <h2>빠른 이동</h2>
+      <div class="quick-grid">
+        <a href="5월/index.html">5월 폴더</a>
+        <a href="5월/market-dashboard-2026-04.html">4월 기준 시장</a>
+        <a href="반도체/index.html">반도체 폴더</a>
+        <a href="Study/index.html">Study 폴더</a>
+        <a href="http://localhost:3000">NeoCloud 앱</a>
+      </div>
+      <p class="note">NeoCloud 앱이 열리지 않으면 `C:\Users\kcgi\Desktop\KCGI\NeoCloud`에서 `npm.cmd run dev`를 실행하세요.</p>
+    </section>
+  </main>
+</body>
+</html>
