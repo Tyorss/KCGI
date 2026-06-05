@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>5월 그래프 모음</title>
+  <style>
+    @font-face {
+      font-family: "KoPubWorld Dotum";
+      font-style: normal;
+      font-weight: 300;
+      src: local("KoPubWorld Dotum Light"), local("KoPubWorldDotumLight");
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "KoPubWorld Dotum";
+      font-style: normal;
+      font-weight: 500;
+      src: local("KoPubWorld Dotum Medium"), local("KoPubWorldDotumMedium");
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "KoPubWorld Dotum";
+      font-style: normal;
+      font-weight: 700;
+      src: local("KoPubWorld Dotum Bold"), local("KoPubWorldDotumBold");
+      font-display: swap;
+    }
+
+    :root {
+      --bg: #f5f6f8;
+      --panel: #ffffff;
+      --text: #000000;
+      --muted: #5b6472;
+      --line: #dfe3ea;
+      --navy: #191877;
+      --soft: #eef1f6;
+      --gold: #c9a85b;
+      --font: "KoPubWorld Dotum", "KoPubWorldDotum", "Malgun Gothic", "맑은 고딕", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      letter-spacing: 0;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .page {
+      width: min(1180px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 22px 0 48px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 7px 11px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--navy);
+      font-size: clamp(28px, 3vw, 42px);
+      line-height: 1.12;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .metric {
+      min-height: 72px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: 7px;
+      color: var(--text);
+      font-size: 24px;
+      line-height: 1;
+      font-weight: 700;
+    }
+
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      align-items: center;
+      margin: 18px 0;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(8px);
+    }
+
+    .search {
+      width: 100%;
+      min-height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px 11px;
+      background: #ffffff;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .toolbar-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .filters,
+    .periods {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .filters button,
+    .periods button {
+      min-height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      color: var(--text);
+      padding: 6px 10px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .filters button.active,
+    .periods button.active {
+      border-color: var(--navy);
+      background: var(--navy);
+      color: #ffffff;
+    }
+
+    .section-jump {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: -6px 0 14px;
+    }
+
+    .section-jump a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 6px 9px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .chart-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      overflow: hidden;
+    }
+
+    .chart-header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: start;
+      min-height: 58px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .chart-title {
+      margin: 0;
+      color: var(--navy);
+      font-size: 18px;
+      line-height: 1.3;
+      font-weight: 700;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 4px 8px;
+      border-radius: 8px;
+      background: var(--soft);
+      color: var(--text);
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .tag.ppt {
+      background: #f7f2df;
+      color: #5d4714;
+    }
+
+    .chart-frame {
+      padding: 14px;
+      background: #ffffff;
+    }
+
+    .chart-frame a {
+      display: block;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .chart-frame img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .chart-footer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 10px 14px 12px;
+      border-top: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 5px 8px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .source {
+      align-self: center;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .empty {
+      display: none;
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--muted);
+      text-align: center;
+      font-weight: 700;
+    }
+
+    @media (max-width: 980px) {
+      .summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 620px) {
+      .page {
+        width: min(100% - 20px, 1180px);
+        padding-top: 14px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .summary {
+        grid-template-columns: 1fr;
+      }
+
+      .chart-header {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <div>
+        <h1>5월 그래프 모음</h1>
+        <p class="subtitle">Node.js나 개발 서버 없이 사용하는 정적 그래프 페이지입니다. 압축을 풀고 <strong>그래프/index.html</strong>을 브라우저로 열면 됩니다.</p>
+      </div>
+      <a class="back-link" href="../index.html">5월 홈</a>
+    </div>
+
+    <section class="summary" aria-label="파일 요약">
+      <div class="metric"><span>PPT용 그래프 이미지</span><strong>4</strong></div>
+      <div class="metric"><span>SECTION 1~5 그래프</span><strong>27</strong></div>
+      <div class="metric"><span>기간 선택</span><strong>5종</strong></div>
+      <div class="metric"><span>PPTX 파일</span><strong>4</strong></div>
+      <div class="metric"><span>실행 방식</span><strong>정적 HTML</strong></div>
+    </section>
+
+    <div class="toolbar">
+      <input id="searchInput" class="search" type="search" placeholder="그래프명, 섹션, 키워드 검색" aria-label="그래프 검색">
+      <div class="toolbar-row">
+        <div class="periods" aria-label="기간 선택">
+          <button class="active" type="button" data-period="1m">1개월</button>
+          <button type="button" data-period="6m">6개월</button>
+          <button type="button" data-period="1y">1년</button>
+          <button type="button" data-period="ytd">올해</button>
+          <button type="button" data-period="all">전체 기간</button>
+        </div>
+        <div class="filters" aria-label="그래프 필터">
+          <button class="active" type="button" data-filter="all">전체</button>
+          <button type="button" data-filter="macro">SECTION 1</button>
+          <button type="button" data-filter="korea">SECTION 2</button>
+          <button type="button" data-filter="us">SECTION 3</button>
+          <button type="button" data-filter="china">SECTION 4</button>
+          <button type="button" data-filter="theme">SECTION 5</button>
+          <button type="button" data-filter="ppt">PPT 이미지</button>
+        </div>
+      </div>
+    </div>
+
+    <nav class="section-jump" aria-label="섹션 바로가기">
+      <a href="#macro">SECTION 1. 매크로</a>
+      <a href="#korea">SECTION 2. 한국</a>
+      <a href="#us">SECTION 3. 미국</a>
+      <a href="#china">SECTION 4. 중국</a>
+      <a href="#theme">SECTION 5. 산업·테마</a>
+      <a href="#ppt">PPT 이미지</a>
+    </nav>
+
+    <section id="chartGrid" class="grid" aria-label="그래프 목록"></section>
+    <p id="emptyState" class="empty">검색 조건에 맞는 그래프가 없습니다.</p>
+  </main>
+
+  <script>
+    const pptCharts = [
+      {
+        id: "ppt-global-market",
+        group: "ppt",
+        tag: "PPT 이미지",
+        title: "글로벌 증시 수익률 비교",
+        image: "assets/global_market_returns_2026_05.png",
+        csv: "assets/global_market_returns_2026_05.csv",
+        pptx: "assets/global_market_returns_2026_05.pptx",
+        search: "글로벌 증시 5월 1개월 연초 이후 수익률 global market returns"
+      },
+      {
+        id: "ppt-retirement",
+        group: "ppt",
+        tag: "PPT 이미지",
+        title: "연령별 추천 비중",
+        image: "assets/retirement_allocation_2026_05.png",
+        csv: "assets/retirement_allocation_2026_05.csv",
+        pptx: "assets/retirement_allocation_2026_05.pptx",
+        search: "연령별 추천 비중 은퇴 포트폴리오 retirement allocation"
+      },
+      {
+        id: "ppt-conservative",
+        group: "ppt",
+        tag: "PPT 이미지",
+        title: "멀티에셋 자산배분 전략 백테스트",
+        image: "assets/conservative_backtest_2026_05.png",
+        csv: "assets/conservative_backtest_2026_05.csv",
+        pptx: "assets/conservative_backtest_2026_05.pptx",
+        search: "멀티에셋 자산배분 전략 백테스트 conservative backtest"
+      },
+      {
+        id: "ppt-aggressive",
+        group: "ppt",
+        tag: "PPT 이미지",
+        title: "듀얼 모멘텀 전략 성과",
+        image: "assets/aggressive_momentum_2026_05.png",
+        csv: "assets/aggressive_momentum_2026_05.csv",
+        pptx: "assets/aggressive_momentum_2026_05.pptx",
+        search: "듀얼 모멘텀 전략 성과 aggressive momentum"
+      }
+    ];
+
+    const periodLabels = {
+      "1m": "1개월",
+      "6m": "6개월",
+      "1y": "1년",
+      ytd: "올해",
+      all: "전체 기간"
+    };
+
+    const sectionCharts = [
+      ["macro", "SECTION 1. 매크로", "WTI vs 미국 10년물 금리", "section_01_01_macro.png"],
+      ["macro", "SECTION 1. 매크로", "WTI + CPI YoY + 미국 10년물 금리", "section_01_02_macro.png"],
+      ["macro", "SECTION 1. 매크로", "SPY 가격 + 거래량", "section_01_03_macro.png"],
+      ["macro", "SECTION 1. 매크로", "SPY 3개월 - 트럼프, 이란 캠페인 종결 의지 시사", "section_01_04_macro.png"],
+      ["macro", "SECTION 1. 매크로", "CPI YoY + 미국 10년물 금리", "section_01_05_macro.png"],
+      ["macro", "SECTION 1. 매크로", "5월 주요 자산 수익률 비교", "section_01_06_macro.png"],
+      ["korea", "SECTION 2. 한국", "KOSPI vs 삼성전자 vs SK하이닉스 정규화 차트", "section_02_01_korea.png"],
+      ["korea", "SECTION 2. 한국", "KOSPI P/E 밴드 차트", "section_02_02_korea.png"],
+      ["korea", "SECTION 2. 한국", "삼성전자+SK하이닉스 KOSPI 시총 비중 변화", "section_02_03_korea.png"],
+      ["korea", "SECTION 2. 한국", "KOSPI vs 삼성전자·하이닉스 제외 + 전닉 시총 비중", "section_02_04_korea.png"],
+      ["korea", "SECTION 2. 한국", "KOSPI 상승 vs 전닉 제외 KOSPI 상승 + Forward P/E", "section_02_05_korea.png"],
+      ["korea", "SECTION 2. 한국", "KOSPI + Forward P/E + P/E of 22.4x", "section_02_06_korea.png"],
+      ["korea", "SECTION 2. 한국", "KOSPI vs 삼성전자, 하이닉스 제외 + Forward P/E + P/E of 22.4x/15.2x/8x", "section_02_07_korea.png"],
+      ["korea", "SECTION 2. 한국", "삼성전자 vs SK하이닉스 수익률 비교", "section_02_08_korea.png"],
+      ["korea", "SECTION 2. 한국", "KRX 날짜별 상승·하락·보합 종목 수", "section_02_09_korea.png"],
+      ["korea", "SECTION 2. 한국", "전닉 시총 비중 + 레버리지 상장 이후 3일 KOSPI·시장폭", "section_02_10_korea.png"],
+      ["us", "SECTION 3. 미국", "SPY vs DRAM ETF 정규화 차트", "section_03_01_us.png"],
+      ["us", "SECTION 3. 미국", "DRAM ETF 가격 + 거래량", "section_03_02_us.png"],
+      ["us", "SECTION 3. 미국", "DRAM ETF vs 삼성전자 vs SK하이닉스 정규화 차트", "section_03_03_us.png"],
+      ["us", "SECTION 3. 미국", "글로벌 시가총액 순위 + SpaceX 가상 8위", "section_03_04_us.png"],
+      ["china", "SECTION 4. 중국", "STAR50 vs HSTECH vs CSI300 정규화 차트", "section_04_01_china.png"],
+      ["china", "SECTION 4. 중국", "STAR50 vs DRAM ETF 정규화 차트", "section_04_02_china.png"],
+      ["china", "SECTION 4. 중국", "중국 지수 최근 1개월·6개월·1년 수익률 비교", "section_04_03_china.png"],
+      ["theme", "SECTION 5. 산업·테마", "QTUM vs NASA vs SPY 정규화 차트", "section_05_01_theme.png"],
+      ["theme", "SECTION 5. 산업·테마", "QTUM 가격 + 거래량", "section_05_02_theme.png"],
+      ["theme", "SECTION 5. 산업·테마", "NASA 가격 + 거래량", "section_05_03_theme.png"],
+      ["theme", "SECTION 5. 산업·테마", "테마 수익률 비교", "section_05_04_theme.png"]
+    ].map(([group, tag, title, fileName], index) => ({
+      id: `section-${index + 1}`,
+      group,
+      tag,
+      title,
+      fileName,
+      periodSensitive: true,
+      search: `${tag} ${title} 1개월 6개월 1년 올해 전체 기간`
+    }));
+
+    const charts = [...sectionCharts, ...pptCharts];
+    const chartGrid = document.getElementById("chartGrid");
+    const searchInput = document.getElementById("searchInput");
+    const filterButtons = Array.from(document.querySelectorAll("[data-filter]"));
+    const periodButtons = Array.from(document.querySelectorAll("[data-period]"));
+    let activeFilter = "all";
+    let activePeriod = "1m";
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function renderCards() {
+      const seenGroups = new Set();
+      chartGrid.innerHTML = charts.map(chart => {
+        const anchorId = seenGroups.has(chart.group) ? "" : ` id="${escapeHtml(chart.group)}"`;
+        seenGroups.add(chart.group);
+        const image = chart.periodSensitive ? periodImagePath(chart) : chart.image;
+        const links = [
+          `<a class="png-link" href="${escapeHtml(image)}" download>PNG</a>`,
+          chart.csv ? `<a href="${escapeHtml(chart.csv)}" download>CSV</a>` : "",
+          chart.pptx ? `<a href="${escapeHtml(chart.pptx)}" download>PPTX</a>` : ""
+        ].join("");
+        const tagClass = chart.group === "ppt" ? "tag ppt" : "tag";
+        const tagText = chart.periodSensitive ? `${chart.tag} · ${periodLabels[activePeriod]}` : chart.tag;
+        return `
+          <article${anchorId} class="chart-card" data-group="${escapeHtml(chart.group)}" data-tag="${escapeHtml(chart.tag)}" data-file-name="${escapeHtml(chart.fileName || "")}" data-period-sensitive="${chart.periodSensitive ? "true" : "false"}" data-search="${escapeHtml(chart.search)}">
+            <div class="chart-header">
+              <h2 class="chart-title">${escapeHtml(chart.title)}</h2>
+              <span class="${tagClass}" data-period-tag>${escapeHtml(tagText)}</span>
+            </div>
+            <div class="chart-frame">
+              <a class="image-link" href="${escapeHtml(image)}" target="_blank"><img loading="lazy" src="${escapeHtml(image)}" alt="${escapeHtml(chart.title)}"></a>
+            </div>
+            <div class="chart-footer">
+              <div class="links">${links}</div>
+              <span class="source">공유용 복사본</span>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function periodImagePath(chart) {
+      return `assets/section_charts/${activePeriod}/${chart.fileName}`;
+    }
+
+    function updatePeriodImages() {
+      document.querySelectorAll('[data-period-sensitive="true"]').forEach(card => {
+        const fileName = card.dataset.fileName;
+        const image = `assets/section_charts/${activePeriod}/${fileName}`;
+        card.querySelector("img").src = image;
+        card.querySelector(".image-link").href = image;
+        card.querySelector(".png-link").href = image;
+        card.querySelector("[data-period-tag]").textContent = `${card.dataset.tag} · ${periodLabels[activePeriod]}`;
+      });
+    }
+
+    function applyFilter() {
+      const query = searchInput.value.trim().toLowerCase();
+      let visibleCount = 0;
+
+      document.querySelectorAll(".chart-card").forEach(card => {
+        const group = card.dataset.group || "";
+        const text = [card.dataset.search || "", card.textContent || ""].join(" ").toLowerCase();
+        const filterMatch = activeFilter === "all" || group === activeFilter;
+        const searchMatch = !query || text.includes(query);
+        const visible = filterMatch && searchMatch;
+        card.style.display = visible ? "" : "none";
+        if (visible) visibleCount += 1;
+      });
+
+      document.getElementById("emptyState").style.display = visibleCount ? "none" : "block";
+    }
+
+    filterButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        activeFilter = button.dataset.filter;
+        filterButtons.forEach(item => item.classList.toggle("active", item === button));
+        applyFilter();
+      });
+    });
+
+    periodButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        activePeriod = button.dataset.period;
+        periodButtons.forEach(item => item.classList.toggle("active", item === button));
+        updatePeriodImages();
+      });
+    });
+
+    searchInput.addEventListener("input", applyFilter);
+    renderCards();
+  </script>
+</body>
+</html>

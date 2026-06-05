@@ -10,8 +10,45 @@
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="./preloaded-data.js"></script>
   <style>
+    @font-face {
+      font-family: "KoPubWorld Dotum";
+      font-style: normal;
+      font-weight: 300;
+      src: local("KoPubWorld Dotum Light"), local("KoPubWorldDotumLight");
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "KoPubWorld Dotum";
+      font-style: normal;
+      font-weight: 500;
+      src: local("KoPubWorld Dotum Medium"), local("KoPubWorldDotumMedium");
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "KoPubWorld Dotum";
+      font-style: normal;
+      font-weight: 700;
+      src: local("KoPubWorld Dotum Bold"), local("KoPubWorldDotumBold");
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "KoPubWorld Dotum";
+      font-style: normal;
+      font-weight: 800;
+      src: local("KoPubWorld Dotum Bold"), local("KoPubWorldDotumBold");
+      font-display: swap;
+    }
+
     :root {
       color-scheme: light;
+      --font-body: "KoPubWorld Dotum", "KoPubWorldDotum", "Malgun Gothic", "맑은 고딕", Calibri, Arial, sans-serif;
+      --chart-legend-font-size: 19.4px;
+      --chart-legend-line-width: 46px;
+      --chart-legend-line-stroke: 4px;
+      --chart-legend-box-size: 15px;
       --bg: #f8f8f9;
       --panel: #ffffff;
       --panel-2: #f8f8f9;
@@ -37,7 +74,7 @@
       margin: 0;
       background: var(--bg);
       color: var(--text);
-      font-family: "Malgun Gothic", "맑은 고딕", Calibri, Arial, sans-serif;
+      font-family: var(--font-body);
       letter-spacing: 0;
     }
 
@@ -58,6 +95,15 @@
       transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
     }
 
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible,
+    summary:focus-visible {
+      outline: 3px solid rgba(25, 24, 119, 0.22);
+      outline-offset: 2px;
+    }
+
     button:hover {
       border-color: #9fb0c3;
       background: #f3f7fb;
@@ -75,6 +121,30 @@
 
     button.primary:hover {
       background: #0a0d3f;
+    }
+
+    button.secondary {
+      background: #ffffff;
+      border-color: #c8d0dc;
+      color: var(--navy);
+      font-weight: 800;
+    }
+
+    button.secondary:hover {
+      border-color: var(--navy);
+      background: #f2f4fb;
+    }
+
+    button.subtle {
+      border-color: transparent;
+      background: transparent;
+      color: var(--muted);
+    }
+
+    button.subtle:hover {
+      border-color: var(--line);
+      background: #f6f7f9;
+      color: var(--text);
     }
 
     button.small {
@@ -171,7 +241,7 @@
 
     .summary-grid {
       display: grid;
-      grid-template-columns: repeat(7, minmax(130px, 1fr));
+      grid-template-columns: repeat(4, minmax(160px, 1fr));
       gap: 10px;
       margin: 18px 0;
     }
@@ -250,6 +320,249 @@
       font-weight: 700;
     }
 
+    .chart-tuning-panel {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(120px, 1fr)) auto;
+      gap: 10px;
+      align-items: end;
+      margin: 0 0 18px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+    }
+
+    .chart-tuning-field {
+      display: grid;
+      gap: 5px;
+    }
+
+    .chart-tuning-field label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .chart-tuning-field input {
+      width: 100%;
+      min-height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 6px 8px;
+      background: var(--panel-2);
+      color: var(--text);
+      font-size: 13px;
+    }
+
+    .chart-tuning-help {
+      grid-column: 1 / -1;
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+      font-weight: 500;
+    }
+
+    .app-header {
+      top: 0;
+    }
+
+    .app-header-inner {
+      min-height: 62px;
+      gap: 18px;
+    }
+
+    .kcgi-site-brand {
+      display: grid;
+      gap: 2px;
+      line-height: 1.2;
+    }
+
+    .kcgi-site-brand span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .kcgi-site-brand strong {
+      color: var(--navy);
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .info-banner {
+      position: sticky;
+      top: 62px;
+      z-index: 18;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      min-height: 34px;
+      padding: 7px 22px;
+      border-bottom: 1px solid #dbe3ef;
+      background: rgba(248, 251, 255, 0.96);
+      color: #36445a;
+      font-size: 13px;
+      font-weight: 700;
+      backdrop-filter: blur(8px);
+    }
+
+    .info-banner strong {
+      color: var(--navy);
+      white-space: nowrap;
+    }
+
+    .overview-panel {
+      display: grid;
+      grid-template-columns: minmax(280px, 1fr) minmax(280px, 420px);
+      gap: 16px;
+      align-items: start;
+      margin-bottom: 16px;
+    }
+
+    .overview-copy {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      box-shadow: var(--shadow);
+    }
+
+    .data-session-card {
+      display: grid;
+      gap: 10px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      box-shadow: var(--shadow);
+    }
+
+    .data-session-card h2 {
+      font-size: 16px;
+    }
+
+    .data-status-line {
+      display: grid;
+      gap: 4px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .overview-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .section-nav {
+      position: sticky;
+      top: 96px;
+      z-index: 12;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      margin: 14px 0 18px;
+      padding: 8px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 4px 16px rgba(18, 31, 46, 0.05);
+      backdrop-filter: blur(8px);
+    }
+
+    .section-nav a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .section-nav a:hover,
+    .section-nav a.active {
+      background: var(--navy);
+      color: #ffffff;
+    }
+
+    .chart-tuning-panel {
+      display: block;
+    }
+
+    .chart-tuning-panel summary {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .chart-tuning-panel summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .chart-tuning-title {
+      display: grid;
+      gap: 3px;
+    }
+
+    .chart-tuning-title strong {
+      color: var(--navy);
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .chart-tuning-title span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+      font-weight: 500;
+    }
+
+    .chart-tuning-open {
+      display: inline-flex;
+      justify-self: end;
+      min-height: 32px;
+      align-items: center;
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      color: var(--navy);
+      font-size: 12px;
+      font-weight: 800;
+      background: #ffffff;
+    }
+
+    .chart-tuning-panel[open] .chart-tuning-open {
+      background: var(--navy);
+      border-color: var(--navy);
+      color: #ffffff;
+    }
+
+    .chart-tuning-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(120px, 1fr)) auto;
+      gap: 10px;
+      align-items: end;
+      margin-top: 12px;
+    }
+
     .section-card {
       margin-top: 18px;
       padding: 18px;
@@ -292,6 +605,16 @@
       justify-content: flex-end;
     }
 
+    .section-period {
+      align-self: center;
+    }
+
+    .section-period button {
+      min-height: 30px;
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+
     .interpretation {
       display: grid;
       gap: 8px;
@@ -316,6 +639,20 @@
       line-height: 1.45;
     }
 
+    .interpretation-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .interpretation-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: flex-end;
+    }
+
     .chart-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -324,11 +661,13 @@
 
     .image-chart-grid {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 14px;
     }
 
     .image-chart-card {
+      display: flex;
+      flex-direction: column;
       border: 1px solid var(--line);
       border-radius: 8px;
       background: #ffffff;
@@ -339,7 +678,7 @@
       display: flex;
       justify-content: space-between;
       gap: 12px;
-      align-items: center;
+      align-items: flex-start;
       padding: 12px 14px;
       border-bottom: 1px solid var(--line);
       background: #ffffff;
@@ -378,6 +717,8 @@
     }
 
     .image-chart-frame {
+      position: relative;
+      flex: 1;
       padding: 12px;
       background: #ffffff;
     }
@@ -386,9 +727,36 @@
       display: block;
       width: 100%;
       height: auto;
+      aspect-ratio: 15 / 7;
+      object-fit: contain;
       border: 1px solid var(--line);
       border-radius: 6px;
       background: #ffffff;
+    }
+
+    .image-chart-frame.missing-image {
+      min-height: 220px;
+      display: grid;
+      place-items: center;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .image-chart-frame.missing-image img {
+      display: none;
+    }
+
+    .image-chart-frame.missing-image::after {
+      content: "이미지 파일을 찾을 수 없습니다.";
+    }
+
+    .ppt-bulk-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
     }
 
     .chart-card,
@@ -414,6 +782,128 @@
       padding: 12px 14px;
       border-bottom: 1px solid var(--line);
       background: #ffffff;
+    }
+
+    .chart-card-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .chart-title-main {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .chart-tweak-panel {
+      border-bottom: 1px solid var(--line);
+      background: #fbfcfe;
+    }
+
+    .chart-tweak-panel summary {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 14px;
+      color: var(--navy);
+      cursor: pointer;
+      list-style: none;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .chart-tweak-panel summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .chart-tweak-summary-value {
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .chart-tweak-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(150px, 1fr));
+      gap: 10px;
+      padding: 0 14px 12px;
+    }
+
+    .chart-tweak-group {
+      display: grid;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .chart-tweak-group span {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .chart-tweak-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      align-items: center;
+    }
+
+    .chart-tweak-buttons button {
+      min-height: 28px;
+      padding: 4px 8px;
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .chart-tweak-color {
+      display: inline-flex;
+      width: 18px;
+      height: 18px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 999px;
+      vertical-align: middle;
+      box-shadow: inset 0 0 0 2px #ffffff;
+    }
+
+    .status-badge,
+    .priority-badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 22px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .status-badge.ok {
+      background: #e8f6ed;
+      color: #19733b;
+    }
+
+    .status-badge.warn,
+    .priority-badge.medium {
+      background: var(--amber-soft);
+      color: #765307;
+    }
+
+    .status-badge.danger,
+    .priority-badge.high {
+      background: #fde8e8;
+      color: #a10000;
+    }
+
+    .status-badge.manual,
+    .priority-badge.low {
+      background: #edf1f7;
+      color: #475569;
     }
 
     .chart-title,
@@ -460,38 +950,40 @@
       flex-wrap: wrap;
       justify-content: center;
       align-items: center;
-      gap: 6px 14px;
-      min-height: 20px;
+      gap: 8px 24px;
+      min-height: 30px;
       color: #1a1a1a;
-      font-size: 12px;
+      font-family: var(--font-body);
+      font-size: var(--chart-legend-font-size);
+      font-weight: 500;
       line-height: 1.2;
     }
 
     .legend-item {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      gap: 8px;
       white-space: nowrap;
     }
 
     .legend-line {
       display: inline-block;
-      width: 24px;
+      width: var(--chart-legend-line-width);
       height: 0;
-      border-top: 3px solid currentColor;
+      border-top: var(--chart-legend-line-stroke) solid currentColor;
     }
 
     .legend-dash {
       display: inline-block;
-      min-width: 28px;
+      min-width: var(--chart-legend-line-width);
       color: currentColor;
       font-weight: 800;
       white-space: pre;
     }
 
     .legend-box {
-      width: 10px;
-      height: 10px;
+      width: var(--chart-legend-box-size);
+      height: var(--chart-legend-box-size);
       border-radius: 2px;
       background: currentColor;
     }
@@ -565,16 +1057,34 @@
     }
 
     .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
       padding: 10px 14px;
       border-top: 1px solid var(--line);
       color: var(--muted);
       font-size: 12px;
-      line-height: 1.55;
+      line-height: 1.35;
+    }
+
+    .meta-pill {
+      display: inline-flex;
+      max-width: 100%;
+      align-items: center;
+      min-height: 24px;
+      padding: 4px 7px;
+      border-radius: 999px;
+      background: #f4f6f9;
+      color: #475569;
+      font-weight: 700;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     details.data-detail {
       border-top: 1px solid var(--line);
-      background: #fcfdff;
+      background: #ffffff;
     }
 
     details.data-detail summary {
@@ -589,6 +1099,7 @@
       max-height: 260px;
       overflow: auto;
       border-top: 1px solid var(--line);
+      scrollbar-gutter: stable;
     }
 
     table {
@@ -690,13 +1201,61 @@
       line-height: 1.55;
     }
 
+    .missing-data-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .missing-filter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .missing-filter button.active {
+      background: var(--navy);
+      border-color: var(--navy);
+      color: #ffffff;
+    }
+
+    .missing-summary {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .missing-table-wrap {
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      max-height: 480px;
+    }
+
+    .missing-table-wrap table {
+      min-width: 980px;
+    }
+
+    .missing-table-wrap th,
+    .missing-table-wrap td {
+      text-align: left;
+      vertical-align: top;
+      white-space: normal;
+      line-height: 1.45;
+    }
+
     @media (max-width: 1120px) {
       .summary-grid {
-        grid-template-columns: repeat(3, minmax(150px, 1fr));
+        grid-template-columns: repeat(2, minmax(150px, 1fr));
       }
 
       .topbar,
-      .section-header {
+      .section-header,
+      .overview-panel {
         grid-template-columns: 1fr;
       }
 
@@ -711,8 +1270,13 @@
       }
 
       .summary-grid,
-      .chart-grid {
+      .chart-grid,
+      .image-chart-grid {
         grid-template-columns: 1fr;
+      }
+
+      .chart-tweak-grid {
+        grid-template-columns: 1fr 1fr;
       }
 
       .warning-bar {
@@ -727,6 +1291,16 @@
       .image-chart-title-row {
         align-items: flex-start;
         flex-direction: column;
+      }
+
+      .section-nav {
+        top: 96px;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+      }
+
+      .section-nav a {
+        white-space: nowrap;
       }
     }
     .kcgi-site-nav {
@@ -794,46 +1368,70 @@
       .kcgi-site-links {
         justify-content: flex-start;
       }
+
+      .chart-tuning-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .chart-tuning-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .app-header-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .header-actions {
+        justify-content: flex-start;
+      }
     }
   </style>
 </head>
 <body>
-  <nav class="kcgi-site-nav" aria-label="KCGI site navigation">
-    <div class="kcgi-site-nav-inner">
-      <a class="kcgi-site-brand" href="../index.html">KCGI Research Hub</a>
-      <div class="kcgi-site-links">
-        <a href="../index.html">홈</a>
+  <nav class="kcgi-site-nav app-header" aria-label="KCGI site navigation">
+    <div class="kcgi-site-nav-inner app-header-inner">
+      <a class="kcgi-site-brand" href="../index.html">
+        <span>KCGI Research Hub</span>
+        <strong>5월 시장 데이터 대시보드</strong>
+      </a>
+      <div class="header-actions">
+        <button id="chooseFilesButton" class="primary" type="button">데이터 파일 업로드</button>
+        <button id="chooseFolderButton" class="secondary" type="button">Bloomberg 폴더 불러오기</button>
+        <button id="downloadPagePng" class="secondary" type="button">전체 화면 이미지 저장</button>
+        <button id="downloadMissingCsv" class="secondary" type="button">필요 데이터 목록 저장</button>
+        <button id="clearButton" class="subtle" type="button">초기화</button>
+        <input id="fileInput" class="hidden-input" type="file" accept=".zip,.xlsx,.xls,.csv" multiple>
+        <input id="folderInput" class="hidden-input" type="file" webkitdirectory multiple>
       </div>
     </div>
   </nav>
-  <div class="warning-bar">
-    <span>목데이터 금지</span>
-    <span>이 페이지는 업로드된 실제 데이터 기반으로만 시각화합니다. 데이터가 없는 항목은 차트를 생성하지 않고 필요한 자료를 요청합니다.</span>
+  <div class="warning-bar info-banner">
+    <strong>데이터 검증 모드</strong>
+    <span>업로드된 실제 데이터만 사용합니다. 데이터가 없는 차트는 자동으로 “누락 데이터 요청”으로 분류됩니다.</span>
   </div>
 
   <main id="dashboardPage" class="page">
-    <div class="topbar">
-      <div>
+    <section id="overview" class="overview-panel">
+      <div class="overview-copy">
         <h1>5월 시장 데이터 대시보드</h1>
         <p class="subtitle">Bloomberg Excel/CSV 원천 파일을 브라우저에서 직접 파싱해 차트, 원천 데이터 표, PNG/CSV 다운로드를 제공합니다.</p>
       </div>
-
-      <div class="upload-panel">
-        <div class="upload-row">
-          <button id="chooseFilesButton" class="primary" type="button">ZIP/XLSX/CSV 업로드</button>
-          <button id="chooseFolderButton" type="button">폴더 업로드</button>
-          <button id="clearButton" type="button">초기화</button>
+      <div class="data-session-card">
+        <h2>데이터 상태</h2>
+        <div class="data-status-line">
+          <span id="fileName" class="file-name">아직 업로드된 파일이 없습니다.</span>
+          <span id="status" class="status">5월.zip 또는 bloomberg 폴더를 선택하면 차트 생성 가능 여부를 판정합니다.</span>
         </div>
-        <input id="fileInput" class="hidden-input" type="file" accept=".zip,.xlsx,.xls,.csv" multiple>
-        <input id="folderInput" class="hidden-input" type="file" webkitdirectory multiple>
-        <div id="fileName" class="file-name">아직 업로드된 파일이 없습니다.</div>
-        <div id="status" class="status">5월.zip 또는 bloomberg 폴더를 선택하면 차트 생성 가능 여부를 판정합니다.</div>
+        <div class="overview-actions">
+          <button id="downloadAllCsv" class="secondary" type="button">전체 원천 데이터 저장</button>
+        </div>
       </div>
-    </div>
+    </section>
 
     <div id="libraryWarning" class="library-warning"></div>
 
-    <section id="summaryGrid" class="summary-grid" aria-label="요약 카드"></section>
+    <section id="summaryGrid" class="summary-grid" aria-label="데이터 상태 카드"></section>
 
     <div class="controls-row">
       <div class="segmented" aria-label="기간 선택">
@@ -843,12 +1441,48 @@
         <button id="periodYearToDate" type="button">올해</button>
         <button id="periodAll" type="button">전체 기간</button>
       </div>
-      <div class="upload-row">
-        <button id="downloadPagePng" type="button">전체 PNG</button>
-        <button id="downloadAllCsv" type="button">전체 CSV</button>
-        <button id="downloadMissingCsv" type="button">누락 데이터 요청서</button>
-      </div>
     </div>
+
+    <nav id="sectionNav" class="section-nav" aria-label="섹션 바로가기">
+      <a href="#overview">개요</a>
+      <a href="#pptImageGraphs">PPT 이미지</a>
+      <a href="#macro">매크로</a>
+      <a href="#korea">한국</a>
+      <a href="#us">미국</a>
+      <a href="#china">중국</a>
+      <a href="#theme">산업·테마</a>
+      <a href="#missingData">누락 데이터</a>
+    </nav>
+
+    <details class="chart-tuning-panel" aria-label="차트 글자 및 단위 위치 조정">
+      <summary>
+        <span class="chart-tuning-title">
+          <strong>PPT용 차트 세부 조정</strong>
+          <span>눈금 크기, 범례 크기, 단위 위치를 조정합니다.</span>
+        </span>
+        <span class="chart-tuning-open">세부 조정 열기</span>
+      </summary>
+      <div class="chart-tuning-grid">
+        <div class="chart-tuning-field">
+          <label for="chartFontPt">눈금·범례 크기(pt)</label>
+          <input id="chartFontPt" type="number" min="6" max="14" step="0.1">
+        </div>
+        <div class="chart-tuning-field">
+          <label for="unitLeftX">좌측 단위 X(px)</label>
+          <input id="unitLeftX" type="number" min="-80" max="80" step="1">
+        </div>
+        <div class="chart-tuning-field">
+          <label for="unitRightX">우측 단위 X(px)</label>
+          <input id="unitRightX" type="number" min="-80" max="80" step="1">
+        </div>
+        <div class="chart-tuning-field">
+          <label for="unitY">단위 Y(px, + 아래)</label>
+          <input id="unitY" type="number" min="-60" max="60" step="1">
+        </div>
+        <button id="resetChartTuning" class="secondary" type="button">PPT 기본값으로 복원</button>
+        <p class="chart-tuning-help">기본 크기는 13.5cm × 6.2cm PPT 배치 기준 약 8.2pt입니다. 조정값은 이 브라우저에 저장되며, 값을 바꾸면 차트와 PNG 다운로드에 바로 반영됩니다.</p>
+      </div>
+    </details>
 
     <section id="pptImageGraphs" class="section-card" aria-label="PPT image graphs">
       <div class="section-header">
@@ -857,7 +1491,9 @@
           <h2>5월 기준 PPT용 그래프 이미지</h2>
         </div>
         <div class="section-actions">
-          <button class="small" type="button" onclick="downloadElementPng(document.getElementById('pptImageGraphs'), 'ppt_image_graphs.png')">섹션 PNG</button>
+          <button class="small secondary" type="button" onclick="downloadPptAssetGroup('png')">PPT 이미지 전체 저장</button>
+          <button class="small secondary" type="button" onclick="downloadPptAssetGroup('pptx')">PPTX 전체 저장</button>
+          <button class="small secondary" type="button" onclick="downloadPptAssetGroup('csv')">CSV 전체 저장</button>
         </div>
       </div>
 
@@ -866,9 +1502,9 @@
           <div class="image-chart-title-row">
             <h3>글로벌 증시 5월 수익률 비교</h3>
             <div class="image-chart-actions">
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/global_market_returns_2026_05.png', 'global_market_returns_2026_05.png')">고해상도 PNG</button>
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/global_market_returns_2026_05.pptx', 'global_market_returns_2026_05.pptx')">PPTX</button>
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/global_market_returns_2026_05.csv', 'global_market_returns_2026_05.csv')">CSV</button>
+              <button class="small primary" type="button" onclick="downloadStaticFile('./outputs/global_market_returns_2026_05.png', 'global_market_returns_2026_05.png')">PNG 저장</button>
+              <button class="small secondary" type="button" onclick="downloadStaticFile('./outputs/global_market_returns_2026_05.pptx', 'global_market_returns_2026_05.pptx')">PPTX 저장</button>
+              <button class="small secondary" type="button" onclick="downloadStaticFile('./outputs/global_market_returns_2026_05.csv', 'global_market_returns_2026_05.csv')">CSV 저장</button>
             </div>
           </div>
           <div class="image-chart-frame">
@@ -880,9 +1516,9 @@
           <div class="image-chart-title-row">
             <h3>연령별 추천 비중</h3>
             <div class="image-chart-actions">
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/retirement_allocation_2026_05.png', 'retirement_allocation_2026_05.png')">고해상도 PNG</button>
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/retirement_allocation_2026_05.pptx', 'retirement_allocation_2026_05.pptx')">PPTX</button>
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/retirement_allocation_2026_05.csv', 'retirement_allocation_2026_05.csv')">CSV</button>
+              <button class="small primary" type="button" onclick="downloadStaticFile('./outputs/retirement_allocation_2026_05.png', 'retirement_allocation_2026_05.png')">PNG 저장</button>
+              <button class="small secondary" type="button" onclick="downloadStaticFile('./outputs/retirement_allocation_2026_05.pptx', 'retirement_allocation_2026_05.pptx')">PPTX 저장</button>
+              <button class="small secondary" type="button" onclick="downloadStaticFile('./outputs/retirement_allocation_2026_05.csv', 'retirement_allocation_2026_05.csv')">CSV 저장</button>
             </div>
           </div>
           <div class="image-chart-frame">
@@ -894,9 +1530,9 @@
           <div class="image-chart-title-row">
             <h3>멀티에셋 자산배분 전략 포트폴리오 백테스트</h3>
             <div class="image-chart-actions">
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/conservative_backtest_2026_05.png', 'conservative_backtest_2026_05.png')">고해상도 PNG</button>
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/conservative_backtest_2026_05.pptx', 'conservative_backtest_2026_05.pptx')">PPTX</button>
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/conservative_backtest_2026_05.csv', 'conservative_backtest_2026_05.csv')">CSV</button>
+              <button class="small primary" type="button" onclick="downloadStaticFile('./outputs/conservative_backtest_2026_05.png', 'conservative_backtest_2026_05.png')">PNG 저장</button>
+              <button class="small secondary" type="button" onclick="downloadStaticFile('./outputs/conservative_backtest_2026_05.pptx', 'conservative_backtest_2026_05.pptx')">PPTX 저장</button>
+              <button class="small secondary" type="button" onclick="downloadStaticFile('./outputs/conservative_backtest_2026_05.csv', 'conservative_backtest_2026_05.csv')">CSV 저장</button>
             </div>
           </div>
           <div class="image-chart-frame">
@@ -908,9 +1544,9 @@
           <div class="image-chart-title-row">
             <h3>듀얼 모멘텀 전략 포트폴리오 성과</h3>
             <div class="image-chart-actions">
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/aggressive_momentum_2026_05.png', 'aggressive_momentum_2026_05.png')">고해상도 PNG</button>
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/aggressive_momentum_2026_05.pptx', 'aggressive_momentum_2026_05.pptx')">PPTX</button>
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/aggressive_momentum_2026_05.csv', 'aggressive_momentum_2026_05.csv')">CSV</button>
+              <button class="small primary" type="button" onclick="downloadStaticFile('./outputs/aggressive_momentum_2026_05.png', 'aggressive_momentum_2026_05.png')">PNG 저장</button>
+              <button class="small secondary" type="button" onclick="downloadStaticFile('./outputs/aggressive_momentum_2026_05.pptx', 'aggressive_momentum_2026_05.pptx')">PPTX 저장</button>
+              <button class="small secondary" type="button" onclick="downloadStaticFile('./outputs/aggressive_momentum_2026_05.csv', 'aggressive_momentum_2026_05.csv')">CSV 저장</button>
             </div>
           </div>
           <div class="image-chart-frame">
@@ -921,8 +1557,8 @@
           <div class="image-chart-title-row">
             <h3>한국 단기채 제외 자산 성과 지표</h3>
             <div class="image-chart-actions">
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_ex_kis_2026_05.png', 'asset_metrics_ex_kis_2026_05.png')">고해상도 PNG</button>
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_ex_kis_2026_05.csv', 'asset_metrics_ex_kis_2026_05.csv')">CSV</button>
+              <button class="small primary" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_ex_kis_2026_05.png', 'asset_metrics_ex_kis_2026_05.png')">PNG 저장</button>
+              <button class="small secondary" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_ex_kis_2026_05.csv', 'asset_metrics_ex_kis_2026_05.csv')">CSV 저장</button>
             </div>
           </div>
           <div class="image-chart-frame">
@@ -934,8 +1570,8 @@
           <div class="image-chart-title-row">
             <h3>KRW 기준 자산 성과 지표 (CAGR)</h3>
             <div class="image-chart-actions">
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_2026_05.png', 'asset_metrics_krw_2026_05.png')">고해상도 PNG</button>
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_2026_05.csv', 'asset_metrics_krw_2026_05.csv')">CSV</button>
+              <button class="small primary" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_2026_05.png', 'asset_metrics_krw_2026_05.png')">PNG 저장</button>
+              <button class="small secondary" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_2026_05.csv', 'asset_metrics_krw_2026_05.csv')">CSV 저장</button>
             </div>
           </div>
           <div class="image-chart-frame">
@@ -947,8 +1583,8 @@
           <div class="image-chart-title-row">
             <h3>KRW 기준 자산 성과 지표 (일간 산술평균 연율화)</h3>
             <div class="image-chart-actions">
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_daily_annualized_2026_05.png', 'asset_metrics_krw_daily_annualized_2026_05.png')">고해상도 PNG</button>
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_daily_annualized_2026_05.csv', 'asset_metrics_krw_daily_annualized_2026_05.csv')">CSV</button>
+              <button class="small primary" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_daily_annualized_2026_05.png', 'asset_metrics_krw_daily_annualized_2026_05.png')">PNG 저장</button>
+              <button class="small secondary" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_daily_annualized_2026_05.csv', 'asset_metrics_krw_daily_annualized_2026_05.csv')">CSV 저장</button>
             </div>
           </div>
           <div class="image-chart-frame">
@@ -960,8 +1596,8 @@
           <div class="image-chart-title-row">
             <h3>KRW 기준 자산 성과 지표 (월간 산술평균 연율화)</h3>
             <div class="image-chart-actions">
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_monthly_annualized_2026_05.png', 'asset_metrics_krw_monthly_annualized_2026_05.png')">고해상도 PNG</button>
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_monthly_annualized_2026_05.csv', 'asset_metrics_krw_monthly_annualized_2026_05.csv')">CSV</button>
+              <button class="small primary" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_monthly_annualized_2026_05.png', 'asset_metrics_krw_monthly_annualized_2026_05.png')">PNG 저장</button>
+              <button class="small secondary" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_monthly_annualized_2026_05.csv', 'asset_metrics_krw_monthly_annualized_2026_05.csv')">CSV 저장</button>
             </div>
           </div>
           <div class="image-chart-frame">
@@ -973,8 +1609,8 @@
           <div class="image-chart-title-row">
             <h3>KRW 기준 자산 성과 지표 (TR, CAGR)</h3>
             <div class="image-chart-actions">
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_tr_cagr_2026_05.png', 'asset_metrics_krw_tr_cagr_2026_05.png')">고해상도 PNG</button>
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_tr_cagr_2026_05.csv', 'asset_metrics_krw_tr_cagr_2026_05.csv')">CSV</button>
+              <button class="small primary" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_tr_cagr_2026_05.png', 'asset_metrics_krw_tr_cagr_2026_05.png')">PNG 저장</button>
+              <button class="small secondary" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_tr_cagr_2026_05.csv', 'asset_metrics_krw_tr_cagr_2026_05.csv')">CSV 저장</button>
             </div>
           </div>
           <div class="image-chart-frame">
@@ -986,8 +1622,8 @@
           <div class="image-chart-title-row">
             <h3>KRW 기준 자산 성과 지표 (TR, 일간 산술평균 연율화)</h3>
             <div class="image-chart-actions">
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_tr_daily_annualized_2026_05.png', 'asset_metrics_krw_tr_daily_annualized_2026_05.png')">고해상도 PNG</button>
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_tr_daily_annualized_2026_05.csv', 'asset_metrics_krw_tr_daily_annualized_2026_05.csv')">CSV</button>
+              <button class="small primary" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_tr_daily_annualized_2026_05.png', 'asset_metrics_krw_tr_daily_annualized_2026_05.png')">PNG 저장</button>
+              <button class="small secondary" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_tr_daily_annualized_2026_05.csv', 'asset_metrics_krw_tr_daily_annualized_2026_05.csv')">CSV 저장</button>
             </div>
           </div>
           <div class="image-chart-frame">
@@ -999,8 +1635,8 @@
           <div class="image-chart-title-row">
             <h3>KRW 기준 자산 성과 지표 (TR, 월간 산술평균 연율화)</h3>
             <div class="image-chart-actions">
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_tr_monthly_annualized_2026_05.png', 'asset_metrics_krw_tr_monthly_annualized_2026_05.png')">고해상도 PNG</button>
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_tr_monthly_annualized_2026_05.csv', 'asset_metrics_krw_tr_monthly_annualized_2026_05.csv')">CSV</button>
+              <button class="small primary" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_tr_monthly_annualized_2026_05.png', 'asset_metrics_krw_tr_monthly_annualized_2026_05.png')">PNG 저장</button>
+              <button class="small secondary" type="button" onclick="downloadStaticFile('./outputs/asset_metrics_krw_tr_monthly_annualized_2026_05.csv', 'asset_metrics_krw_tr_monthly_annualized_2026_05.csv')">CSV 저장</button>
             </div>
           </div>
           <div class="image-chart-frame">
@@ -1012,8 +1648,8 @@
           <div class="image-chart-title-row">
             <h3>KRW 기준 자산별 시계열 및 MDD</h3>
             <div class="image-chart-actions">
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_series_mdd_krw_2026_05.png', 'asset_series_mdd_krw_2026_05.png')">고해상도 PNG</button>
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/asset_series_krw_2026_05.csv', 'asset_series_krw_2026_05.csv')">CSV</button>
+              <button class="small primary" type="button" onclick="downloadStaticFile('./outputs/asset_series_mdd_krw_2026_05.png', 'asset_series_mdd_krw_2026_05.png')">PNG 저장</button>
+              <button class="small secondary" type="button" onclick="downloadStaticFile('./outputs/asset_series_krw_2026_05.csv', 'asset_series_krw_2026_05.csv')">CSV 저장</button>
             </div>
           </div>
           <div class="image-chart-frame">
@@ -1024,8 +1660,8 @@
           <div class="image-chart-title-row">
             <h3>5월 기준 전략별 성과 요약</h3>
             <div class="image-chart-actions">
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/strategy_summary_2026_05.png', 'strategy_summary_2026_05.png')">고해상도 PNG</button>
-              <button class="small" type="button" onclick="downloadStaticFile('./outputs/strategy_summary_2026_05.csv', 'strategy_summary_2026_05.csv')">CSV</button>
+              <button class="small primary" type="button" onclick="downloadStaticFile('./outputs/strategy_summary_2026_05.png', 'strategy_summary_2026_05.png')">PNG 저장</button>
+              <button class="small secondary" type="button" onclick="downloadStaticFile('./outputs/strategy_summary_2026_05.csv', 'strategy_summary_2026_05.csv')">CSV 저장</button>
             </div>
           </div>
           <div class="image-chart-frame">
@@ -1036,6 +1672,28 @@
     </section>
 
     <div id="sectionsRoot"></div>
+
+    <section id="missingData" class="section-card" aria-label="누락 데이터">
+      <div class="section-header">
+        <div>
+          <p class="section-kicker">MISSING DATA</p>
+          <h2>누락 데이터</h2>
+        </div>
+        <div class="section-actions">
+          <button id="missingSectionDownload" class="small secondary" type="button">필요 데이터 목록 CSV 저장</button>
+        </div>
+      </div>
+      <div class="missing-data-controls">
+        <p id="missingDataSummary" class="missing-summary">누락 데이터 0개</p>
+        <div class="missing-filter" aria-label="누락 데이터 우선순위 필터">
+          <button class="small active" type="button" data-missing-filter="all">전체</button>
+          <button class="small" type="button" data-missing-filter="High">High</button>
+          <button class="small" type="button" data-missing-filter="Medium">Medium</button>
+          <button class="small" type="button" data-missing-filter="Low">Low</button>
+        </div>
+      </div>
+      <div id="missingDataTable" class="missing-table-wrap"></div>
+    </section>
   </main>
 
   <script>
@@ -1046,10 +1704,26 @@
     const MAIN_LINE_COLOR = "#191877";
     const REPORT_GRID_COLOR = "#e8e8e8";
     const REPORT_AXIS_COLOR = "#d8d8d8";
-    const REPORT_TICK_COLOR = "#595959";
-    const REPORT_TEXT_COLOR = "#1a1a1a";
-    const CHART_DEVICE_PIXEL_RATIO = 2;
-    const PNG_SCALE = 4;
+    const REPORT_TICK_COLOR = "#000000";
+    const REPORT_TEXT_COLOR = "#000000";
+    const CHART_FONT_FAMILY = "\"KoPubWorld Dotum\", \"KoPubWorldDotum\", \"KoPubWorld Dotum Medium\", \"KoPubWorld Dotum Light\", \"Malgun Gothic\", \"맑은 고딕\", Calibri, Arial, sans-serif";
+    const SVG_FONT_FAMILY = "'KoPubWorld Dotum', 'KoPubWorldDotum', 'KoPubWorld Dotum Medium', 'KoPubWorld Dotum Light', 'Malgun Gothic', '맑은 고딕', Calibri, Arial, sans-serif";
+    const CHART_AXIS_FONT_WEIGHT = "500";
+    const DEFAULT_CHART_FONT_PT = 8.2;
+    const CHART_PX_PER_PPT_PT = 26 / 11;
+    const CHART_RENDER_SETTINGS_KEY = "kcgi-chart-render-settings-v1";
+    const INTERPRETATION_STORAGE_KEY = "kcgi-market-dashboard-interpretations-v1";
+    const CHART_TWEAKS_STORAGE_KEY = "kcgi-chart-card-tweaks-v1";
+    const chartRenderSettings = loadChartRenderSettings();
+    let CHART_AXIS_FONT_SIZE = chartFontPx();
+    let CHART_UNIT_FONT_SIZE = chartFontPx();
+    let CHART_LEGEND_FONT_SIZE = chartFontPx();
+    const LEFT_TICK_LABEL_CENTER_OFFSET = 42;
+    const RIGHT_TICK_LABEL_CENTER_OFFSET = 42;
+    const CHART_DEVICE_PIXEL_RATIO = 4;
+    const PNG_SCALE = 5;
+    const PPT_EXPORT_WIDTH_CM = 13.5;
+    const PPT_EXPORT_HEIGHT_CM = 6.2;
     const DATA_CUTOFF_DATE = "2026-05-29";
     const PERIOD_OPTIONS = {
       "1m": { label: "1개월", months: 1 },
@@ -1072,6 +1746,87 @@
       "#e5e5e5",
       "#f8f8f9"
     ];
+
+    const CHART_COLOR_SETS = [
+      ["#191877", "#c9a85b", "#8c8c8c", "#9cc826", "#c00000", "#595959", "#c7d4ed"],
+      ["#191877", "#2f6f9f", "#c9a85b", "#7f8c3a", "#b54b4b", "#6b7280", "#9aa7bd"],
+      ["#0f172a", "#2563eb", "#c9a85b", "#16a34a", "#dc2626", "#64748b", "#7c3aed"],
+      ["#1b1b7a", "#b08b2e", "#4f6f52", "#a13d63", "#3f5f8f", "#7a7a7a", "#c7d4ed"]
+    ];
+
+    const PPT_IMAGE_ASSETS = [
+      { title: "글로벌 증시 5월 수익률 비교", png: "./outputs/global_market_returns_2026_05.png", pptx: "./outputs/global_market_returns_2026_05.pptx", csv: "./outputs/global_market_returns_2026_05.csv" },
+      { title: "연령별 추천 비중", png: "./outputs/retirement_allocation_2026_05.png", pptx: "./outputs/retirement_allocation_2026_05.pptx", csv: "./outputs/retirement_allocation_2026_05.csv" },
+      { title: "멀티에셋 자산배분 전략 포트폴리오 백테스트", png: "./outputs/conservative_backtest_2026_05.png", pptx: "./outputs/conservative_backtest_2026_05.pptx", csv: "./outputs/conservative_backtest_2026_05.csv" },
+      { title: "듀얼 모멘텀 전략 포트폴리오 성과", png: "./outputs/aggressive_momentum_2026_05.png", pptx: "./outputs/aggressive_momentum_2026_05.pptx", csv: "./outputs/aggressive_momentum_2026_05.csv" },
+      { title: "한국 단기채 제외 자산 성과 지표", png: "./outputs/asset_metrics_ex_kis_2026_05.png", csv: "./outputs/asset_metrics_ex_kis_2026_05.csv" },
+      { title: "KRW 기준 자산 성과 지표 (CAGR)", png: "./outputs/asset_metrics_krw_2026_05.png", csv: "./outputs/asset_metrics_krw_2026_05.csv" },
+      { title: "KRW 기준 자산 성과 지표 (일간 산술평균 연율화)", png: "./outputs/asset_metrics_krw_daily_annualized_2026_05.png", csv: "./outputs/asset_metrics_krw_daily_annualized_2026_05.csv" },
+      { title: "KRW 기준 자산 성과 지표 (월간 산술평균 연율화)", png: "./outputs/asset_metrics_krw_monthly_annualized_2026_05.png", csv: "./outputs/asset_metrics_krw_monthly_annualized_2026_05.csv" },
+      { title: "KRW 기준 자산 성과 지표 (TR, CAGR)", png: "./outputs/asset_metrics_krw_tr_cagr_2026_05.png", csv: "./outputs/asset_metrics_krw_tr_cagr_2026_05.csv" },
+      { title: "KRW 기준 자산 성과 지표 (TR, 일간 산술평균 연율화)", png: "./outputs/asset_metrics_krw_tr_daily_annualized_2026_05.png", csv: "./outputs/asset_metrics_krw_tr_daily_annualized_2026_05.csv" },
+      { title: "KRW 기준 자산 성과 지표 (TR, 월간 산술평균 연율화)", png: "./outputs/asset_metrics_krw_tr_monthly_annualized_2026_05.png", csv: "./outputs/asset_metrics_krw_tr_monthly_annualized_2026_05.csv" },
+      { title: "KRW 기준 자산별 시계열 및 MDD", png: "./outputs/asset_series_mdd_krw_2026_05.png", csv: "./outputs/asset_series_krw_2026_05.csv" },
+      { title: "5월 기준 전략별 성과 요약", png: "./outputs/strategy_summary_2026_05.png", csv: "./outputs/strategy_summary_2026_05.csv" }
+    ];
+
+    function defaultChartRenderSettings() {
+      return {
+        fontPt: DEFAULT_CHART_FONT_PT,
+        unitLeftX: 0,
+        unitRightX: 0,
+        unitY: 0
+      };
+    }
+
+    function loadChartRenderSettings() {
+      const defaults = defaultChartRenderSettings();
+      try {
+        const saved = JSON.parse(localStorage.getItem(CHART_RENDER_SETTINGS_KEY) || "{}");
+        return sanitizeChartRenderSettings({ ...defaults, ...saved });
+      } catch {
+        return defaults;
+      }
+    }
+
+    function sanitizeChartRenderSettings(settings) {
+      const defaults = defaultChartRenderSettings();
+      return {
+        fontPt: clampNumber(settings.fontPt, 6, 14, defaults.fontPt),
+        unitLeftX: clampNumber(settings.unitLeftX, -80, 80, defaults.unitLeftX),
+        unitRightX: clampNumber(settings.unitRightX, -80, 80, defaults.unitRightX),
+        unitY: clampNumber(settings.unitY, -60, 60, defaults.unitY)
+      };
+    }
+
+    function clampNumber(value, min, max, fallback) {
+      const numeric = Number(value);
+      if (!Number.isFinite(numeric)) return fallback;
+      return Math.min(max, Math.max(min, numeric));
+    }
+
+    function chartFontPx() {
+      return round(chartRenderSettings.fontPt * CHART_PX_PER_PPT_PT, 2);
+    }
+
+    function applyChartRenderSettings() {
+      const fontPx = chartFontPx();
+      CHART_AXIS_FONT_SIZE = fontPx;
+      CHART_UNIT_FONT_SIZE = fontPx;
+      CHART_LEGEND_FONT_SIZE = fontPx;
+      document.documentElement.style.setProperty("--chart-legend-font-size", `${fontPx}px`);
+      document.documentElement.style.setProperty("--chart-legend-line-width", `${round(fontPx * 2.38, 2)}px`);
+      document.documentElement.style.setProperty("--chart-legend-line-stroke", `${round(fontPx * 0.19, 2)}px`);
+      document.documentElement.style.setProperty("--chart-legend-box-size", `${round(fontPx * 0.77, 2)}px`);
+    }
+
+    function saveChartRenderSettings() {
+      try {
+        localStorage.setItem(CHART_RENDER_SETTINGS_KEY, JSON.stringify(chartRenderSettings));
+      } catch {
+        // 차트 조정은 저장소 없이도 현재 화면에서 계속 동작합니다.
+      }
+    }
 
     const DATASETS = {
       WTI: { label: "WTI", expected: "WTI.xlsx", match: [/wti/i] },
@@ -1412,12 +2167,20 @@
       }
     ];
 
+    let chartTuningRenderTimer = null;
+    let sectionNavObserver = null;
+
     const state = {
       datasets: new Map(),
       uploadedAt: null,
       periodMode: "1m",
+      sectionPeriodModes: new Map(),
+      activeSectionId: null,
       chartInstances: new Map(),
       interpretations: new Map(),
+      chartTweaks: new Map(),
+      openChartTweakPanels: new Set(),
+      missingPriorityFilter: "all",
       availableSummaries: [],
       missingRequests: [],
       computedReturns: []
@@ -1441,15 +2204,29 @@
       libraryWarning: document.getElementById("libraryWarning"),
       downloadPagePng: document.getElementById("downloadPagePng"),
       downloadAllCsv: document.getElementById("downloadAllCsv"),
-      downloadMissingCsv: document.getElementById("downloadMissingCsv")
+      downloadMissingCsv: document.getElementById("downloadMissingCsv"),
+      chartFontPt: document.getElementById("chartFontPt"),
+      unitLeftX: document.getElementById("unitLeftX"),
+      unitRightX: document.getElementById("unitRightX"),
+      unitY: document.getElementById("unitY"),
+      resetChartTuning: document.getElementById("resetChartTuning"),
+      missingDataSummary: document.getElementById("missingDataSummary"),
+      missingDataTable: document.getElementById("missingDataTable"),
+      missingSectionDownload: document.getElementById("missingSectionDownload"),
+      sectionNav: document.getElementById("sectionNav")
     };
 
     boot();
 
     function boot() {
+      applyChartRenderSettings();
+      syncChartRenderControls();
       bindEvents();
       checkLibraries();
+      loadInterpretations();
+      loadChartTweaks();
       loadPreloadedData();
+      setupImageFallbacks();
       render();
     }
 
@@ -1467,6 +2244,253 @@
       el.downloadPagePng.addEventListener("click", () => downloadElementPng(document.getElementById("dashboardPage"), "5월_시장_데이터_대시보드.png"));
       el.downloadAllCsv.addEventListener("click", downloadAllCsv);
       el.downloadMissingCsv.addEventListener("click", () => downloadCsv("missing_data_requests.csv", missingRequestsCsvRows()));
+      el.missingSectionDownload.addEventListener("click", () => downloadCsv("missing_data_requests.csv", missingRequestsCsvRows()));
+      document.querySelectorAll("[data-missing-filter]").forEach(button => {
+        button.addEventListener("click", () => setMissingPriorityFilter(button.dataset.missingFilter));
+      });
+      bindChartRenderControls();
+    }
+
+    function bindChartRenderControls() {
+      [
+        [el.chartFontPt, "fontPt"],
+        [el.unitLeftX, "unitLeftX"],
+        [el.unitRightX, "unitRightX"],
+        [el.unitY, "unitY"]
+      ].forEach(([input, key]) => {
+        if (!input) return;
+        input.addEventListener("input", () => {
+          const next = sanitizeChartRenderSettings({
+            ...chartRenderSettings,
+            [key]: input.value
+          });
+          Object.assign(chartRenderSettings, next);
+          syncChartRenderControls();
+          applyChartRenderSettings();
+          saveChartRenderSettings();
+          scheduleChartRerender();
+        });
+      });
+
+      if (el.resetChartTuning) {
+        el.resetChartTuning.addEventListener("click", () => {
+          Object.assign(chartRenderSettings, defaultChartRenderSettings());
+          syncChartRenderControls();
+          applyChartRenderSettings();
+          saveChartRenderSettings();
+          render();
+        });
+      }
+    }
+
+    function syncChartRenderControls() {
+      if (el.chartFontPt) el.chartFontPt.value = chartRenderSettings.fontPt.toFixed(1);
+      if (el.unitLeftX) el.unitLeftX.value = String(chartRenderSettings.unitLeftX);
+      if (el.unitRightX) el.unitRightX.value = String(chartRenderSettings.unitRightX);
+      if (el.unitY) el.unitY.value = String(chartRenderSettings.unitY);
+    }
+
+    function scheduleChartRerender() {
+      window.clearTimeout(chartTuningRenderTimer);
+      chartTuningRenderTimer = window.setTimeout(render, 160);
+    }
+
+    function loadInterpretations() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(INTERPRETATION_STORAGE_KEY) || "{}");
+        state.interpretations = new Map(Object.entries(saved));
+      } catch {
+        state.interpretations = new Map();
+      }
+    }
+
+    function saveInterpretations() {
+      try {
+        localStorage.setItem(INTERPRETATION_STORAGE_KEY, JSON.stringify(Object.fromEntries(state.interpretations)));
+      } catch {
+        // 저장소가 막혀도 현재 세션 입력은 유지됩니다.
+      }
+    }
+
+    function defaultChartTweak() {
+      return {
+        fontDelta: 0,
+        legendX: 0,
+        legendY: 0,
+        colorSet: 0,
+        lineStyle: "auto"
+      };
+    }
+
+    function loadChartTweaks() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(CHART_TWEAKS_STORAGE_KEY) || "{}");
+        state.chartTweaks = new Map(Object.entries(saved).map(([key, value]) => [key, sanitizeChartTweak(value)]));
+      } catch {
+        state.chartTweaks = new Map();
+      }
+    }
+
+    function saveChartTweaks() {
+      try {
+        localStorage.setItem(CHART_TWEAKS_STORAGE_KEY, JSON.stringify(Object.fromEntries(state.chartTweaks)));
+      } catch {
+        // 저장소가 막혀도 현재 세션 조정은 유지됩니다.
+      }
+    }
+
+    function sanitizeChartTweak(value) {
+      const defaults = defaultChartTweak();
+      const lineStyle = ["auto", "solid", "dashed"].includes(value?.lineStyle) ? value.lineStyle : defaults.lineStyle;
+      return {
+        fontDelta: clampNumber(value?.fontDelta, -6, 12, defaults.fontDelta),
+        legendX: clampNumber(value?.legendX, -160, 160, defaults.legendX),
+        legendY: clampNumber(value?.legendY, -120, 120, defaults.legendY),
+        colorSet: Math.round(clampNumber(value?.colorSet, 0, CHART_COLOR_SETS.length - 1, defaults.colorSet)),
+        lineStyle
+      };
+    }
+
+    function chartTweak(key) {
+      if (!state.chartTweaks.has(key)) state.chartTweaks.set(key, defaultChartTweak());
+      return sanitizeChartTweak(state.chartTweaks.get(key));
+    }
+
+    function updateChartTweak(key, patch) {
+      const next = sanitizeChartTweak({ ...chartTweak(key), ...patch });
+      state.chartTweaks.set(key, next);
+      state.openChartTweakPanels.add(key);
+      saveChartTweaks();
+      renderPreservingViewport();
+    }
+
+    function resetChartTweak(key) {
+      state.chartTweaks.delete(key);
+      state.openChartTweakPanels.add(key);
+      saveChartTweaks();
+      renderPreservingViewport();
+    }
+
+    function renderPreservingViewport() {
+      const scrollX = window.scrollX;
+      const scrollY = window.scrollY;
+      render();
+      requestAnimationFrame(() => {
+        window.scrollTo(scrollX, scrollY);
+      });
+    }
+
+    function chartFontSize(model) {
+      return Math.max(10, round(CHART_AXIS_FONT_SIZE + (model.chartTweak?.fontDelta || 0), 2));
+    }
+
+    function chartLegendFontSize(model) {
+      return Math.max(10, round(CHART_LEGEND_FONT_SIZE + (model.chartTweak?.fontDelta || 0), 2));
+    }
+
+    function chartUnitFontSize(model) {
+      return Math.max(10, round(CHART_UNIT_FONT_SIZE + (model.chartTweak?.fontDelta || 0), 2));
+    }
+
+    function tweakLineDatasets(datasets, tweak) {
+      const colors = CHART_COLOR_SETS[tweak.colorSet] || CHART_COLOR_SETS[0];
+      let lineIndex = 0;
+      return datasets.map((dataset, index) => {
+        const isLine = dataset.type === "line";
+        const color = Array.isArray(dataset.borderColor)
+          ? dataset.borderColor
+          : (isLine ? colors[lineIndex % colors.length] : colors[index % colors.length]);
+        const lineStyle = tweak.lineStyle === "solid"
+          ? []
+          : (tweak.lineStyle === "dashed" ? [7, 5] : dataset.borderDash);
+        const next = {
+          ...dataset,
+          borderColor: color,
+          backgroundColor: Array.isArray(dataset.backgroundColor)
+            ? dataset.backgroundColor
+            : (isLine ? color : transparent(color, 0.45))
+        };
+        if (isLine) {
+          next.borderDash = lineStyle || [];
+          lineIndex += 1;
+        }
+        return next;
+      });
+    }
+
+    function applyChartTweak(model, safeId) {
+      const tweak = chartTweak(safeId);
+      return {
+        ...model,
+        chartKey: safeId,
+        chartTweak: tweak,
+        datasets: tweakLineDatasets(model.datasets, tweak)
+      };
+    }
+
+    function interpretationTemplate() {
+      return "1) 이번 달 핵심 변화: \n2) 시장 영향: \n3) 포트폴리오 함의: ";
+    }
+
+    function setupImageFallbacks() {
+      document.querySelectorAll(".image-chart-frame img").forEach(image => {
+        if (image.complete && image.naturalWidth === 0) {
+          image.closest(".image-chart-frame")?.classList.add("missing-image");
+        }
+        image.addEventListener("error", () => {
+          image.closest(".image-chart-frame")?.classList.add("missing-image");
+        });
+      });
+    }
+
+    function setupSectionNavigation() {
+      if (!el.sectionNav) return;
+      if (sectionNavObserver) {
+        sectionNavObserver.disconnect();
+        sectionNavObserver = null;
+      }
+      const links = Array.from(el.sectionNav.querySelectorAll("a"));
+      const sections = links
+        .map(link => document.querySelector(link.getAttribute("href")))
+        .filter(Boolean);
+      if (!sections.length) return;
+      const activate = id => {
+        links.forEach(link => link.classList.toggle("active", link.getAttribute("href") === `#${id}`));
+      };
+      if (!("IntersectionObserver" in window)) {
+        activate(sections[0].id);
+        return;
+      }
+      sectionNavObserver = new IntersectionObserver(entries => {
+        const visible = entries
+          .filter(entry => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible?.target?.id) activate(visible.target.id);
+      }, { rootMargin: "-28% 0px -58% 0px", threshold: [0.08, 0.2, 0.4] });
+      sections.forEach(section => sectionNavObserver.observe(section));
+    }
+
+    function setMissingPriorityFilter(priority) {
+      state.missingPriorityFilter = priority || "all";
+      document.querySelectorAll("[data-missing-filter]").forEach(button => {
+        button.classList.toggle("active", button.dataset.missingFilter === state.missingPriorityFilter);
+      });
+      renderMissingDataSection();
+    }
+
+    function downloadPptAssetGroup(type) {
+      const assets = PPT_IMAGE_ASSETS
+        .map(asset => ({ path: asset[type], title: asset.title }))
+        .filter(asset => asset.path);
+      if (!assets.length) {
+        alert("저장할 파일이 없습니다.");
+        return;
+      }
+      assets.forEach((asset, index) => {
+        const fileName = asset.path.split("/").pop();
+        window.setTimeout(() => downloadStaticFile(asset.path, fileName), index * 180);
+      });
+      el.status.textContent = `${assets.length}개 ${type.toUpperCase()} 파일 저장을 시작했습니다.`;
     }
 
     function loadPreloadedData() {
@@ -1659,6 +2683,8 @@
       state.computedReturns = [];
       renderSections();
       renderSummary();
+      renderMissingDataSection();
+      setupSectionNavigation();
     }
 
     function renderSummary() {
@@ -1666,18 +2692,12 @@
       const availableChartCount = state.availableSummaries.filter(row => row.status === "생성 가능").length;
       const uniqueMissing = new Set(state.missingRequests.map(row => `${row.section}::${row.missing_data}`));
       const cards = [
-        metricCard("현재 사용 가능한 데이터", validDatasets.length),
+        metricCard("사용 가능 데이터셋", validDatasets.length),
+        metricCard("생성 가능 차트", availableChartCount),
         metricCard("누락 데이터", uniqueMissing.size),
-        metricCard("생성 가능한 그래프 수", availableChartCount),
-        metricCard("필요한 추가 데이터 수", uniqueMissing.size),
-        actionCard("전체 PNG 다운로드", "download-page-summary"),
-        actionCard("전체 CSV 다운로드", "download-csv-summary"),
-        actionCard("누락 데이터 요청서 다운로드", "download-missing-summary")
+        metricCard("마지막 업데이트", state.uploadedAt ? formatDateTime(state.uploadedAt) : "-")
       ];
       el.summaryGrid.innerHTML = cards.join("");
-      document.getElementById("download-page-summary").addEventListener("click", () => downloadElementPng(document.getElementById("dashboardPage"), "5월_시장_데이터_대시보드.png"));
-      document.getElementById("download-csv-summary").addEventListener("click", downloadAllCsv);
-      document.getElementById("download-missing-summary").addEventListener("click", () => downloadCsv("missing_data_requests.csv", missingRequestsCsvRows()));
     }
 
     function metricCard(label, value) {
@@ -1686,6 +2706,76 @@
 
     function actionCard(label, id) {
       return `<div class="summary-card summary-action"><span class="summary-label">${escapeHtml(label)}</span><button id="${id}" type="button">${escapeHtml(label)}</button></div>`;
+    }
+
+    function renderMissingDataSection() {
+      const filter = state.missingPriorityFilter || "all";
+      const uniqueRows = uniqueMissingRequests(state.missingRequests);
+      const rows = filter === "all" ? uniqueRows : uniqueRows.filter(row => row.priority === filter);
+      const counts = uniqueRows.reduce((acc, row) => {
+        acc[row.priority] = (acc[row.priority] || 0) + 1;
+        return acc;
+      }, {});
+
+      if (el.missingDataSummary) {
+        el.missingDataSummary.textContent = `누락 데이터 ${uniqueRows.length}개 · High ${counts.High || 0} · Medium ${counts.Medium || 0} · Low ${counts.Low || 0}`;
+      }
+
+      document.querySelectorAll("[data-missing-filter]").forEach(button => {
+        button.classList.toggle("active", button.dataset.missingFilter === filter);
+      });
+
+      if (!el.missingDataTable) return;
+      if (!rows.length) {
+        el.missingDataTable.innerHTML = `<div class="empty-state">현재 필터에 해당하는 누락 데이터가 없습니다.</div>`;
+        return;
+      }
+
+      el.missingDataTable.innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>섹션</th>
+              <th>필요한 데이터</th>
+              <th>필요한 컬럼</th>
+              <th>권장 출처</th>
+              <th>필요한 이유</th>
+              <th>우선순위</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows.map(row => `
+              <tr>
+                <td>${escapeHtml(row.section)}</td>
+                <td>${escapeHtml(row.missing_data)}</td>
+                <td>${escapeHtml(row.required_columns)}</td>
+                <td>${escapeHtml(row.suggested_source)}</td>
+                <td>${escapeHtml(row.reason_needed)}</td>
+                <td><span class="priority-badge ${escapeHtml(String(row.priority || "Medium").toLowerCase())}">${escapeHtml(row.priority || "Medium")}</span></td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+
+    function uniqueMissingRequests(rows) {
+      const seen = new Set();
+      return rows.filter(row => {
+        const key = `${row.section}::${row.missing_data}::${row.required_columns}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+    }
+
+    function renderSectionPeriodControl(section) {
+      const activeMode = sectionPeriodMode(section.id);
+      const buttons = Object.entries(PERIOD_OPTIONS).map(([mode, option]) => {
+        const active = activeMode === mode ? " active" : "";
+        return `<button class="${active}" data-section-period="${escapeHtml(mode)}" type="button">${escapeHtml(option.label)}</button>`;
+      }).join("");
+      return `<div class="segmented section-period" aria-label="${escapeHtml(section.title)} 기간 선택">${buttons}</div>`;
     }
 
     function renderSections() {
@@ -1701,40 +2791,53 @@
               <h2>${escapeHtml(section.title)}</h2>
             </div>
             <div class="section-actions">
-              <button class="small" data-section-png="${escapeHtml(section.id)}" type="button">섹션 PNG</button>
-              <button class="small" data-section-csv="${escapeHtml(section.id)}" type="button">섹션 CSV</button>
+              ${renderSectionPeriodControl(section)}
+              <button class="small secondary" data-section-png="${escapeHtml(section.id)}" type="button">이 섹션 이미지 저장</button>
+              <button class="small secondary" data-section-csv="${escapeHtml(section.id)}" type="button">이 섹션 데이터 저장</button>
             </div>
           </div>
           <div class="interpretation">
-            <label for="${section.id}-interpretation">핵심 해석 3줄</label>
-            <textarea id="${section.id}-interpretation" data-interpretation="${escapeHtml(section.id)}" rows="3">${escapeHtml(state.interpretations.get(section.id) || "")}</textarea>
+            <div class="interpretation-head">
+              <label for="${section.id}-interpretation">핵심 해석 3줄</label>
+              <div class="interpretation-actions">
+                <button class="small subtle" data-interpretation-template="${escapeHtml(section.id)}" type="button">해석 템플릿 삽입</button>
+                <button class="small subtle" data-interpretation-clear="${escapeHtml(section.id)}" type="button">해석 비우기</button>
+              </div>
+            </div>
+            <textarea id="${section.id}-interpretation" data-interpretation="${escapeHtml(section.id)}" rows="3" placeholder="1) 이번 달 핵심 변화: 2) 시장 영향: 3) 포트폴리오 함의:">${escapeHtml(state.interpretations.get(section.id) || "")}</textarea>
           </div>
           <div id="${section.id}-charts" class="chart-grid"></div>
         `;
         el.sectionsRoot.appendChild(article);
 
         const grid = article.querySelector(".chart-grid");
-        for (const spec of section.charts) {
-          const model = buildChartModel(spec, section);
-          if (model.ok) {
-            state.availableSummaries.push({
-              section: section.kicker,
-              chart_title: spec.title,
-              required_files: model.files.join("; "),
-              required_columns: model.columns.join("; "),
-              status: "생성 가능"
-            });
-            renderChartCard(grid, model, section);
-          } else {
-            registerMissing(section.kicker, spec.title, model.requiredColumns.join("; "), model.suggestedSource, model.reason, "High");
-            state.availableSummaries.push({
-              section: section.kicker,
-              chart_title: spec.title,
-              required_files: model.requiredFiles.join("; "),
-              required_columns: model.requiredColumns.join("; "),
-              status: "필요 데이터 요청"
-            });
+        state.activeSectionId = section.id;
+        try {
+          for (const spec of section.charts) {
+            const model = buildChartModel(spec, section);
+            if (model.ok) {
+              state.availableSummaries.push({
+                section: section.kicker,
+                chart_title: spec.title,
+                required_files: model.files.join("; "),
+                required_columns: model.columns.join("; "),
+                status: "생성 가능"
+              });
+              renderChartCard(grid, model, section);
+            } else {
+              registerMissing(section.kicker, spec.title, model.requiredColumns.join("; "), model.suggestedSource, model.reason, "High");
+              state.availableSummaries.push({
+                section: section.kicker,
+                chart_title: spec.title,
+                required_files: model.requiredFiles.join("; "),
+                required_columns: model.requiredColumns.join("; "),
+                status: "필요 데이터 요청"
+              });
+              renderMissingChartCard(grid, spec, model, section);
+            }
           }
+        } finally {
+          state.activeSectionId = null;
         }
 
         for (const request of section.extraRequests) {
@@ -1748,8 +2851,24 @@
 
         article.querySelector(`[data-section-png="${section.id}"]`).addEventListener("click", () => downloadElementPng(article, `${section.id}_section.png`));
         article.querySelector(`[data-section-csv="${section.id}"]`).addEventListener("click", () => downloadSectionCsv(section));
+        article.querySelectorAll("[data-section-period]").forEach(button => {
+          button.addEventListener("click", () => setSectionPeriod(section.id, button.dataset.sectionPeriod));
+        });
         article.querySelector(`[data-interpretation="${section.id}"]`).addEventListener("input", event => {
           state.interpretations.set(section.id, event.target.value);
+          saveInterpretations();
+        });
+        article.querySelector(`[data-interpretation-template="${section.id}"]`).addEventListener("click", () => {
+          const input = article.querySelector(`[data-interpretation="${section.id}"]`);
+          input.value = interpretationTemplate();
+          state.interpretations.set(section.id, input.value);
+          saveInterpretations();
+        });
+        article.querySelector(`[data-interpretation-clear="${section.id}"]`).addEventListener("click", () => {
+          const input = article.querySelector(`[data-interpretation="${section.id}"]`);
+          input.value = "";
+          state.interpretations.delete(section.id);
+          saveInterpretations();
         });
       }
     }
@@ -1961,7 +3080,7 @@
         false,
         `${SOURCE_NAME} / ${SOURCE_URL}`,
         false,
-        "누적 수익률 (100 = 26.03.02)"
+        base100UnitLabel(startDate)
       );
       model.events = events;
       model.forceSvg = true;
@@ -2003,6 +3122,7 @@
         true
       );
       model.customSvg = renderMarketCapRankSvg(rows);
+      model.marketCapRows = rows;
       model.tallChart = true;
       model.periodLabel = "사용자 제공";
       return model;
@@ -2058,7 +3178,21 @@
       const note = usesLateListingAlignment(alignedSeries)
         ? "정규화 기준: 포함 종목 중 가장 늦게 데이터가 시작되는 날짜 = 100"
         : "정규화 기준: 선택 기간의 첫 거래일 = 100";
-      return okModel(spec, section, files, columns, labels, datasets, tableRows, note);
+      return okModel(
+        spec,
+        section,
+        files,
+        columns,
+        labels,
+        datasets,
+        tableRows,
+        note,
+        false,
+        false,
+        `${SOURCE_NAME} / ${SOURCE_URL}`,
+        false,
+        base100UnitLabel(labels[0])
+      );
     }
 
     function usesLateListingAlignment(series) {
@@ -2080,10 +3214,10 @@
 
     function buildReturnsModel(spec, section) {
       const returnsByPeriod = new Map();
+      const selectedMode = currentPeriodMode();
+      const selectedOption = PERIOD_OPTIONS[selectedMode] || PERIOD_OPTIONS["1m"];
       const periodSpecs = [
-        { key: "1m", label: "1개월", color: "#c9a85b" },
-        { key: "6m", label: "6개월", color: "#191877" },
-        { key: "1y", label: "1년", color: "#8c8c8c" }
+        { key: selectedMode, label: selectedOption.label, color: "#191877" }
       ];
       const files = [];
       const columns = [];
@@ -2154,8 +3288,8 @@
         ? unique(Array.from(commonStarts.values()).filter(Boolean).map(date => isoDate(date)))
         : [];
       const note = alignLateListings
-        ? `수익률 계산식: (마지막 값 / 첫 값 - 1) * 100. DRAM/NASA/QTUM 포함 그래프는 포함 종목 중 가장 늦게 데이터가 시작되는 날짜부터 계산합니다.${commonStartLabels.length ? ` 공통 시작일: ${commonStartLabels.join(", ")}.` : ""}`
-        : "수익률 계산식: (마지막 값 / 첫 값 - 1) * 100. 1개월·6개월·1년 기준을 함께 표시합니다.";
+        ? `수익률 계산식: (마지막 값 / 첫 값 - 1) * 100. ${selectedOption.label} 기준입니다. DRAM/NASA/QTUM 포함 그래프는 포함 종목 중 가장 늦게 데이터가 시작되는 날짜부터 계산합니다.${commonStartLabels.length ? ` 공통 시작일: ${commonStartLabels.join(", ")}.` : ""}`
+        : `수익률 계산식: (마지막 값 / 첫 값 - 1) * 100. ${selectedOption.label} 기준입니다.`;
       return okModel(spec, section, unique(files), unique(columns), labels, datasets, tableRows, note, false, true);
     }
 
@@ -2442,7 +3576,7 @@
         false,
         `${SOURCE_NAME} / ${SOURCE_URL}, KRX / KRX CSV`,
         true,
-        "정규화 지수",
+        base100UnitLabel(labels[0]),
         "시총 비중(%)"
       );
     }
@@ -2767,7 +3901,7 @@
         false,
         `${SOURCE_NAME} / ${SOURCE_URL}, KRX / KRX CSV`,
         false,
-        "상승률 지수",
+        base100UnitLabel(labels[0]),
         "Forward P/E"
       );
     }
@@ -2826,31 +3960,128 @@
       };
     }
 
+    var chartPluginsRegistered = false;
+    var axisUnitLabelPlugin = null;
+
+    function createAxisUnitLabelPlugin() {
+      return {
+        id: "axisUnitLabels",
+        afterDraw(chart, args, options) {
+          const left = options?.left || "";
+          const right = options?.right || "";
+          if (!left && !right) return;
+
+          const { ctx, chartArea, scales } = chart;
+          ctx.save();
+          ctx.fillStyle = REPORT_TICK_COLOR;
+          const unitFontSize = options?.fontSize || CHART_UNIT_FONT_SIZE;
+          ctx.font = `${CHART_AXIS_FONT_WEIGHT} ${unitFontSize}px ${CHART_FONT_FAMILY}`;
+          ctx.textBaseline = "bottom";
+
+          if (left) {
+            const yScale = scales?.y;
+            const x = (yScale ? (yScale.left + yScale.right) / 2 : chartArea.left - LEFT_TICK_LABEL_CENTER_OFFSET) + chartRenderSettings.unitLeftX;
+            ctx.textAlign = "center";
+            ctx.fillText(left, x, chartArea.top - 12 + chartRenderSettings.unitY);
+          }
+
+          if (right) {
+            const rightScales = [scales?.y1, scales?.y2].filter(scale => scale && scale.display !== false);
+            const x = rightScales.length
+              ? (Math.min(...rightScales.map(scale => scale.left)) + Math.max(...rightScales.map(scale => scale.right))) / 2
+              : chartArea.right + RIGHT_TICK_LABEL_CENTER_OFFSET;
+            ctx.textAlign = "center";
+            ctx.fillText(right, x + chartRenderSettings.unitRightX, chartArea.top - 12 + chartRenderSettings.unitY);
+          }
+
+          ctx.restore();
+        }
+      };
+    }
+
+    function ensureChartPlugins() {
+      if (!window.Chart || chartPluginsRegistered) return;
+      axisUnitLabelPlugin = axisUnitLabelPlugin || createAxisUnitLabelPlugin();
+      Chart.defaults.font.family = CHART_FONT_FAMILY;
+      Chart.defaults.color = REPORT_TEXT_COLOR;
+      Chart.register(axisUnitLabelPlugin);
+      chartPluginsRegistered = true;
+    }
+
+    function axisSideSuffix(dataset) {
+      return dataset.yAxisID === "y1" || dataset.yAxisID === "y2" ? " (우)" : " (좌)";
+    }
+
+    function legendLabel(dataset, index) {
+      return `${dataset.label || `Series ${index + 1}`}${axisSideSuffix(dataset)}`;
+    }
+
+    function axisUnitLabels(model) {
+      const left = [];
+      const right = [];
+      addUnique(left, normalizeAxisUnit(model.yTitle || (model.bar ? "수익률(%)" : "")));
+      addUnique(right, normalizeAxisUnit(model.y1Title || ""));
+      addUnique(right, normalizeAxisUnit(model.y2Title || ""));
+      return {
+        left: left.join(" / "),
+        right: right.join(" / ")
+      };
+    }
+
+    function addUnique(items, value) {
+      if (value && !items.includes(value)) items.push(value);
+    }
+
+    function normalizeAxisUnit(title) {
+      const text = String(title || "").trim();
+      if (!text) return "";
+      if (text === "%") return "(%)";
+
+      const parentheticalUnit = text.match(/(\([^()]+\))\s*$/);
+      if (parentheticalUnit) return parentheticalUnit[1];
+
+      const compactUnits = new Set(["bp", "bps", "pt", "pts", "p", "원", "달러", "조 달러", "억 원", "배", "회"]);
+      return compactUnits.has(text) ? `(${text})` : "";
+    }
+
     function renderChartCard(parent, model, section) {
       const card = document.createElement("div");
       card.className = "chart-card";
       const safeId = `${section.id}-${model.spec.id}`;
+      model = applyChartTweak(model, safeId);
       const useSvg = model.forceSvg || !window.Chart;
       const chartAreaClass = `chart-area${(model.events || model.eventBands) ? " event-chart-area" : ""}${model.tallChart ? " tall-chart-area" : ""}`;
-      const chartMarkup = model.customSvg || (useSvg ? renderSvgChart(model) : `<div class="canvas-wrap"><canvas id="${safeId}-canvas"></canvas></div>${renderHtmlLegend(model)}`);
+      const chartMarkup = renderChartMarkup(model, safeId, useSvg);
+      const status = chartStatus(model);
       card.innerHTML = `
         <div class="chart-title-row">
-          <h3 class="chart-title">${escapeHtml(model.spec.title)}</h3>
-          <button class="small" data-chart-png="${safeId}" type="button">차트 PNG</button>
+          <div class="chart-title-main">
+            <h3 class="chart-title">${escapeHtml(model.spec.title)}</h3>
+            <span class="status-badge ${escapeHtml(status.className)}">${escapeHtml(status.label)}</span>
+          </div>
+          <div class="chart-card-actions">
+            <button class="small primary" data-chart-png="${safeId}" type="button">이 차트 이미지 저장</button>
+            <button class="small secondary" data-chart-csv="${safeId}" type="button">CSV 원천 데이터 저장</button>
+          </div>
         </div>
+        ${renderChartTweakControls(safeId, model)}
         ${model.note ? `<p class="chart-note ${model.note.includes("주기") ? "warning" : ""}">${escapeHtml(model.note)}</p>` : ""}
         <div class="${chartAreaClass}">${model.preChartHtml || ""}${chartMarkup}</div>
         <div class="meta">
-          사용 파일명: ${escapeHtml(model.files.join(", "))}<br>
-          사용 컬럼: ${escapeHtml(model.columns.join(", "))}<br>
-          기준 기간: ${escapeHtml(model.periodLabel)} · 출처: ${escapeHtml(model.sourceLabel)} · 마지막 업데이트: ${escapeHtml(model.updatedAt)}
+          <span class="meta-pill">기간: ${escapeHtml(model.periodLabel)}</span>
+          <span class="meta-pill">출처: ${escapeHtml(model.sourceLabel)}</span>
+          <span class="meta-pill">파일: ${escapeHtml(model.files.join(", "))}</span>
+          <span class="meta-pill">업데이트: ${escapeHtml(model.updatedAt)}</span>
         </div>
         ${renderDataTable(model.tableRows)}
       `;
       parent.appendChild(card);
       card.querySelector(`[data-chart-png="${safeId}"]`).addEventListener("click", () => downloadElementPng(card.querySelector(".chart-area"), `${safeId}.png`));
+      card.querySelector(`[data-chart-csv="${safeId}"]`).addEventListener("click", () => downloadChartCsv(model, `${safeId}.csv`));
+      bindChartTweakControls(card, safeId, model);
 
       if (window.Chart && !model.forceSvg && !model.customSvg) {
+        ensureChartPlugins();
         const ctx = card.querySelector("canvas");
         const chart = new Chart(ctx, {
           type: model.bar ? "bar" : "line",
@@ -2864,10 +4095,143 @@
       }
     }
 
+    function renderChartMarkup(model, safeId, useSvg) {
+      if (model.marketCapRows) return renderMarketCapRankSvg(model.marketCapRows, model);
+      if (model.customSvg) return model.customSvg;
+      return useSvg
+        ? renderSvgChart(model)
+        : `${renderHtmlLegend(model)}<div class="canvas-wrap"><canvas id="${safeId}-canvas"></canvas></div>`;
+    }
+
+    function renderChartTweakControls(safeId, model) {
+      const tweak = model.chartTweak || defaultChartTweak();
+      const colorSet = CHART_COLOR_SETS[tweak.colorSet] || CHART_COLOR_SETS[0];
+      const lineLabel = tweak.lineStyle === "solid" ? "실선" : (tweak.lineStyle === "dashed" ? "점선" : "자동");
+      const openAttr = state.openChartTweakPanels.has(safeId) ? " open" : "";
+      return `
+        <details class="chart-tweak-panel" data-chart-tweak-panel="${escapeHtml(safeId)}"${openAttr}>
+          <summary>
+            <span>차트별 조정</span>
+            <span class="chart-tweak-summary-value">글자 ${formatSigned(tweak.fontDelta)}px · 범례 X ${formatSigned(tweak.legendX)} / Y ${formatSigned(tweak.legendY)} · ${escapeHtml(lineLabel)}</span>
+          </summary>
+          <div class="chart-tweak-grid">
+            <div class="chart-tweak-group">
+              <span>눈금·범례 크기</span>
+              <div class="chart-tweak-buttons">
+                <button type="button" data-chart-tweak="${safeId}" data-tweak-action="fontDown">작게</button>
+                <button type="button" data-chart-tweak="${safeId}" data-tweak-action="fontUp">크게</button>
+              </div>
+            </div>
+            <div class="chart-tweak-group">
+              <span>선 색상</span>
+              <div class="chart-tweak-buttons">
+                <button type="button" data-chart-tweak="${safeId}" data-tweak-action="colorCycle">
+                  색상 변경 <span class="chart-tweak-color" style="background:${escapeHtml(colorSet[0])}"></span>
+                </button>
+              </div>
+            </div>
+            <div class="chart-tweak-group">
+              <span>실선·점선</span>
+              <div class="chart-tweak-buttons">
+                <button type="button" data-chart-tweak="${safeId}" data-tweak-action="lineStyle">${escapeHtml(lineLabel)}</button>
+              </div>
+            </div>
+            <div class="chart-tweak-group">
+              <span>범례 위치</span>
+              <div class="chart-tweak-buttons">
+                <button type="button" data-chart-tweak="${safeId}" data-tweak-action="legendLeft">←</button>
+                <button type="button" data-chart-tweak="${safeId}" data-tweak-action="legendRight">→</button>
+                <button type="button" data-chart-tweak="${safeId}" data-tweak-action="legendUp">↑</button>
+                <button type="button" data-chart-tweak="${safeId}" data-tweak-action="legendDown">↓</button>
+              </div>
+            </div>
+            <div class="chart-tweak-group">
+              <span>초기화</span>
+              <div class="chart-tweak-buttons">
+                <button type="button" data-chart-tweak="${safeId}" data-tweak-action="reset">이 차트 기본값</button>
+              </div>
+            </div>
+          </div>
+        </details>
+      `;
+    }
+
+    function bindChartTweakControls(card, safeId) {
+      const panel = card.querySelector(".chart-tweak-panel");
+      if (panel) {
+        panel.addEventListener("toggle", () => {
+          if (panel.open) {
+            state.openChartTweakPanels.add(safeId);
+          } else {
+            state.openChartTweakPanels.delete(safeId);
+          }
+        });
+      }
+
+      card.querySelectorAll(`[data-chart-tweak="${safeId}"]`).forEach(button => {
+        button.addEventListener("click", event => {
+          event.preventDefault();
+          state.openChartTweakPanels.add(safeId);
+          const tweak = chartTweak(safeId);
+          const action = button.dataset.tweakAction;
+          if (action === "fontUp") updateChartTweak(safeId, { fontDelta: tweak.fontDelta + 1 });
+          if (action === "fontDown") updateChartTweak(safeId, { fontDelta: tweak.fontDelta - 1 });
+          if (action === "legendLeft") updateChartTweak(safeId, { legendX: tweak.legendX - 8 });
+          if (action === "legendRight") updateChartTweak(safeId, { legendX: tweak.legendX + 8 });
+          if (action === "legendUp") updateChartTweak(safeId, { legendY: tweak.legendY - 8 });
+          if (action === "legendDown") updateChartTweak(safeId, { legendY: tweak.legendY + 8 });
+          if (action === "colorCycle") updateChartTweak(safeId, { colorSet: (tweak.colorSet + 1) % CHART_COLOR_SETS.length });
+          if (action === "lineStyle") updateChartTweak(safeId, { lineStyle: nextLineStyle(tweak.lineStyle) });
+          if (action === "reset") resetChartTweak(safeId);
+        });
+      });
+    }
+
+    function nextLineStyle(current) {
+      if (current === "auto") return "solid";
+      if (current === "solid") return "dashed";
+      return "auto";
+    }
+
+    function formatSigned(value) {
+      if (!Number.isFinite(value) || value === 0) return "0";
+      return value > 0 ? `+${value}` : String(value);
+    }
+
+    function chartStatus(model) {
+      const text = [model.spec.title, model.note, model.sourceLabel].join(" ");
+      if (/가상|추정|사용자 제공|SpaceX/.test(text)) return { label: "추정치 포함", className: "warn" };
+      if (/자동 코멘트|검증/.test(text)) return { label: "수동 검증 필요", className: "manual" };
+      return { label: "생성 가능", className: "ok" };
+    }
+
+    function renderMissingChartCard(parent, spec, model, section) {
+      const card = document.createElement("div");
+      card.className = "request-card";
+      card.innerHTML = `
+        <div class="request-title-row">
+          <div class="chart-title-main">
+            <h3 class="request-title">${escapeHtml(spec.title)}</h3>
+            <span class="status-badge danger">데이터 부족</span>
+          </div>
+        </div>
+        <div class="request-body">
+          <dl>
+            <dt>필요 파일</dt><dd>${escapeHtml((model.requiredFiles || []).join(", ") || "-")}</dd>
+            <dt>필요 컬럼</dt><dd>${escapeHtml((model.requiredColumns || []).join(", ") || "-")}</dd>
+            <dt>권장 출처</dt><dd>${escapeHtml(model.suggestedSource || "Bloomberg")}</dd>
+            <dt>사유</dt><dd>${escapeHtml(model.reason || "차트 생성에 필요한 데이터가 없습니다.")}</dd>
+          </dl>
+        </div>
+      `;
+      parent.appendChild(card);
+    }
+
     function renderHtmlLegend(model) {
+      const legendFontSize = chartLegendFontSize(model);
       const items = model.datasets.map((dataset, index) => {
         const color = Array.isArray(dataset.borderColor) ? dataset.borderColor[0] : (dataset.borderColor || COLORS[index % COLORS.length]);
-        const label = dataset.label || `Series ${index + 1}`;
+        const label = legendLabel(dataset, index);
         let marker = `<span class="legend-box" style="color:${escapeHtml(color)}"></span>`;
         if (dataset.type === "line") {
           marker = Array.isArray(dataset.borderDash) && dataset.borderDash.length
@@ -2876,18 +4240,30 @@
         }
         return `<span class="legend-item">${marker}<span>${escapeHtml(label)}</span></span>`;
       }).join("");
-      return `<div class="chart-legend">${items}</div>`;
+      return `<div class="chart-legend" style="${escapeHtml(legendInlineStyle(model, legendFontSize))}">${items}</div>`;
     }
 
-    function renderMarketCapRankSvg(rows) {
+    function legendInlineStyle(model, fontSize) {
+      const tweak = model.chartTweak || defaultChartTweak();
+      return [
+        `--chart-legend-font-size:${fontSize}px`,
+        `--chart-legend-line-width:${round(fontSize * 2.38, 2)}px`,
+        `--chart-legend-line-stroke:${round(fontSize * 0.19, 2)}px`,
+        `--chart-legend-box-size:${round(fontSize * 0.77, 2)}px`,
+        `transform:translate(${tweak.legendX || 0}px, ${tweak.legendY || 0}px)`
+      ].join(";");
+    }
+
+    function renderMarketCapRankSvg(rows, model = null) {
       const width = 900;
       const height = 390;
+      const axisFontSize = model ? chartFontSize(model) : CHART_AXIS_FONT_SIZE;
       const margin = { top: 24, right: 132, bottom: 34, left: 184 };
       const plotWidth = width - margin.left - margin.right;
       const rowHeight = 27;
       const maxValue = Math.max(...rows.map(row => row.high)) * 1.06;
       const x = value => margin.left + value / maxValue * plotWidth;
-      let svg = `<svg viewBox="0 0 ${width} ${height}" width="100%" height="100%" role="img" aria-label="글로벌 시가총액 순위">`;
+      let svg = `<svg viewBox="0 0 ${width} ${height}" width="100%" height="100%" role="img" aria-label="글로벌 시가총액 순위" style="font-family: ${escapeHtml(SVG_FONT_FAMILY)};">`;
       svg += `<rect x="0" y="0" width="${width}" height="${height}" fill="#ffffff"></rect>`;
       svg += `<text x="22" y="18" font-size="12" font-weight="800" fill="${REPORT_TICK_COLOR}">순위</text>`;
       svg += `<text x="78" y="18" font-size="12" font-weight="800" fill="${REPORT_TICK_COLOR}">기업</text>`;
@@ -2895,7 +4271,7 @@
       [0, 1, 2, 3, 4, 5].forEach(tick => {
         const xx = x(tick);
         svg += `<line x1="${round(xx, 2)}" y1="${margin.top}" x2="${round(xx, 2)}" y2="${height - margin.bottom}" stroke="${REPORT_GRID_COLOR}" stroke-width="0.7" stroke-dasharray="2 5"></line>`;
-        svg += `<text x="${round(xx, 2)}" y="${height - 10}" text-anchor="middle" font-size="12" fill="${REPORT_TICK_COLOR}">$${tick}T</text>`;
+        svg += `<text x="${round(xx, 2)}" y="${height - 10}" text-anchor="middle" font-size="${axisFontSize}" font-weight="${CHART_AXIS_FONT_WEIGHT}" fill="${REPORT_TICK_COLOR}">$${tick}T</text>`;
       });
       rows.forEach((row, index) => {
         const y = margin.top + index * rowHeight + 13;
@@ -2925,7 +4301,18 @@
       const height = hasEventOverlay ? 390 : 320;
       const labels = model.labels;
       const hasY2 = model.datasets.some(dataset => dataset.yAxisID === "y2");
-      const margin = { top: hasEvents ? 102 : (hasEventBands ? 70 : 20), right: hasY2 ? 118 : 64, bottom: 58, left: 64 };
+      const axisUnits = axisUnitLabels(model);
+      const longLeftUnit = axisUnits.left && axisUnits.left.length > 8;
+      const axisFontSize = chartFontSize(model);
+      const legendFontSize = chartLegendFontSize(model);
+      const unitFontSize = chartUnitFontSize(model);
+      const tweak = model.chartTweak || defaultChartTweak();
+      const margin = {
+        top: hasEvents ? 128 : (hasEventBands ? 98 : Math.max(58, unitFontSize + 38)),
+        right: hasY2 ? Math.max(118, axisFontSize * 5.2) : 64,
+        bottom: Math.max(58, axisFontSize + 38),
+        left: longLeftUnit ? Math.max(180, unitFontSize * 8.4) : Math.max(84, axisFontSize * 4.3)
+      };
       const plotWidth = width - margin.left - margin.right;
       const plotHeight = height - margin.top - margin.bottom;
       const x = index => labels.length <= 1
@@ -2940,37 +4327,60 @@
       const y = (value, scale) => margin.top + (scale.max - value) / (scale.max - scale.min) * plotHeight;
       const ticks = makeTicks(yScale);
       const xTicks = hasEvents ? makeMonthTicks(labels) : makeXTicks(labels);
-      const tickFontSize = hasEventOverlay ? 12 : 11;
-      const legendFontSize = hasEventOverlay ? 13 : 12;
-      let svg = `<svg viewBox="0 0 ${width} ${height}" width="100%" height="100%" role="img" aria-label="${escapeHtml(model.spec.title)}">`;
+      const tickFontSize = axisFontSize;
+      const leftTickLabels = ticks.map(tick => model.plainYAxis ? formatChartNumber(tick) : compactChartNumber(tick));
+      const leftTickWidth = Math.max(0, ...leftTickLabels.map(label => estimateSvgTextWidth(label, tickFontSize)));
+      const leftUnitX = margin.left - 8 - leftTickWidth / 2 + chartRenderSettings.unitLeftX;
+      const y1TickStartX = width - margin.right + 8;
+      const y2AxisX = width - margin.right + 54;
+      const y2TickStartX = y2AxisX + 8;
+      const rightTickBoxes = [];
+      if (y1Datasets.length) {
+        const y1Width = Math.max(0, ...makeTicks(y1Scale).map(tick => estimateSvgTextWidth(compactChartNumber(tick), tickFontSize)));
+        rightTickBoxes.push({ left: y1TickStartX, right: y1TickStartX + y1Width });
+      }
+      if (y2Datasets.length) {
+        const y2Width = Math.max(0, ...makeTicks(y2Scale).map(tick => estimateSvgTextWidth(compactChartNumber(tick), tickFontSize)));
+        rightTickBoxes.push({ left: y2TickStartX, right: y2TickStartX + y2Width });
+      }
+      const rightUnitX = rightTickBoxes.length
+        ? (Math.min(...rightTickBoxes.map(box => box.left)) + Math.max(...rightTickBoxes.map(box => box.right))) / 2 + chartRenderSettings.unitRightX
+        : width - margin.right + RIGHT_TICK_LABEL_CENTER_OFFSET + chartRenderSettings.unitRightX;
+      const unitY = margin.top - 18 + chartRenderSettings.unitY;
+      let svg = `<svg viewBox="0 0 ${width} ${height}" width="100%" height="100%" role="img" aria-label="${escapeHtml(model.spec.title)}" style="font-family: ${escapeHtml(SVG_FONT_FAMILY)};">`;
       svg += `<rect x="0" y="0" width="${width}" height="${height}" fill="#ffffff"></rect>`;
+      if (axisUnits.left) {
+        svg += `<text x="${round(leftUnitX, 2)}" y="${round(unitY, 2)}" text-anchor="middle" font-size="${unitFontSize}" font-weight="${CHART_AXIS_FONT_WEIGHT}" fill="${REPORT_TICK_COLOR}">${escapeHtml(axisUnits.left)}</text>`;
+      }
+      if (axisUnits.right) {
+        svg += `<text x="${round(rightUnitX, 2)}" y="${round(unitY, 2)}" text-anchor="middle" font-size="${unitFontSize}" font-weight="${CHART_AXIS_FONT_WEIGHT}" fill="${REPORT_TICK_COLOR}">${escapeHtml(axisUnits.right)}</text>`;
+      }
       if (hasEventBands) {
         svg += renderSvgEventBands(model.eventBands, labels, x, margin, width, height);
       }
       for (const tick of ticks) {
         const yy = y(tick, yScale);
         svg += `<line x1="${margin.left}" y1="${yy}" x2="${width - margin.right}" y2="${yy}" stroke="${REPORT_GRID_COLOR}" stroke-width="0.8" stroke-dasharray="2 5"></line>`;
-        svg += `<text x="${margin.left - 8}" y="${yy + 4}" text-anchor="end" font-size="${tickFontSize}" fill="${REPORT_TICK_COLOR}">${escapeHtml(model.plainYAxis ? formatNumber(tick) : compactNumber(tick))}</text>`;
+        svg += `<text x="${margin.left - 8}" y="${yy + 4}" text-anchor="end" font-size="${tickFontSize}" font-weight="${CHART_AXIS_FONT_WEIGHT}" fill="${REPORT_TICK_COLOR}">${escapeHtml(model.plainYAxis ? formatChartNumber(tick) : compactChartNumber(tick))}</text>`;
       }
       svg += `<line x1="${margin.left}" y1="${margin.top}" x2="${margin.left}" y2="${height - margin.bottom}" stroke="${REPORT_AXIS_COLOR}"></line>`;
       svg += `<line x1="${margin.left}" y1="${height - margin.bottom}" x2="${width - margin.right}" y2="${height - margin.bottom}" stroke="${REPORT_AXIS_COLOR}"></line>`;
       if (y1Datasets.length) {
         for (const tick of makeTicks(y1Scale)) {
           const yy = y(tick, y1Scale);
-          svg += `<text x="${width - margin.right + 8}" y="${yy + 4}" text-anchor="start" font-size="${tickFontSize}" fill="${REPORT_TICK_COLOR}">${escapeHtml(compactNumber(tick))}</text>`;
+          svg += `<text x="${y1TickStartX}" y="${yy + 4}" text-anchor="start" font-size="${tickFontSize}" font-weight="${CHART_AXIS_FONT_WEIGHT}" fill="${REPORT_TICK_COLOR}">${escapeHtml(compactChartNumber(tick))}</text>`;
         }
         svg += `<line x1="${width - margin.right}" y1="${margin.top}" x2="${width - margin.right}" y2="${height - margin.bottom}" stroke="${REPORT_AXIS_COLOR}"></line>`;
       }
       if (y2Datasets.length) {
-        const axisX = width - margin.right + 54;
         for (const tick of makeTicks(y2Scale)) {
           const yy = y(tick, y2Scale);
-          svg += `<text x="${axisX + 8}" y="${yy + 4}" text-anchor="start" font-size="${tickFontSize}" fill="${REPORT_TICK_COLOR}">${escapeHtml(compactNumber(tick))}</text>`;
+          svg += `<text x="${y2TickStartX}" y="${yy + 4}" text-anchor="start" font-size="${tickFontSize}" font-weight="${CHART_AXIS_FONT_WEIGHT}" fill="${REPORT_TICK_COLOR}">${escapeHtml(compactChartNumber(tick))}</text>`;
         }
-        svg += `<line x1="${axisX}" y1="${margin.top}" x2="${axisX}" y2="${height - margin.bottom}" stroke="${REPORT_AXIS_COLOR}"></line>`;
+        svg += `<line x1="${y2AxisX}" y1="${margin.top}" x2="${y2AxisX}" y2="${height - margin.bottom}" stroke="${REPORT_AXIS_COLOR}"></line>`;
       }
       for (const tick of xTicks) {
-        svg += `<text x="${x(tick.index)}" y="${height - margin.bottom + 22}" text-anchor="middle" font-size="${tickFontSize}" fill="${REPORT_TICK_COLOR}">${escapeHtml(shortDateLabel(tick.label))}</text>`;
+        svg += `<text x="${x(tick.index)}" y="${height - margin.bottom + 22}" text-anchor="middle" font-size="${tickFontSize}" font-weight="${CHART_AXIS_FONT_WEIGHT}" fill="${REPORT_TICK_COLOR}">${escapeHtml(shortDateLabel(tick.label))}</text>`;
       }
       const barDatasets = model.datasets.filter(dataset => dataset.type === "bar");
       model.datasets.forEach((dataset, datasetIndex) => {
@@ -3010,23 +4420,23 @@
         svg += `</svg>`;
         return svg;
       }
-      const legendY = height - 18;
-      let legendX = margin.left;
+      const legendY = 22 + (tweak.legendY || 0);
+      let legendX = margin.left + (tweak.legendX || 0);
       model.datasets.forEach((dataset, index) => {
         const color = Array.isArray(dataset.borderColor) ? dataset.borderColor[0] : (dataset.borderColor || COLORS[index % COLORS.length]);
-        const label = dataset.label || `Series ${index + 1}`;
+        const label = legendLabel(dataset, index);
         if (dataset.type === "line") {
           if (Array.isArray(dataset.borderDash) && dataset.borderDash.length) {
             svg += `<text x="${legendX}" y="${legendY}" font-size="${legendFontSize}" font-weight="800" fill="${escapeHtml(color)}">- - -</text>`;
           } else {
-            svg += `<line x1="${legendX}" y1="${legendY - 4}" x2="${legendX + 22}" y2="${legendY - 4}" stroke="${escapeHtml(color)}" stroke-width="${dataset.borderWidth || 2.4}" stroke-linecap="round"></line>`;
+            svg += `<line x1="${legendX}" y1="${legendY - 5}" x2="${legendX + 44}" y2="${legendY - 5}" stroke="${escapeHtml(color)}" stroke-width="${Math.max(dataset.borderWidth || 2.4, 3.2)}" stroke-linecap="round"></line>`;
           }
-          svg += `<text x="${legendX + 34}" y="${legendY}" font-size="${legendFontSize}" fill="${REPORT_TEXT_COLOR}">${escapeHtml(label)}</text>`;
-          legendX += Math.max(104, label.length * (legendFontSize * 0.68) + 46);
+          svg += `<text x="${legendX + 58}" y="${legendY}" font-size="${legendFontSize}" font-weight="500" fill="${REPORT_TEXT_COLOR}">${escapeHtml(label)}</text>`;
+          legendX += Math.max(150, label.length * (legendFontSize * 0.7) + 76);
         } else {
-          svg += `<rect x="${legendX}" y="${legendY - 10}" width="12" height="12" fill="${escapeHtml(color)}"></rect>`;
-          svg += `<text x="${legendX + 18}" y="${legendY}" font-size="${legendFontSize}" fill="${REPORT_TEXT_COLOR}">${escapeHtml(label)}</text>`;
-          legendX += Math.max(92, label.length * (legendFontSize * 0.68) + 34);
+          svg += `<rect x="${legendX}" y="${legendY - 13}" width="16" height="16" fill="${escapeHtml(color)}"></rect>`;
+          svg += `<text x="${legendX + 26}" y="${legendY}" font-size="${legendFontSize}" font-weight="500" fill="${REPORT_TEXT_COLOR}">${escapeHtml(label)}</text>`;
+          legendX += Math.max(130, label.length * (legendFontSize * 0.7) + 46);
         }
       });
       svg += `</svg>`;
@@ -3067,15 +4477,17 @@
     }
 
     function renderSvgBandLegend(model, margin) {
-      const legendX = margin.left + 10;
-      let y = 20;
-      let svg = `<line x1="${legendX}" y1="${y}" x2="${legendX + 34}" y2="${y}" stroke="${MAIN_LINE_COLOR}" stroke-width="3" stroke-linecap="round"></line>`;
-      svg += `<text x="${legendX + 46}" y="${y + 5}" font-size="14" fill="${REPORT_TEXT_COLOR}">${escapeHtml(model.datasets[0]?.label || "SPY")}</text>`;
-      y += 24;
+      const legendFontSize = chartLegendFontSize(model);
+      const tweak = model.chartTweak || defaultChartTweak();
+      const legendX = margin.left + 10 + (tweak.legendX || 0);
+      let y = 20 + (tweak.legendY || 0);
+      let svg = `<line x1="${legendX}" y1="${y}" x2="${legendX + 44}" y2="${y}" stroke="${MAIN_LINE_COLOR}" stroke-width="3.4" stroke-linecap="round"></line>`;
+      svg += `<text x="${legendX + 58}" y="${y + 6}" font-size="${legendFontSize}" font-weight="500" fill="${REPORT_TEXT_COLOR}">${escapeHtml(model.datasets[0]?.label || "SPY")}</text>`;
+      y += 30;
       for (const band of model.eventBands || []) {
-        svg += `<rect x="${legendX}" y="${y - 10}" width="34" height="14" fill="${escapeHtml(transparent(band.color || "#c00000", band.opacity ?? 0.14))}" stroke="${escapeHtml(transparent(band.color || "#c00000", 0.32))}" stroke-width="0.8"></rect>`;
-        svg += `<text x="${legendX + 46}" y="${y + 2}" font-size="14" fill="${REPORT_TEXT_COLOR}">${escapeHtml(band.label)}</text>`;
-        y += 22;
+        svg += `<rect x="${legendX}" y="${y - 13}" width="44" height="18" fill="${escapeHtml(transparent(band.color || "#c00000", band.opacity ?? 0.14))}" stroke="${escapeHtml(transparent(band.color || "#c00000", 0.32))}" stroke-width="0.8"></rect>`;
+        svg += `<text x="${legendX + 58}" y="${y + 3}" font-size="${legendFontSize}" font-weight="500" fill="${REPORT_TEXT_COLOR}">${escapeHtml(band.label)}</text>`;
+        y += 28;
       }
       return svg;
     }
@@ -3086,11 +4498,11 @@
       if (index < 0 || !Number.isFinite(data[index])) return "";
       const pointX = x(index);
       const pointY = y(data[index]);
-      const label = `${model.endReturnPct >= 0 ? "+" : ""}${formatNumber(model.endReturnPct)}%`;
+      const label = formatChartPercent(model.endReturnPct);
       const labelX = clamp(pointX - 96, margin.left + 10, width - margin.right - 86);
       const labelY = clamp(pointY - 18, margin.top + 18, pointY + 28);
       let svg = `<circle cx="${round(pointX, 2)}" cy="${round(pointY, 2)}" r="6" fill="#c00000" stroke="#ffffff" stroke-width="2"></circle>`;
-      svg += `<text x="${round(labelX, 2)}" y="${round(labelY, 2)}" font-size="18" font-weight="800" fill="#c00000">${escapeHtml(label)}</text>`;
+      svg += `<text x="${round(labelX, 2)}" y="${round(labelY, 2)}" font-size="18" font-weight="${CHART_AXIS_FONT_WEIGHT}" fill="#c00000">${escapeHtml(label)}</text>`;
       return svg;
     }
 
@@ -3116,7 +4528,7 @@
         const boxWidth = event.width || 180;
         const boxHeight = 38 + event.lines.length * 20;
         const boxX = clamp(pointX + (event.xOffset || 0), margin.left + 4, width - margin.right - boxWidth - 4);
-        const boxY = clamp(event.boxY ?? 16, 8, height - margin.bottom - boxHeight - 8);
+        const boxY = clamp(Math.max(event.boxY ?? 16, 44), 8, height - margin.bottom - boxHeight - 8);
         const anchorY = boxY > pointY ? boxY : boxY + boxHeight;
         const anchorX = clamp(pointX, boxX + 16, boxX + boxWidth - 16);
         svg += `<line x1="${round(pointX, 2)}" y1="${round(pointY, 2)}" x2="${round(anchorX, 2)}" y2="${round(anchorY, 2)}" stroke="${MAIN_LINE_COLOR}" stroke-width="0.9"></line>`;
@@ -3224,15 +4636,27 @@
       const yBounds = model.spec.padYAxes ? makeScale(model.datasets.filter(dataset => (dataset.yAxisID || "y") === "y"), model.bar) : null;
       const y1Bounds = model.spec.padYAxes ? makeScale(model.datasets.filter(dataset => dataset.yAxisID === "y1"), false) : null;
       const y2Bounds = model.spec.padYAxes ? makeScale(model.datasets.filter(dataset => dataset.yAxisID === "y2"), false) : null;
+      const axisUnits = axisUnitLabels(model);
+      const longLeftUnit = axisUnits.left && axisUnits.left.length > 8;
+      const axisFontSize = chartFontSize(model);
+      const unitFontSize = chartUnitFontSize(model);
       return {
         responsive: true,
         maintainAspectRatio: false,
         devicePixelRatio: CHART_DEVICE_PIXEL_RATIO,
         animation: false,
         interaction: { mode: "index", intersect: false },
+        layout: {
+          padding: {
+            top: axisUnits.left || axisUnits.right ? Math.max(36, unitFontSize + 18) : 10,
+            left: longLeftUnit ? Math.max(120, unitFontSize * 6.8) : 16,
+            right: axisUnits.right ? Math.max(56, unitFontSize * 2.6) : 16
+          }
+        },
         plugins: {
           legend: { display: false },
-          tooltip: { callbacks: { label: context => `${context.dataset.label}: ${formatNumber(context.parsed.y)}` } }
+          axisUnitLabels: { ...axisUnits, fontSize: unitFontSize },
+          tooltip: { callbacks: { label: context => `${context.dataset.label}: ${formatChartNumber(context.parsed.y)}` } }
         },
         scales: {
           x: {
@@ -3243,7 +4667,7 @@
               autoSkip: true,
               maxTicksLimit: 6,
               color: REPORT_TICK_COLOR,
-              font: { size: 10 },
+              font: { family: CHART_FONT_FAMILY, size: axisFontSize, weight: CHART_AXIS_FONT_WEIGHT },
               callback: function(value) {
                 return shortDateLabel(this.getLabelForValue(value));
               }
@@ -3254,8 +4678,8 @@
             border: { color: REPORT_AXIS_COLOR },
             min: yBounds ? yBounds.min : undefined,
             max: yBounds ? yBounds.max : undefined,
-            ticks: { color: REPORT_TICK_COLOR, callback: value => model.plainYAxis ? formatNumber(value) : compactNumber(value) },
-            title: { display: true, text: model.yTitle || (model.bar ? "수익률(%)" : ""), color: REPORT_TICK_COLOR }
+            ticks: { color: REPORT_TICK_COLOR, font: { family: CHART_FONT_FAMILY, size: axisFontSize, weight: CHART_AXIS_FONT_WEIGHT }, callback: value => model.plainYAxis ? formatChartNumber(value) : compactChartNumber(value) },
+            title: { display: false, text: "" }
           },
           y1: model.priceVolume || model.datasets.some(dataset => dataset.yAxisID === "y1")
             ? {
@@ -3264,8 +4688,8 @@
                 border: { color: REPORT_AXIS_COLOR },
                 min: y1Bounds ? y1Bounds.min : undefined,
                 max: y1Bounds ? y1Bounds.max : undefined,
-                ticks: { color: REPORT_TICK_COLOR, callback: value => model.plainYAxis ? formatNumber(value) : compactNumber(value) },
-                title: { display: Boolean(model.y1Title), text: model.y1Title, color: REPORT_TICK_COLOR }
+                ticks: { color: REPORT_TICK_COLOR, font: { family: CHART_FONT_FAMILY, size: axisFontSize, weight: CHART_AXIS_FONT_WEIGHT }, callback: value => model.plainYAxis ? formatChartNumber(value) : compactChartNumber(value) },
+                title: { display: false, text: "" }
               }
             : { display: false },
           y2: model.datasets.some(dataset => dataset.yAxisID === "y2")
@@ -3275,8 +4699,8 @@
                 border: { color: REPORT_AXIS_COLOR },
                 min: y2Bounds ? y2Bounds.min : undefined,
                 max: y2Bounds ? y2Bounds.max : undefined,
-                ticks: { color: REPORT_TICK_COLOR, callback: value => model.plainYAxis ? formatNumber(value) : compactNumber(value) },
-                title: { display: Boolean(model.y2Title), text: model.y2Title, color: REPORT_TICK_COLOR },
+                ticks: { color: REPORT_TICK_COLOR, font: { family: CHART_FONT_FAMILY, size: axisFontSize, weight: CHART_AXIS_FONT_WEIGHT }, callback: value => model.plainYAxis ? formatChartNumber(value) : compactChartNumber(value) },
+                title: { display: false, text: "" },
                 weight: 2
               }
             : { display: false }
@@ -3315,8 +4739,9 @@
     }
 
     function filteredRows(dataset) {
-      if (state.periodMode === "all") return dataset.rows;
-      return rowsForPeriod(dataset, state.periodMode);
+      const mode = currentPeriodMode();
+      if (mode === "all") return dataset.rows;
+      return rowsForPeriod(dataset, mode);
     }
 
     function filterRowsByCutoff(rows) {
@@ -3364,7 +4789,7 @@
       return null;
     }
 
-    function computeReturn(key, columns, mode = state.periodMode, minStartDate = null, allowShortWindow = false) {
+    function computeReturn(key, columns, mode = currentPeriodMode(), minStartDate = null, allowShortWindow = false) {
       const dataset = state.datasets.get(key);
       const label = DATASETS[key].label;
       if (!dataset) return { ok: false, reason: `${label} 파일이 업로드되지 않았습니다.` };
@@ -3453,6 +4878,7 @@
 
     function setPeriod(mode) {
       state.periodMode = mode;
+      state.sectionPeriodModes.clear();
       el.periodOneMonth.classList.toggle("active", mode === "1m");
       el.periodSixMonths.classList.toggle("active", mode === "6m");
       el.periodOneYear.classList.toggle("active", mode === "1y");
@@ -3461,8 +4887,26 @@
       render();
     }
 
-    function periodLabel() {
-      return PERIOD_OPTIONS[state.periodMode]?.label || "1개월";
+    function setSectionPeriod(sectionId, mode) {
+      if (!PERIOD_OPTIONS[mode]) return;
+      if (mode === state.periodMode) {
+        state.sectionPeriodModes.delete(sectionId);
+      } else {
+        state.sectionPeriodModes.set(sectionId, mode);
+      }
+      render();
+    }
+
+    function sectionPeriodMode(sectionId) {
+      return state.sectionPeriodModes.get(sectionId) || state.periodMode;
+    }
+
+    function currentPeriodMode() {
+      return state.activeSectionId ? sectionPeriodMode(state.activeSectionId) : state.periodMode;
+    }
+
+    function periodLabel(mode = currentPeriodMode()) {
+      return PERIOD_OPTIONS[mode]?.label || "1개월";
     }
 
     function destroyCharts() {
@@ -3471,12 +4915,17 @@
     }
 
     function downloadStaticFile(path, fileName) {
-      const link = document.createElement("a");
-      link.href = path;
-      link.download = fileName;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
+      try {
+        const link = document.createElement("a");
+        link.href = path;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        if (el.status) el.status.textContent = `${fileName} 저장을 시작했습니다.`;
+      } catch (error) {
+        alert(`파일 저장을 시작하지 못했습니다: ${error.message}`);
+      }
     }
 
     async function downloadElementPng(element, fileName) {
@@ -3484,23 +4933,55 @@
         alert("html2canvas 라이브러리가 로드되지 않아 PNG를 생성할 수 없습니다.");
         return;
       }
-      const canvas = await html2canvas(element, { backgroundColor: "#ffffff", scale: PNG_SCALE, useCORS: true });
-      const link = document.createElement("a");
-      link.download = fileName;
-      link.href = canvas.toDataURL("image/png");
-      link.click();
+      const isSingleChart = element.classList.contains("chart-area");
+      const originalHeight = element.style.height;
+      if (isSingleChart) {
+        const width = element.getBoundingClientRect().width;
+        element.style.height = `${width * PPT_EXPORT_HEIGHT_CM / PPT_EXPORT_WIDTH_CM}px`;
+        await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+      }
+      try {
+        const canvas = await html2canvas(element, { backgroundColor: "#ffffff", scale: PNG_SCALE, useCORS: true });
+        const link = document.createElement("a");
+        link.download = fileName;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+        if (el.status) el.status.textContent = `${fileName} 저장을 시작했습니다.`;
+      } catch (error) {
+        alert(`PNG 저장에 실패했습니다: ${error.message}`);
+      } finally {
+        if (isSingleChart) {
+          element.style.height = originalHeight;
+        }
+      }
     }
 
     function downloadSectionCsv(section) {
       const rows = [];
-      for (const spec of section.charts) {
-        const model = buildChartModel(spec, section);
-        if (!model.ok) continue;
-        for (const row of model.tableRows) {
-          rows.push({ section: section.kicker, chart_title: spec.title, ...row });
+      state.activeSectionId = section.id;
+      try {
+        for (const spec of section.charts) {
+          const model = buildChartModel(spec, section);
+          if (!model.ok) continue;
+          for (const row of model.tableRows) {
+            rows.push({ section: section.kicker, chart_title: spec.title, ...row });
+          }
         }
+      } finally {
+        state.activeSectionId = null;
       }
       downloadCsv(`${section.id}_data.csv`, rows);
+    }
+
+    function downloadChartCsv(model, fileName) {
+      const rows = (model.tableRows || []).map(row => ({
+        chart_title: model.spec.title,
+        period: model.periodLabel,
+        source: model.sourceLabel,
+        files: model.files.join("; "),
+        ...row
+      }));
+      downloadCsv(fileName, rows);
     }
 
     function downloadAllCsv() {
@@ -3528,7 +5009,7 @@
     }
 
     function missingRequestsCsvRows() {
-      return state.missingRequests;
+      return uniqueMissingRequests(state.missingRequests);
     }
 
     function downloadCsv(fileName, rows) {
@@ -3622,6 +5103,17 @@
       return `${match[1].slice(2)}/${match[2]}`;
     }
 
+    function base100UnitLabel(value) {
+      const text = String(value || "");
+      const match = text.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if (!match) return text ? `(${text} = 100)` : "";
+      return `(${match[1]}/${match[2]}/${match[3]} = 100)`;
+    }
+
+    function estimateSvgTextWidth(value, fontSize) {
+      return String(value == null ? "" : value).length * fontSize * 0.56;
+    }
+
     function escapeHtml(value) {
       return String(value == null ? "" : value)
         .replace(/&/g, "&amp;")
@@ -3644,6 +5136,23 @@
     function compactNumber(value) {
       if (!Number.isFinite(value)) return "";
       return new Intl.NumberFormat("ko-KR", { notation: "compact", maximumFractionDigits: 2 }).format(value);
+    }
+
+    function formatChartNumber(value) {
+      if (!Number.isFinite(value)) return "";
+      const text = formatNumber(Math.abs(value));
+      return value < 0 ? `(${text})` : text;
+    }
+
+    function compactChartNumber(value) {
+      if (!Number.isFinite(value)) return "";
+      const text = compactNumber(Math.abs(value));
+      return value < 0 ? `(${text})` : text;
+    }
+
+    function formatChartPercent(value) {
+      if (!Number.isFinite(value)) return "";
+      return `${formatChartNumber(value)}%`;
     }
 
     function numberOrNull(value) {

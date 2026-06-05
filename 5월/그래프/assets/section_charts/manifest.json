@@ -1,0 +1,245 @@
+[
+  {
+    "sectionId": "macro",
+    "sectionIndex": 1,
+    "kicker": "SECTION 1. 매크로",
+    "sectionTitle": "매크로: 유가 하락에도 금리는 높은 상태인가?",
+    "chartIndex": 1,
+    "title": "WTI vs 미국 10년물 금리",
+    "fileName": "section_01_01_macro.png"
+  },
+  {
+    "sectionId": "macro",
+    "sectionIndex": 1,
+    "kicker": "SECTION 1. 매크로",
+    "sectionTitle": "매크로: 유가 하락에도 금리는 높은 상태인가?",
+    "chartIndex": 2,
+    "title": "WTI + CPI YoY + 미국 10년물 금리",
+    "fileName": "section_01_02_macro.png"
+  },
+  {
+    "sectionId": "macro",
+    "sectionIndex": 1,
+    "kicker": "SECTION 1. 매크로",
+    "sectionTitle": "매크로: 유가 하락에도 금리는 높은 상태인가?",
+    "chartIndex": 3,
+    "title": "SPY 가격 + 거래량",
+    "fileName": "section_01_03_macro.png"
+  },
+  {
+    "sectionId": "macro",
+    "sectionIndex": 1,
+    "kicker": "SECTION 1. 매크로",
+    "sectionTitle": "매크로: 유가 하락에도 금리는 높은 상태인가?",
+    "chartIndex": 4,
+    "title": "SPY 3개월 - 트럼프, 이란 캠페인 종결 의지 시사",
+    "fileName": "section_01_04_macro.png"
+  },
+  {
+    "sectionId": "macro",
+    "sectionIndex": 1,
+    "kicker": "SECTION 1. 매크로",
+    "sectionTitle": "매크로: 유가 하락에도 금리는 높은 상태인가?",
+    "chartIndex": 5,
+    "title": "CPI YoY + 미국 10년물 금리",
+    "fileName": "section_01_05_macro.png"
+  },
+  {
+    "sectionId": "macro",
+    "sectionIndex": 1,
+    "kicker": "SECTION 1. 매크로",
+    "sectionTitle": "매크로: 유가 하락에도 금리는 높은 상태인가?",
+    "chartIndex": 6,
+    "title": "5월 주요 자산 수익률 비교",
+    "fileName": "section_01_06_macro.png"
+  },
+  {
+    "sectionId": "korea",
+    "sectionIndex": 2,
+    "kicker": "SECTION 2. 한국",
+    "sectionTitle": "한국: KOSPI가 오른 건가, 삼성전자·SK하이닉스가 오른 건가?",
+    "chartIndex": 1,
+    "title": "KOSPI vs 삼성전자 vs SK하이닉스 정규화 차트",
+    "fileName": "section_02_01_korea.png"
+  },
+  {
+    "sectionId": "korea",
+    "sectionIndex": 2,
+    "kicker": "SECTION 2. 한국",
+    "sectionTitle": "한국: KOSPI가 오른 건가, 삼성전자·SK하이닉스가 오른 건가?",
+    "chartIndex": 2,
+    "title": "KOSPI P/E 밴드 차트",
+    "fileName": "section_02_02_korea.png"
+  },
+  {
+    "sectionId": "korea",
+    "sectionIndex": 2,
+    "kicker": "SECTION 2. 한국",
+    "sectionTitle": "한국: KOSPI가 오른 건가, 삼성전자·SK하이닉스가 오른 건가?",
+    "chartIndex": 3,
+    "title": "삼성전자+SK하이닉스 KOSPI 시총 비중 변화",
+    "fileName": "section_02_03_korea.png"
+  },
+  {
+    "sectionId": "korea",
+    "sectionIndex": 2,
+    "kicker": "SECTION 2. 한국",
+    "sectionTitle": "한국: KOSPI가 오른 건가, 삼성전자·SK하이닉스가 오른 건가?",
+    "chartIndex": 4,
+    "title": "KOSPI vs 삼성전자·하이닉스 제외 + 전닉 시총 비중",
+    "fileName": "section_02_04_korea.png"
+  },
+  {
+    "sectionId": "korea",
+    "sectionIndex": 2,
+    "kicker": "SECTION 2. 한국",
+    "sectionTitle": "한국: KOSPI가 오른 건가, 삼성전자·SK하이닉스가 오른 건가?",
+    "chartIndex": 5,
+    "title": "KOSPI 상승 vs 전닉 제외 KOSPI 상승 + Forward P/E",
+    "fileName": "section_02_05_korea.png"
+  },
+  {
+    "sectionId": "korea",
+    "sectionIndex": 2,
+    "kicker": "SECTION 2. 한국",
+    "sectionTitle": "한국: KOSPI가 오른 건가, 삼성전자·SK하이닉스가 오른 건가?",
+    "chartIndex": 6,
+    "title": "KOSPI + Forward P/E + P/E of 22.4x",
+    "fileName": "section_02_06_korea.png"
+  },
+  {
+    "sectionId": "korea",
+    "sectionIndex": 2,
+    "kicker": "SECTION 2. 한국",
+    "sectionTitle": "한국: KOSPI가 오른 건가, 삼성전자·SK하이닉스가 오른 건가?",
+    "chartIndex": 7,
+    "title": "KOSPI vs 삼성전자, 하이닉스 제외 + Forward P/E + P/E of 22.4x/15.2x/8x",
+    "fileName": "section_02_07_korea.png"
+  },
+  {
+    "sectionId": "korea",
+    "sectionIndex": 2,
+    "kicker": "SECTION 2. 한국",
+    "sectionTitle": "한국: KOSPI가 오른 건가, 삼성전자·SK하이닉스가 오른 건가?",
+    "chartIndex": 8,
+    "title": "삼성전자 vs SK하이닉스 수익률 비교",
+    "fileName": "section_02_08_korea.png"
+  },
+  {
+    "sectionId": "korea",
+    "sectionIndex": 2,
+    "kicker": "SECTION 2. 한국",
+    "sectionTitle": "한국: KOSPI가 오른 건가, 삼성전자·SK하이닉스가 오른 건가?",
+    "chartIndex": 9,
+    "title": "KRX 날짜별 상승·하락·보합 종목 수",
+    "fileName": "section_02_09_korea.png"
+  },
+  {
+    "sectionId": "korea",
+    "sectionIndex": 2,
+    "kicker": "SECTION 2. 한국",
+    "sectionTitle": "한국: KOSPI가 오른 건가, 삼성전자·SK하이닉스가 오른 건가?",
+    "chartIndex": 10,
+    "title": "전닉 시총 비중 + 레버리지 상장 이후 3일 KOSPI·시장폭",
+    "fileName": "section_02_10_korea.png"
+  },
+  {
+    "sectionId": "us",
+    "sectionIndex": 3,
+    "kicker": "SECTION 3. 미국",
+    "sectionTitle": "미국: AI 수혜가 DRAM으로 확산됐나?",
+    "chartIndex": 1,
+    "title": "SPY vs DRAM ETF 정규화 차트",
+    "fileName": "section_03_01_us.png"
+  },
+  {
+    "sectionId": "us",
+    "sectionIndex": 3,
+    "kicker": "SECTION 3. 미국",
+    "sectionTitle": "미국: AI 수혜가 DRAM으로 확산됐나?",
+    "chartIndex": 2,
+    "title": "DRAM ETF 가격 + 거래량",
+    "fileName": "section_03_02_us.png"
+  },
+  {
+    "sectionId": "us",
+    "sectionIndex": 3,
+    "kicker": "SECTION 3. 미국",
+    "sectionTitle": "미국: AI 수혜가 DRAM으로 확산됐나?",
+    "chartIndex": 3,
+    "title": "DRAM ETF vs 삼성전자 vs SK하이닉스 정규화 차트",
+    "fileName": "section_03_03_us.png"
+  },
+  {
+    "sectionId": "us",
+    "sectionIndex": 3,
+    "kicker": "SECTION 3. 미국",
+    "sectionTitle": "미국: AI 수혜가 DRAM으로 확산됐나?",
+    "chartIndex": 4,
+    "title": "글로벌 시가총액 순위 + SpaceX 가상 8위",
+    "fileName": "section_03_04_us.png"
+  },
+  {
+    "sectionId": "china",
+    "sectionIndex": 4,
+    "kicker": "SECTION 4. 중국",
+    "sectionTitle": "중국: 과창판은 강했지만 전체 시장은 약했나?",
+    "chartIndex": 1,
+    "title": "STAR50 vs HSTECH vs CSI300 정규화 차트",
+    "fileName": "section_04_01_china.png"
+  },
+  {
+    "sectionId": "china",
+    "sectionIndex": 4,
+    "kicker": "SECTION 4. 중국",
+    "sectionTitle": "중국: 과창판은 강했지만 전체 시장은 약했나?",
+    "chartIndex": 2,
+    "title": "STAR50 vs DRAM ETF 정규화 차트",
+    "fileName": "section_04_02_china.png"
+  },
+  {
+    "sectionId": "china",
+    "sectionIndex": 4,
+    "kicker": "SECTION 4. 중국",
+    "sectionTitle": "중국: 과창판은 강했지만 전체 시장은 약했나?",
+    "chartIndex": 3,
+    "title": "중국 지수 최근 1개월·6개월·1년 수익률 비교",
+    "fileName": "section_04_03_china.png"
+  },
+  {
+    "sectionId": "theme",
+    "sectionIndex": 5,
+    "kicker": "SECTION 5. 산업·테마",
+    "sectionTitle": "산업·테마: 우주·양자 테마가 시장보다 강했나?",
+    "chartIndex": 1,
+    "title": "QTUM vs NASA vs SPY 정규화 차트",
+    "fileName": "section_05_01_theme.png"
+  },
+  {
+    "sectionId": "theme",
+    "sectionIndex": 5,
+    "kicker": "SECTION 5. 산업·테마",
+    "sectionTitle": "산업·테마: 우주·양자 테마가 시장보다 강했나?",
+    "chartIndex": 2,
+    "title": "QTUM 가격 + 거래량",
+    "fileName": "section_05_02_theme.png"
+  },
+  {
+    "sectionId": "theme",
+    "sectionIndex": 5,
+    "kicker": "SECTION 5. 산업·테마",
+    "sectionTitle": "산업·테마: 우주·양자 테마가 시장보다 강했나?",
+    "chartIndex": 3,
+    "title": "NASA 가격 + 거래량",
+    "fileName": "section_05_03_theme.png"
+  },
+  {
+    "sectionId": "theme",
+    "sectionIndex": 5,
+    "kicker": "SECTION 5. 산업·테마",
+    "sectionTitle": "산업·테마: 우주·양자 테마가 시장보다 강했나?",
+    "chartIndex": 4,
+    "title": "테마 수익률 비교",
+    "fileName": "section_05_04_theme.png"
+  }
+]
